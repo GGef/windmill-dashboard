@@ -1,21 +1,31 @@
 <?php
-namespace public\app\controllers;
+namespace app\controllers ;
+
 
 
 class BaseController
 {
     protected static $model ;
-  
+ 
 
-    public static function view($view , $data = NULL)
+    public static function requir($view, $data = NULL)
     {
-        require "public/ressources/views/".$view.".php";
+        // Construct the file path of the view file
+        $filePath = "ressources/views/" . $view . ".php";
+        
+        // Include the view file
+        require $filePath;
     }
-
+    
     public static function redirect($route)
     {
+        // Redirect to the specified route
         header("location: index1.php?action=$route");
     }
+    
+
+
 }
 
 ?>
+
