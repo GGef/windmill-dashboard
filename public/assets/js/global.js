@@ -108,6 +108,8 @@ function GetItem(pageNumber){
     success: function(data) {
       // Cette fonction sera appelée en cas de succès de la requête
       // 'data' contient la réponse du serveur
+
+      
       console.log("IN")
       console.log(data)
       $("#resultat").html("Réponse du serveur : " + data.message);
