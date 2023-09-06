@@ -18,6 +18,7 @@ class Item extends Model
     private $owner_id;
     private $price_per_unit;
     private $unit_id;
+    private $titrePropriete;
 
     // Getters
     public function getItemId()
@@ -63,6 +64,11 @@ class Item extends Model
     public function getItemUnitId()
     {
         return $this->unit_id;
+    }
+
+    public function getItemTitle()
+    {
+        return $this->titrePropriete;
     }
 
     // Setters
@@ -111,15 +117,25 @@ class Item extends Model
         $this->unit_id = $unit_id;
     }
 
-    public static function latestItem()
+    public function setItemTitle($titrePropriete)
+    {
+         $this->titrePropriete = $titrePropriete;
+    }
+
+    public static function latestItem($leftLimit = '' ,$rightLimit ='')
     {
         // Perform a database query to retrieve the latest items
-        $statement = static::database()->query('SELECT I.id, I.item_name, It.type_name, l.name, I.item_location, I.description,
+        $comm = 'SELECT I.id, I.item_name, It.type_name, l.name, I.item_location, I.description,
             U.username, I.price_per_unit, Un.unit_name, I.avaible FROM user_account U 
             INNER JOIN item I ON I.owner_id = U.id 
             INNER JOIN item_type It ON I.item_type_id = It.id 
             INNER JOIN location l ON I.location_id = l.id 
-            INNER JOIN unit Un ON I.unit_id = Un.id');
+            INNER JOIN unit Un ON I.unit_id = Un.id';
+        if(!empty($rightLimit) || !empty($leftLimit) )
+        {
+            $comm .= ' LIMIT '.$leftLimit.', '.$rightLimit ;
+        }
+        $statement = static::database()->query($comm);
 
         return  $statement->fetchAll(PDO::FETCH_CLASS, __CLASS__);
     }
@@ -128,12 +144,12 @@ class Item extends Model
     {
         // Prepare the SQL statement with placeholders for values
         $statement = static::database()->prepare("INSERT INTO `item` (`id`, `item_name`, `item_type_id`, `location_id`, 
-            `item_location`, `description`, `owner_id`, `price_per_unit`, `unit_id`) 
-            VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?)");
+            `item_location`, `description`, `owner_id`, `price_per_unit`, `unit_id` , `titrePropriete`) 
+            VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     
         // Execute the prepared statement with the actual values
         return $statement->execute([$this->item_name, $this->item_type_id, $this->location_id, $this->item_location, 
-            $this->description, $this->owner_id, $this->price_per_unit, $this->unit_id]);
+            $this->description, $this->owner_id, $this->price_per_unit, $this->unit_id , $this->titrePropriete]);
     }
 
     public static function viewItem($id)

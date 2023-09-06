@@ -121,6 +121,41 @@ class User extends Model
       return $stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__);
   }
 
+  public static function getDataLimit($Limit) 
+  {
+      // Construct the SQL query with placeholders for left and right limit values
+      $sql = "SELECT * FROM item LIMIT ".$Limit;
+      
+      // Prepare the SQL statement
+      $stmt = static::database()->prepare($sql);
+      
+      // Execute the prepared statement
+      $stmt->execute();
+     // var_dump($stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__));
+      // Fetch all rows as an array of objects of the current class
+      //var_dump($stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__));
+      return $stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__);
+      
+  }
+
+  public static function getDataOffset($Limit,$offset) 
+  {
+      // Construct the SQL query with placeholders for left and right limit values
+      $sql = "SELECT * FROM item LIMIT ".$Limit." OFFSET ".$offset ;
+
+      
+      // Prepare the SQL statement
+      $stmt = static::database()->prepare($sql);
+      
+      // Execute the prepared statement
+      $stmt->execute();
+     // var_dump($stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__));
+      // Fetch all rows as an array of objects of the current class
+      //var_dump($stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__));
+      return $stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__);
+      
+  }
+
 //   public function getLimitProducts($leftLimit, $rightLimit , $key) 
 //   {
 //       // Construct the SQL query with placeholders for left and right limit values

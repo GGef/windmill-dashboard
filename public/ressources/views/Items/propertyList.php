@@ -1,5 +1,5 @@
 <?php
-namespace ressources\views;
+namespace ressources\views\Items;
 use \app\models\Item;
 use \app\controllers\ItemController;
 
@@ -8,6 +8,7 @@ require "vendor/autoload.php";
 $title = "Liste des utilisateurs";
 ob_start();
 $totalItems = ItemController::lengthActionItem();
+$newItems = ItemController::CountNewItems();
 
 // Define the number of items to display per page
 $itemsPerPage = 3;
@@ -30,6 +31,7 @@ $endItem = min($startItem + $itemsPerPage - 1, $totalItems);
 
 ?>
   <main class="h-full pb-16 overflow-y-auto">
+    <input id="pageCount" type="hidden" name="" value="<?= $totalItems ?>">
     <div class="container grid px-6 mx-auto">
     <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">propriétés</h2>
 
@@ -54,7 +56,7 @@ $endItem = min($startItem + $itemsPerPage - 1, $totalItems);
             </p>
             
             <p class="text-lg font-semibold text-gray-700 dark:text-gray-200" >
-              <?php echo ItemController::lengthActionItem() ;
+              <?php echo $totalItems ;
               ?>
             </p>
           </div>
@@ -104,12 +106,13 @@ $endItem = min($startItem + $itemsPerPage - 1, $totalItems);
             <p
               class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400"
             >
-              New sales
+            Nouveaux Biens
             </p>
             <p
               class="text-lg font-semibold text-gray-700 dark:text-gray-200"
             >
-              376
+            <?php echo $newItems ;
+              ?>
             </p>
           </div>
         </div>
@@ -147,7 +150,7 @@ $endItem = min($startItem + $itemsPerPage - 1, $totalItems);
       <div class="flex flex-col justify-between flex-wrap mb-4 space-y-4 md:flex-row md:items-end md:space-x-4">
        <!-- With actions -->
   <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">
-    Listes des propriétés
+    Liste des propriétés
   </h4>
   <a href="index1.php?action=createItem" ><button class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
     Ajouter </button>
@@ -164,7 +167,7 @@ $endItem = min($startItem + $itemsPerPage - 1, $totalItems);
         <nav aria-label="Table navigation">
           <ul class="inline-flex items-center">
             <li>
-              <button class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous" >
+            <button id="PreviousButton"  data-current-id = "1" class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous" >
                 <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20" >
                   <path
                     d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
@@ -178,16 +181,16 @@ $endItem = min($startItem + $itemsPerPage - 1, $totalItems);
                   for($i=1; $i<=$totalPages; $i++) {
             ?>
             <li>
-              <a class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple" 
-              href="?action=propertyList&page=<?= $i ?>" >
+              <button class="pagination px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple" 
+              href="?action=propertyList&page=<?= $i ?> " data-id=<?= $i ?> >
                 <?=  $i  ?>
-              </a>
+                  </button>
             </li>
             <?php } ?>
-
             <li>
-              <button
-                class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple"
+            <button id="NextButton"
+                data-current-id="1"
+                class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" 
                 aria-label="Next" >
                 <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20" >
                   <path
@@ -211,7 +214,7 @@ $endItem = min($startItem + $itemsPerPage - 1, $totalItems);
           <!-- row -->
           <div class="table-row flex text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
               <!-- columns -->
-              <div class="table-cell name-field px-4 py-3 p-2 text-sm" style="width: 16.6667%;flex-grow:0!important">NOM</div>
+              <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-500 dark:border-gray-700" style="width: 16.6667%;flex-grow:0!important">NOM</div>
               <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-500 dark:border-gray-700" style="width: 16.6667%;">TYPE</div>
               <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-500 dark:border-gray-700" style="width: 16.6667%;"> EMPLACEMENT </div>
               <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-500 dark:border-gray-700" style="width: 16.6667%;"> EMPLACEMENT DE L'ARTICLE </div>
@@ -221,19 +224,18 @@ $endItem = min($startItem + $itemsPerPage - 1, $totalItems);
               <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-500 dark:border-gray-700" style="width: 16.6667%;">UNITÉ </div>    
               <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-500 dark:border-gray-700" style="width: 16.6667%;">SATUT </div>        
               <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-500 dark:border-gray-700" style="width: 16.6667%;">ACTION </div>                      
-
           </div>
-          </div>
+        </div>
             <!-- Table rows -->
          
             <?php 
 
-             /** @var \public\app\models\Item[] $data */
+             /** @var \public\app\models\ItemLeased[] $data */
 
               if (is_array($data) || is_object($data)) {
                 foreach ($data as $item): ?>
-                <?php echo $item->getItemId()?>
-            <div class="item-row table-row-group "  data-id="<?php echo $item->getItemId()?>">
+                 <?php echo $item->getItemId()?> 
+            <div class="item-row table-row-group " data-id="<?php echo $item->getItemId()?>">
               <div  class=" table-row flex bg-gray-50 dark:bg-gray-900 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400 h-12"  data-id="<?php echo $item->getItemId()?>">
                 <div class="table-cell px-4 py-3 p-2 text-sm" style="width: 16.6667%;"><?= $item->getItemName()?></div>
                   <div class="table-cell px-4 py-3 p-2 text-sm" style="width: 16.6667%;"><?= $item->type_name ?></div>
@@ -247,35 +249,28 @@ $endItem = min($startItem + $itemsPerPage - 1, $totalItems);
                     <?php echo ItemController::statutActionItem($item->getItemId()) ; ?>
                   </div>
                   <div class="table-cell px-4 py-3 p-2 text-sm" style="width: 16.6667%;">
-                    <div class="flex items-center space-x-4 text-sm">
-                      <a
-                        class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
-                        aria-label="Edit" href="index1.php?action=editItem&id=<?php echo $item->getItemId()?>" >
-
-                        <svg
-                          class="w-5 h-5"
-                          aria-hidden="true"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path
-                            d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"
-                          ></path>
+                    <div class="flex  items-center space-x-4 text-sm">
+                      <div class="relative ">
+                      <button class="dropdownbtton"
+                        type="button" onclick="toggleDropdown(this)" data-item-id="<?php echo $item->getItemId() ?>">
+                        <svg class="dropdownbtton" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical">
+                          <circle cx="12" cy="12" r="1"></circle>
+                          <circle cx="12" cy="5" r="1"></circle>
+                          <circle cx="12" cy="19" r="1"></circle>
                         </svg>
-                      </a>
-                      <a
-                        class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
-                        aria-label="Delete" onclick="return confirm('voulez vous vraiment supprimer ce utilisateur')" 
-                        href="index1.php?action=destroyItem&id=<?php echo $item->getItemId()?>" >
-                        <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" >
-                          <path
-                            fill-rule="evenodd"
-                            d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                            clip-rule="evenodd" >
-                          </path>
-                        </svg>
-                      </a>
-                    </div>
+                      </button>
+                        <!-- Dropdown menu -->
+                      <div id="dropdownDelay-<?php echo $item->getItemId() ?>" class="drop absolute z-20 right-0 w-56 space-y-2 hidden text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:text-gray-300 dark:border-gray-700 dark:bg-gray-700">
+                          <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDelayButton">
+                            <li><a href="index1.php?action=editItem&id=<?php echo $item->getItemId()?>"
+                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white">Modifier</a></li>
+                            <li><a href="index1.php?action=reserveItem" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white">Réserver</a></li>
+                            <li><a onclick="return confirm('voulez vous vraiment supprimer ce utilisateur')" href="index1.php?action=destroyItem&id=<?php echo $item->getItemId()?>" 
+                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white">Supprimer</a></li>
+                          </ul>
+                        </div>
+                      </div>
+                     </div>
                   </div>
               </div> 
            
@@ -287,20 +282,9 @@ $endItem = min($startItem + $itemsPerPage - 1, $totalItems);
                   <div class="sam-details__item">3</div>
                 </div>
                 <div class="sam-details__item-box">4</div>
-              </div> 
-         
-        
-
-                  <!-- <div class="grid grid-cols-3 gap-4 p-5" >
-                          <div class="shadow-lg bg-green-100 text-green-500 text-lg font-bold text-center p-5 rounded-lg row-span-2">1</div>
-                          <div class="shadow-lg bg-green-100 text-green-500 text-lg font-bold text-center p-5 rounded-lg">2</div>          
-                          <div class="shadow-lg bg-green-100 text-green-500 text-lg font-bold text-center p-5 rounded-lg row-span-2">3</div>
-                          <div class="shadow-lg bg-green-100 text-green-500 text-lg font-bold text-center p-5 rounded-lg">4</div>
-                 </div>  -->
-         
-
-            
-          <?php endforeach;}
+              </div>             
+          <?php endforeach;
+          }
           else {
             echo "No data available";
           } ?>
@@ -337,6 +321,8 @@ $endItem = min($startItem + $itemsPerPage - 1, $totalItems);
   include_once 'assets/js/global.js';
   ?>
 </script>
+
+
 <?php
 $content = ob_get_clean();
 include_once 'ressources/views/layout.php';

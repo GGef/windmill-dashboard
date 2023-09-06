@@ -33,7 +33,8 @@ class Model
     public static function latest($table)
     {
         // Execute a query to fetch the latest records from the specified table
-        return static::database()->query('SELECT * FROM '.$table.' ORDER BY id DESC')
+        return static::database()->query('SELECT * FROM '.$table.' ORDER BY id DESC
+        ')
             ->fetchAll(PDO::FETCH_CLASS, __CLASS__);
     }
     
@@ -54,7 +55,7 @@ class Model
         $comm = 'SELECT COUNT(*) FROM '.$table ;
         if(!empty($key) )
         {
-            $comm .=' WHERE role_id = '. $key;
+            $comm .=' WHERE  '. $key;
         }    
         
         $requete = static::database()->query($comm);
@@ -79,6 +80,15 @@ class Model
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public static function countNewIU($table, $date)
+    {
+        // Current month
+        $currentMonth = date("m");
+        $comm = 'SELECT COUNT(*) FROM ' . $table . ' WHERE MONTH(' . $date . ') = ' . $currentMonth;
+        $requete = static::database()->query($comm);
+        // Fetch the result of the query and return the count
+        return $requete->fetch()['COUNT(*)'];
 
+    }
 
 }

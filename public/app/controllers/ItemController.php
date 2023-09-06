@@ -10,6 +10,7 @@ use \app\models\Item;
 
 class ItemController  extends BaseController
 {
+    private static $productsPerPage = 3;
 
     public static function getModelItem()
     {
@@ -21,6 +22,32 @@ class ItemController  extends BaseController
         return static::$model;
     }
     
+    public static function makeItemsProductPager()
+    {
+        // Get the total number of pages
+        $totalPages = static::lengthActionItem();
+    
+        // Check the value of the 'page' parameter in the URL
+        if (!isset($_GET['page']) || intval($_GET['page']) == 0 || intval($_GET['page']) == 1 || intval($_GET['page']) < 0) {
+            // If 'page' parameter is not set or is invalid, set the page number to 1
+            $pageNumber = 1;
+            $leftLimit = 0;
+            $rightLimit = static::$productsPerPage; // Set the limit based on the number of products per page
+        } elseif (intval($_GET['page']) > $totalPages || intval($_GET['page']) == $totalPages) {
+            // If 'page' parameter is greater than the total number of pages, set the page number to the last page
+            $pageNumber = $totalPages;
+            $leftLimit = static::$productsPerPage * ($pageNumber - 1);
+            $rightLimit = $leftLimit + static::$productsPerPage; // Variable $allProducts is undefined, you might need to define it
+        } else {
+            // If 'page' parameter is valid, set the page number based on the value in the URL
+            $pageNumber = intval($_GET['page']);
+            $leftLimit = static::$productsPerPage * ($pageNumber - 1);
+            $rightLimit = static::$productsPerPage;
+        }
+        
+        // Call the 'getLimitProducts()' method of the model to fetch the products within the specified limits
+        return static::getModelItem()->latestItem($leftLimit, $rightLimit);
+    }
 
     public static function indexActionItem()
     {
@@ -34,9 +61,14 @@ class ItemController  extends BaseController
         if ($searchValue !== "" && $searchType !== "" && $requestMethod === 'POST') {
             // Search for items based on the provided search input
             $items = static::getModelItem()->findItem($searchType, $searchValue);
+           
         } else {
             // Retrieve the latest items
-            $items = static::getModelItem()->latestItem();
+            $items = static::makeItemsProductPager();
+        }
+        if(is_null($items))
+        {
+            $items = static::makeItemsProductPager();
         }
 
         // Render the view "Items/propertyList" and pass the items as data
@@ -47,6 +79,11 @@ class ItemController  extends BaseController
     {
         // Retrieve the length of the "item" table
         return static::getModelItem()->length('item');
+    }
+    public static function CountNewItems()
+    {
+        // Retrieve the length of the "item" table
+        return static::getModelItem()->countNewIU('item' , ' date_creation ');
     }
 
     public static function retrieveSettresItem()
@@ -62,6 +99,8 @@ class ItemController  extends BaseController
         $Item->setOwnerId($_POST['ownerId']);
         $Item->setPricePerUnit($_POST['price']);
         $Item->setItemUnitId($_POST['unitId']);
+        $Item->setItemTitle($_POST['titrePropriete']);
+
 
         return $Item ;
     }
@@ -69,6 +108,11 @@ class ItemController  extends BaseController
     public static function createActionItem()
     {
         static::requir("Items/createItem");
+        
+    }
+    public static function reserveActionItem()
+    {
+        static::requir("Items/reserveItem");
         
     }
 

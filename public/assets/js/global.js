@@ -1,104 +1,126 @@
 
-// // JavaScript click event handler for .user-row elements
-// var userRows = document.querySelectorAll('.item-row');
-// userRows.forEach(function(userRow) {
-//     userRow.addEventListener('click', function () {
-//         // Find the corresponding .detailsRow element for the clicked .user-row
-//         var detailsRow = this.nextElementSibling;
-
-//         // Check if the display property is set to 'none'
-//         if (detailsRow.style.display === 'none') {
-
-//           // Change the display property to 'table-row'
-//           // detailsRow.style.display = 'table-row';
-          
-//           var userId = userRow.dataset.id;
-          
-//           $.ajax({
-//             url: 'index1.php',
-//             type: 'GET',
-//             data: {
-//               action: 'getUserDataAjax', // Sending the function name as an action parameter
-//               param1 : userId
-//             },
-//              success: function (response) {
-//               // Set the HTML content inside the detailsRow 
-//             // Assuming 'response' is an array with values you want to concatenate
-
-//             for (const key in response) { if (response.hasOwnProperty(key)) { console.log( response[key]) }}
-
-//             newtext = '<div class="grid grid-cols-3 gap-4 p-5">'
-//             newtext += '<div class="shadow-lg bg-gray-100 px-4 py-3 text-sm  p-10 rounded-lg row-span-2">1</div>'
-//             newtext +='<div class="shadow-lg bg-gray-100 px-4 py-3 text-sm  p-10 rounded-lg">'
-//             newtext += '<span class="font-semibold">Titre : </span> '+ response['titre'] + '<br><span class="font-semibold"> Description : </span>' 
-//             newtext += '</div> <div class="shadow-lg bg-gray-100 px-4 py-3 text-sm  p-10 rounded-lg row-span-2">'
-//             newtext += '<span class="font-semibold">Prix : </span> ' + response['price'] + '<br> <span class="font-semibold"> Statut : </span>' + response['statut'] + '<br><span class="font-semibold"> Last occup : </span>de ' + response['from'] + 'à ' + response['to']
-//             newtext += '</div> <div class="shadow-lg bg-gray-100 px-4 py-3 text-sm   p-10 rounded-lg"><span class="font-semibold"> Details : </span>'+ response['desc'] + '</div> </div>'
-//             document.getElementById('new').innerHTML = newtext
-//             // detailsRow.innerHTML = newtext
-//             },
-//             error: function (xhr, status, error) {
-//               // Handle errors, if any
-//               detailsRow.innerHTML = 'hi';
-//               console.error('Error occurred:', error);
-//             }
-//           });
-  
-//         } else {
-//           // Hide the .detailsRow
-//           detailsRow.style.display = 'none';
-//         }
-//     });
-// });
-
+//--- This function handles the toggling of user details display and API data retrieval for individual user rows in the interface ---
 
 var userRows = document.querySelectorAll('.item-row');
 userRows.forEach(function (userRow) {
   userRow.addEventListener('click', function () {
     // Find the corresponding .detailsRow element for the clicked .user-row
     var detailsRow = this.nextElementSibling;
-
+    if ( event.target.tagName !== 'A' && !event.target.closest('button')) {
     // Check if the display property is set to 'none'
-    if (detailsRow.style.display === 'none') {
-      // Change the display property to 'table-row'
-      detailsRow.style.display = 'table-row';
+      if (detailsRow.style.display === 'none') {
+        // Change the display property to 'table-row'
+        detailsRow.style.display = 'table-row';
 
-      // Get the user ID from the data-id attribute of the clicked row
-      var userId = userRow.dataset.id;
-      console.log(userId)
-      //  make an API call to get more details about the user.
-      var apiEndpoint = 'https://www.sakane.ma/oc-content/plugins/rest/api.php?key=DOoebZRUU1ozFAelnC5u7x8hMvcqBV&type=read&object=item&action=byId&itemId=' + userId;
-      var apiPictures = 'https://www.sakane.ma/oc-content/plugins/rest/api.php?key=DOoebZRUU1ozFAelnC5u7x8hMvcqBV&type=read&object=item&action=resourcesById&itemId=' + userId
-        
-      Promise.all([fetch(apiEndpoint), fetch(apiPictures)])
-        .then(responses => {
-          // Check for errors in the responses
-          if (!responses[0].ok || !responses[1].ok) {
-            throw new Error('One or both API responses were not ok');
-          }
+        // Get the user ID from the data-id attribute of the clicked row
+        var userId = userRow.dataset.id;
+        console.log(userId)
+        //  make an API call to get more details about the user.
+        var apiEndpoint = 'https://www.sakane.ma/oc-content/plugins/rest/api.php?key=DOoebZRUU1ozFAelnC5u7x8hMvcqBV&type=read&object=item&action=byId&itemId=' + userId;
+        var apiPictures = 'https://www.sakane.ma/oc-content/plugins/rest/api.php?key=DOoebZRUU1ozFAelnC5u7x8hMvcqBV&type=read&object=item&action=resourcesById&itemId=' + userId
+          
+        Promise.all([fetch(apiEndpoint), fetch(apiPictures)])
+          .then(responses => {
+            // Check for errors in the responses
+            if (!responses[0].ok || !responses[1].ok) {
+              throw new Error('One or both API responses were not ok');
+            }
 
-          // Parse the responses as JSON
-          return Promise.all([responses[0].json(), responses[1].json()]);
-        })
-        .then(data => {
-          var userData = data[0];
-          var picturesData = data[1];
+            // Parse the responses as JSON
+            return Promise.all([responses[0].json(), responses[1].json()]);
+          })
+          .then(data => {
+            var userData = data[0];
+            var picturesData = data[1];
 
-          // Process the user data and pictures data received from the APIs
-          displayItemData(userData);
-          displayItemPictures(picturesData)
-        })
-        .catch(error => {
-          console.error('Error fetching user data or pictures:', error);
-        });
-    } else {
-      // If the details row is visible, hide it by setting the display property to 'none'
-      detailsRow.style.display = 'none';
+            // Process the user data and pictures data received from the APIs
+            displayItemData(userData);
+            displayItemPictures(picturesData)
+          })
+          .catch(error => {
+            console.error('Error fetching user data or pictures:', error);
+          });
+      } else {
+        // If the details row is visible, hide it by setting the display property to 'none'
+        detailsRow.style.display = 'none';
+      }
+    }
+  });
+});
+//ahmed ==========================
+document.addEventListener("DOMContentLoaded", function() {
+  //Obtenez une référence vers le bouton
+  var bottonNext = document.getElementById("NextButton");
+  var bottonPrevius = document.getElementById("PreviousButton");
+  var page = 1;
+  GetItem(page)
+  //Utilisez addEventListener pour détecter le clic sur le bouton
+  bottonNext.addEventListener("click", (e) => {
+    var page = (bottonNext.getAttribute("data-current-id")*1) +1
+    console.log(document.getElementById("pageCount").value);
+    if((bottonNext.getAttribute("data-current-id")*1)+1 <= document.getElementById("pageCount").value){
+    console.log(page)
+    GetItem(page)
+    bottonNext.setAttribute("data-current-id",`${page}`)
+    bottonPrevius.setAttribute("data-current-id",`${page}`)
+  }
+    
+  });
+  
+  bottonPrevius.addEventListener("click", (e) => {
+    // Effectuez une action AJAX ici (par exemple, récupérez des données du serveur)
+    var page = (bottonNext.getAttribute("data-current-id")*1) -1
+    if((bottonNext.getAttribute("data-current-id")*1)-1 >= 1){
+    console.log(page)
+    GetItem(page)
+    bottonNext.setAttribute("data-current-id",`${page}`)
+    bottonPrevius.setAttribute("data-current-id",`${page}`)
     }
   });
 });
 
-// Function to display the fetched user data
+//----------------Fonction 2-----------------------
+document.addEventListener("DOMContentLoaded", function() {
+  // Obtenez une référence vers le bouton
+  // var bouton = document.getElementById("paginationNumber");
+  var btns = document.querySelectorAll(".pagination")
+  //console.log("======== ",bouton);
+  // Utilisez addEventListener pour détecter le clic sur le bouton
+  //console.log("Le Nombre a été cliqué !");
+  btns.forEach(el=>{
+  el.addEventListener("click",(e)=>{
+    var bottonNext = document.getElementById("NextButton");
+    var bottonPrevius = document.getElementById("PreviousButton");
+    GetItem(e.target.getAttribute("data-id"));
+    bottonNext.setAttribute("data-current-id",`${e.target.getAttribute("data-id")}`)
+    bottonPrevius.setAttribute("data-current-id",`${e.target.getAttribute("data-id")}`)
+    
+  })
+  })
+});
+
+function GetItem(pageNumber){
+  console.log(`Le Nombre a été cliqué !${pageNumber}`);
+  $.ajax({
+    url: `index1.php?action=paginationNumber&limit=1&prepa=${pageNumber}`, // URL du script PHP à appeler
+    type: "GET",             // Méthode de la requête (GET, POST, etc.)
+    dataType: "json",        // Type de données attendu en retour (json, text, html, etc.)
+    success: function(data) {
+      // Cette fonction sera appelée en cas de succès de la requête
+      // 'data' contient la réponse du serveur
+      console.log("IN")
+      console.log(data)
+      $("#resultat").html("Réponse du serveur : " + data.message);
+    },
+    error: function() {
+      // Cette fonction sera appelée en cas d'échec de la requête
+      $("#resultat").html("Échec de la requête AJAX.");
+    }
+  });
+
+}
+
+//---------------- Function to display the fetched user data ----------------
 function displayItemData(userData ) {
   // Create an HTML element using the fetched data
   var newtext = '<div class="grid grid-cols-3 gap-4 p-5">';
@@ -113,7 +135,8 @@ function displayItemData(userData ) {
 }
 
 
-
+//---------------- Display images in a Swiper gallery using data from the API response ----------------
+//---------------- API response containing image data ----------------
 function displayItemPictures(picturesData) {
   // Create the initial HTML structure for the Swiper slides
   var text = '<div class="swiper gallery-top">';
@@ -211,21 +234,47 @@ function displayItemPictures(picturesData) {
    });
 }
 
-{/* <img class="lazy" src="https://www.sakane.ma/oc-content/uploads/84/24159_thumbnail.jpg" 
+/* <img class="lazy" src="https://www.sakane.ma/oc-content/uploads/84/24159_thumbnail.jpg" 
 data-src="https://www.sakane.ma/oc-content/uploads/84/24159_thumbnail.jpg" 
-alt="Dar bouazza, Bel appartement a louer, semi meublé 3CH - 2" loading="lazy"></img> */}
+alt="Dar bouazza, Bel appartement a louer, semi meublé 3CH - 2" loading="lazy"></img> */
 
+//---------------- Show or hide the messages list ----------------
+document.querySelector('.messages-btn').addEventListener('click', function() {
+  document.querySelector('.messages-section').classList.toggle('show');
+});
 
+//---------------- Close the messages list ----------------
+document.querySelector('.messages-close').addEventListener('click', function() {
+  document.querySelector('.messages-section').classList.remove('show');
+});
 
+//---------------- Dropdown function: modify, reserve, and delete ----------------
 
+// Function to toggle a dropdown and close others
+function toggleDropdown(button) {
+  var dropdown = button.nextElementSibling;
+  closeDropdown(dropdown)
+  dropdown.classList.toggle("hidden");
+}
+// Function to close all dropdowns except a specific one
+function closeDropdown(dropdown)
+{
+  var dropdowns = document.querySelectorAll('.drop');
+  dropdowns.forEach(function (drop) {
+    if(dropdown.id != drop.id)
+    drop.classList.add('hidden');
+  });
+}
 
-
-
-
-
-
-
-
-
-
+// Event listener for clicks on the body
+document.body.addEventListener('click', function(event) {
+  var clickedElement = event.target;
+  
+  if (!clickedElement.classList.contains('dropdownbtton')) {
+    var dropdowns = document.querySelectorAll('.drop');
+    dropdowns.forEach(function (drop) {
+    drop.classList.add('hidden');
+  });
+  } 
+});
 

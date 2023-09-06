@@ -1,5 +1,6 @@
 <?php
 namespace app\controllers ;
+
  // Include the necessary files
 require "vendor/autoload.php";
 
@@ -20,6 +21,7 @@ class UserController extends BaseController
         }
         return static::$model ;
     }
+    // private static $productsPerPage = 3;
 
     public static function makeProductPager($key)
     {
@@ -71,6 +73,12 @@ class UserController extends BaseController
         $file = $key == 2 ? 'list' : 'listRenter' ;
         // Render the "Users/list" view and pass the users data to it
         static::requir("Users/$file", $users);
+    }
+
+    public static function CountNewUsers()
+    {
+        // Retrieve the length of the "item" table
+        return static::getModel()->countNewIU('user_account' , ' registration_time ');
     }
 
     public static function retrieveSettres()
@@ -182,7 +190,36 @@ class UserController extends BaseController
     }
 
     // Function to handle the AJAX request and retrieve user data by ID
+    public static function Pagination()
+    {
+        $limit = $_GET['limit'];
+        // var_dump($limit);
+        // die();
+       // $stmt = $db->prepare($query); // Prepare the SQL query.
 
+       // $stmt->execute(['id' => 8324]); // Execute the prepared statement with the 'id' parameter.
+
+       // return $stmt->fetchAll(PDO::FETCH_ASSOC); // Return the fetched data as an associative array.
+       $result = static::getModel()::getDataLimit($limit);
+       var_dump($result);
+    }
+
+    public static function paginationNumber()
+    {
+        $limit = $_GET['limit'];
+        $numberOfPage = $_GET['prepa'] -1 ;
+        $offset = $limit * $numberOfPage ;
+        // var_dump($offset);
+        // exit();
+       // $stmt = $db->prepare($query); // Prepare the SQL query.
+
+       // $stmt->execute(['id' => 8324]); // Execute the prepared statement with the 'id' parameter.
+
+       // return $stmt->fetchAll(PDO::FETCH_ASSOC); // Return the fetched data as an associative array.
+       $result = static::getModel()::getDataOffset($limit,$offset);
+       //$result = static::getModel()::getData($limit);
+       var_dump($result);
+    }
     
 }
 

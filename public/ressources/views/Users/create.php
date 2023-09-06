@@ -1,5 +1,5 @@
 <?php
-namespace ressources\views;
+namespace ressources\views\Users;
 use \app\models\User;
 use \app\controllers\UserController;
 
@@ -55,6 +55,12 @@ ob_start();
           <span class="text-gray-700 dark:text-gray-400">Email :</span>
           <input type="text" name="email"
           class="py-1 px-4 block w-full border border-gray-200 rounded-md text-sm border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="xxx@gmail.ma" required><br>
+        </label>
+
+        <label class="block text-sm">
+          <span class="text-gray-700 dark:text-gray-400" >CIN : </span >
+          <input class="block w-full mb-5 text-sm text-gray-900 border border-gray-300 rounded-md cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
+           id="default_size" type="file" required>
         </label>
 
         <label class="block text-sm">

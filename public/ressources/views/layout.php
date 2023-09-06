@@ -24,7 +24,57 @@
   href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
 />
 
+<!-- CSS for full calender -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css" rel="stylesheet" />
+<!-- JS for jQuery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- JS for full calender -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js"></script>
+
+<style>
+
+  .messages-section {
+    display: none;
+  }
+  .messages-section.show {
+    box-shadow: 0 0 5px 5px lightgray;
+    right: 0;
+    display: block;
+    position: absolute;
+    opacity: 1;
+    top: 0;
+    z-index: 100;
+    height: 100%;
+    width: auto;
+    background-color: white;
+  }
+    
+  @media screen and (max-width: 1000px) { 
+    .messages-section.show {
+      transform: translateX(0);
+      opacity: 1;
+      position: fixed;
+      
+    }
+  } 
+
+    .option {
+      display: block;
+      padding: 8px 12px;
+      text-align: left;
+      color: #333;
+      text-decoration: none;
+      transition: background-color 0.2s ease;
+    }
+
+    .option:hover {
+      background-color: #f5f5f5;
+    }
+</style>
+
 <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
 </head>
 
 <body>

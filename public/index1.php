@@ -4,24 +4,32 @@
 
 
    use \app\controllers\UserController;
+   use \app\controllers\BaseController;
    use \app\controllers\ItemController;
+   use \app\controllers\ItemLeasedController;
+   use \app\controllers\DashController;
+   use \app\controllers\CalendarController;
 
     // Création d'un routeur.
     if (isset($_GET['action'])) 
     {
         $action = $_GET['action'];
         switch ($action) {
+            case "dash":
+                // echo 'hello' ;
+             DashController::dashFile('dashboard');
+            break;
             case 'create':
                 UserController::createAction();
             break;
             case 'list' :
-            case 'searchlist': 
+                case 'searchlist': 
                 UserController::indexAction(2);
             break;
             case 'listRenter' :
                 case 'searchlistRenter': 
                     UserController::indexAction(3);
-                break;
+            break;
             case 'store':
                 UserController::storeAction();
             break;
@@ -53,13 +61,24 @@
             case 'destroyItem':
                 ItemController::destroyActionItem();
             break;
-            case "getUserDataAjax":
-                // echo 'hello' ;
-             ItemController::sendData($_GET['param1']);
+            case 'reserveItem':
+                ItemController::reserveActionItem();
             break;
-
+            case 'itemLeasedList':
+                case 'searchitemLeasedList' :
+                ItemLeasedController::indexActionItemLeased();
+            break;
+            case 'calendar' :
+                CalendarController::calendarFile();
+            break;
+            case 'pagination' :
+                UserController::Pagination();
+            break;
+            case 'paginationNumber' :
+                UserController::paginationNumber();
+            break;
             default :
-            echo " page not found 404";
+            require 'ressources/views/404.php';
             break;
             }
     }
