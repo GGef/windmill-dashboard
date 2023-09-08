@@ -71,11 +71,8 @@
             case 'calendar' :
                 CalendarController::calendarFile();
             break;
-            case 'pagination' :
-                UserController::Pagination();
-            break;
             case 'paginationNumber' :
-                UserController::paginationNumber();
+                ItemController::paginationNumber();
             break;
             default :
             require 'ressources/views/404.php';

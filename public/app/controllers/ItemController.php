@@ -199,6 +199,34 @@ class ItemController  extends BaseController
         return $etat;
     }
 
+    public static function paginationNumber()
+    {
+        $limit = $_GET['limit'];
+        $numberOfPage = $_GET['prepa'] -1 ;
+        $offset = $limit * $numberOfPage ;
+        // var_dump($offset);
+        // exit();
+       // $stmt = $db->prepare($query); // Prepare the SQL query.
+
+       // $stmt->execute(['id' => 8324]); // Execute the prepared statement with the 'id' parameter.
+
+       // return $stmt->fetchAll(PDO::FETCH_ASSOC); // Return the fetched data as an associative array.
+       $result = static::getModelItem()::getDataOffset($limit,$offset);
+       //$result = static::getModel()::getData($limit);
+    
+    //   $responce = json_encode(array(
+    //     'data' => $result ,
+    //     'page number' => $numberOfPage
+    //    ));
+    //    var_dump($responce);
+    //    exit;
+       header('Content-type: application/json');
+       echo json_encode(array(
+        'data' => $result 
+        ));
+       exit;
+    }
+
     public static function sendData($id)
     {
         $item = static::getModelItem() ;

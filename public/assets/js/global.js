@@ -57,7 +57,6 @@ document.addEventListener("DOMContentLoaded", function() {
   //Utilisez addEventListener pour détecter le clic sur le bouton
   bottonNext.addEventListener("click", (e) => {
     var page = (bottonNext.getAttribute("data-current-id")*1) +1
-    console.log(document.getElementById("pageCount").value);
     if((bottonNext.getAttribute("data-current-id")*1)+1 <= document.getElementById("pageCount").value){
     console.log(page)
     GetItem(page)
@@ -104,12 +103,11 @@ function GetItem(pageNumber){
   $.ajax({
     url: `index1.php?action=paginationNumber&limit=1&prepa=${pageNumber}`, // URL du script PHP à appeler
     type: "GET",             // Méthode de la requête (GET, POST, etc.)
-    dataType: "json",        // Type de données attendu en retour (json, text, html, etc.)
+    dataType: "json",   
+     // Type de données attendu en retour (json, text, html, etc.)
     success: function(data) {
       // Cette fonction sera appelée en cas de succès de la requête
       // 'data' contient la réponse du serveur
-
-      
       console.log("IN")
       console.log(data)
       $("#resultat").html("Réponse du serveur : " + data.message);
@@ -279,4 +277,5 @@ document.body.addEventListener('click', function(event) {
   });
   } 
 });
+
 
