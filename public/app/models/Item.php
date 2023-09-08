@@ -9,16 +9,16 @@ use PDO;
 
 class Item extends Model
 {
-   // private $id;
-    private $item_name;
-    private $item_type_id;
-    private $location_id;
-    private $item_location;
-    private $description;
-    private $owner_id;
-    private $price_per_unit;
-    private $unit_id;
-    private $titrePropriete;
+    public $id;
+    public $item_name;
+    public $item_type_id;
+    public $location_id;
+    public $item_location;
+    public $description;
+    public $owner_id;
+    public $price_per_unit;
+    public $unit_id;
+    public $titrePropriete;
 
     // Getters
     public function getItemId()
@@ -278,6 +278,27 @@ class Item extends Model
         $stmt->execute(['id' => $id]); // Execute the prepared statement with the 'id' parameter.
 
         return ($stmt->fetch(PDO::FETCH_ASSOC)); // Return the fetched data as an associative array.
+    }
+
+  
+    public static function getDataOffset($Limit,$offset) 
+    {
+        // Construct the SQL query with placeholders for left and right limit values
+        $sql = "SELECT * FROM item LIMIT ".$Limit." OFFSET ".$offset ;
+  
+        
+        // Prepare the SQL statement
+        $stmt = static::database()->prepare($sql);
+        
+        // Execute the prepared statement  
+        $stmt->execute();
+       // var_dump($stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__));
+        // Fetch all rows as an array of objects of the current class
+        //var_dump($stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__));
+       // return $stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__);
+        return $stmt->fetchAll(PDO::FETCH_CLASS,__CLASS__);
+        
+        
     }
 
 

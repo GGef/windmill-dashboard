@@ -208,7 +208,7 @@ $endItem = min($startItem + $itemsPerPage - 1, $totalItems);
 
     <div class="w-full overflow-x-auto">
       <!-- Table container -->
-      <div class="w-full whitespace-no-wrap container mx-auto ">
+      <div  class="w-full whitespace-no-wrap container mx-auto ">
         <!-- Table header -->
         <div class="table-header-group">
           <!-- row -->
@@ -227,73 +227,7 @@ $endItem = min($startItem + $itemsPerPage - 1, $totalItems);
           </div>
         </div>
             <!-- Table rows -->
-         
-            <?php 
-
-             /** @var \public\app\models\ItemLeased[] $data */
-
-              if (is_array($data) || is_object($data)) {
-                foreach ($data as $item): ?>
-                 <?php echo $item->getItemId()?> 
-            <div class="item-row table-row-group " data-id="<?php echo $item->getItemId()?>">
-              <div  class=" table-row flex bg-gray-50 dark:bg-gray-900 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400 h-12"  data-id="<?php echo $item->getItemId()?>">
-                <div class="table-cell px-4 py-3 p-2 text-sm" style="width: 16.6667%;"><?= $item->getItemName()?></div>
-                  <div class="table-cell px-4 py-3 p-2 text-sm" style="width: 16.6667%;"><?= $item->type_name ?></div>
-                  <div class="table-cell px-4 py-3 p-2 text-sm" style="width: 16.6667%;"><?= $item->name?></div>
-                  <div class="table-cell px-4 py-3 p-2 text-sm" style="width: 16.6667%;"><?= $item->getItemLocation() ?></div>
-                  <div class="table-cell px-4 py-3 p-2 text-sm" style="width: 16.6667%;"><?= $item->getItemDescription()?></div>
-                  <div class="table-cell px-4 py-3 p-2 text-sm" style="width: 16.6667%;"><?= $item->username ?></div>
-                  <div class="table-cell px-4 py-3 p-2 text-sm" style="width: 16.6667%;"><?= $item->getPricePerUnit() ?></div>
-                  <div class="table-cell px-4 py-3 p-2 text-sm" style="width: 16.6667%;"><?= $item->unit_name ?></div>
-                  <div class="table-cell px-4 py-3 p-2 text-sm" style="width: 16.6667%;">
-                    <?php echo ItemController::statutActionItem($item->getItemId()) ; ?>
-                  </div>
-                  <div class="table-cell px-4 py-3 p-2 text-sm" style="width: 16.6667%;">
-                    <div class="flex  items-center space-x-4 text-sm">
-                      <div class="relative ">
-                      <button class="dropdownbtton"
-                        type="button" onclick="toggleDropdown(this)" data-item-id="<?php echo $item->getItemId() ?>">
-                        <svg class="dropdownbtton" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical">
-                          <circle cx="12" cy="12" r="1"></circle>
-                          <circle cx="12" cy="5" r="1"></circle>
-                          <circle cx="12" cy="19" r="1"></circle>
-                        </svg>
-                      </button>
-                        <!-- Dropdown menu -->
-                      <div id="dropdownDelay-<?php echo $item->getItemId() ?>" class="drop absolute z-20 right-0 w-56 space-y-2 hidden text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:text-gray-300 dark:border-gray-700 dark:bg-gray-700">
-                          <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDelayButton">
-                            <li><a href="index1.php?action=editItem&id=<?php echo $item->getItemId()?>"
-                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white">Modifier</a></li>
-                            <li><a href="index1.php?action=reserveItem" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white">Réserver</a></li>
-                            <li><a onclick="return confirm('voulez vous vraiment supprimer ce utilisateur')" href="index1.php?action=destroyItem&id=<?php echo $item->getItemId()?>" 
-                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white">Supprimer</a></li>
-                          </ul>
-                        </div>
-                      </div>
-                     </div>
-                  </div>
-              </div> 
-           
-            </div>
-              <div class=" sam-details__box" style='display:none;' >
-                <div class="sam-details__item-box">1</div>
-                <div class="sam-details__item-box fff">
-                  <div class="sam-details__item">2</div>          
-                  <div class="sam-details__item">3</div>
-                </div>
-                <div class="sam-details__item-box">4</div>
-              </div>             
-          <?php endforeach;
-          }
-          else {
-            echo "No data available";
-          } ?>
-                   
-     
-        
-    
-
-    
+        <div id ="ItemContainer"></div>                   
       </div>  
     
     </div>   
