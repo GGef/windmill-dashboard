@@ -285,8 +285,11 @@ class Item extends Model
     {
         // Construct the SQL query with placeholders for left and right limit values
         //$sql = "SELECT * FROM item LIMIT ".$Limit." OFFSET ".$offset ;
-        $sql = "SELECT I.id, I.item_name, it.type_name , L.name, L.description LocalDesc,I.description  FROM item I INNER JOIN item_type it ON I.item_type_id = it.id
-        INNER JOIN location L ON I.location_id = L.id  LIMIT ".$Limit." OFFSET ".$offset ;
+        $sql = "SELECT I.id, I.item_name, it.type_name ,I.description,u.unit_name,I.price_per_unit, L.name, L.description descrLocal,ua.username FROM item I 
+        INNER JOIN item_type it ON I.item_type_id = it.id 
+        INNER JOIN location L ON I.location_id = L.id 
+        INNER JOIN user_account ua ON I.owner_id = ua.id
+        INNER JOIN unit u ON I.unit_id = u.id;  LIMIT ".$Limit." OFFSET ".$offset ;
         //var_dump($sql);
         
         // Prepare the SQL statement

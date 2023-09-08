@@ -292,11 +292,11 @@ function rowTable(item){
       <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.item_name}</div>
         <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.type_name}</div>
         <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.name}</div>
-        <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.LocalDesc}</div>
+        <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.descrLocal}</div>
         <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.description}</div>
-        <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.owner_id}</div>
+        <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.username}</div>
         <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.price_per_unit}</div>
-        <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.unit_id}</div>
+        <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.unit_name}</div>
         <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.avaible}</div>
         <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>
           <?php // echo ItemController::statutActionItem($item->getItemId()) ; ?>
