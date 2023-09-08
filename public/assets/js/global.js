@@ -290,13 +290,14 @@ function rowTable(item){
     <div  class='table-row flex bg-gray-50 dark:bg-gray-900 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400 h-12'  data-id='${item.id}'>
     <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.id}</div>
       <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.item_name}</div>
-        <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.item_name}</div>
-        <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.item_location}</div>
+        <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.type_name}</div>
+        <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.name}</div>
+        <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.LocalDesc}</div>
         <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.description}</div>
-        <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.item_name}</div>
+        <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.owner_id}</div>
         <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.price_per_unit}</div>
         <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.unit_id}</div>
-        <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.description}</div>
+        <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.avaible}</div>
         <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>
           <?php // echo ItemController::statutActionItem($item->getItemId()) ; ?>
         </div>

@@ -284,8 +284,10 @@ class Item extends Model
     public static function getDataOffset($Limit,$offset) 
     {
         // Construct the SQL query with placeholders for left and right limit values
-        $sql = "SELECT * FROM item LIMIT ".$Limit." OFFSET ".$offset ;
-  
+        //$sql = "SELECT * FROM item LIMIT ".$Limit." OFFSET ".$offset ;
+        $sql = "SELECT I.id, I.item_name, it.type_name , L.name, L.description LocalDesc,I.description  FROM item I INNER JOIN item_type it ON I.item_type_id = it.id
+        INNER JOIN location L ON I.location_id = L.id  LIMIT ".$Limit." OFFSET ".$offset ;
+        //var_dump($sql);
         
         // Prepare the SQL statement
         $stmt = static::database()->prepare($sql);
