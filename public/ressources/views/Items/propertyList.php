@@ -11,7 +11,7 @@ $totalItems = ItemController::lengthActionItem();
 $newItems = ItemController::CountNewItems();
 
 // Define the number of items to display per page
-$itemsPerPage = 3;
+$itemsPerPage = 6;
 
 // Calculate the total number of pages
 $totalPages = ceil($totalItems / $itemsPerPage);
@@ -24,14 +24,17 @@ $current_page = max(1, min($current_page, $totalPages));
 
 // Calculate the offset to fetch the items for the current page
 $offset = ($current_page - 1) * $itemsPerPage;
-
 // Display the pagination information
 $startItem = ($current_page - 1) * $itemsPerPage + 1;
-$endItem = min($startItem + $itemsPerPage - 1, $totalItems);
+// $endItem = min($startItem + $itemsPerPage - 1, $totalItems);
+
+$endItem = ceil($totalItems/$itemsPerPage);
+
 
 ?>
   <main class="h-full pb-16 overflow-y-auto">
     <input id="pageCount" type="hidden" name="" value="<?= $totalItems ?>">
+    <input id="endPage" type="hidden" name="" value="<?= $endItem ?>">
     <div class="container grid px-6 mx-auto">
     <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">propriétés</h2>
 
@@ -214,6 +217,7 @@ $endItem = min($startItem + $itemsPerPage - 1, $totalItems);
           <!-- row -->
           <div class="table-row flex text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
               <!-- columns -->
+              <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-500 dark:border-gray-700" style="width: 16.6667%;flex-grow:0!important">ID</div>
               <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-500 dark:border-gray-700" style="width: 16.6667%;flex-grow:0!important">NOM</div>
               <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-500 dark:border-gray-700" style="width: 16.6667%;">TYPE</div>
               <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-500 dark:border-gray-700" style="width: 16.6667%;"> EMPLACEMENT </div>

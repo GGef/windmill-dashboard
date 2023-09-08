@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function() {
   //Utilisez addEventListener pour détecter le clic sur le bouton
   bottonNext.addEventListener("click", (e) => {
     var page = (bottonNext.getAttribute("data-current-id")*1) +1
-    if((bottonNext.getAttribute("data-current-id")*1)+1 <= document.getElementById("pageCount").value){
+    if((bottonNext.getAttribute("data-current-id")*1)+1 <= document.getElementById("endPage").value){
     console.log(page)
     GetItem(page)
     bottonNext.setAttribute("data-current-id",`${page}`)
@@ -288,6 +288,7 @@ document.body.addEventListener('click', function(event) {
 function rowTable(item){
    let newItem = `
     <div  class='table-row flex bg-gray-50 dark:bg-gray-900 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400 h-12'  data-id='${item.id}'>
+    <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.id}</div>
       <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.item_name}</div>
         <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.item_name}</div>
         <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.item_location}</div>
