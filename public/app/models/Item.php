@@ -289,7 +289,7 @@ class Item extends Model
         INNER JOIN item_type it ON I.item_type_id = it.id 
         INNER JOIN location L ON I.location_id = L.id 
         INNER JOIN user_account ua ON I.owner_id = ua.id
-        INNER JOIN unit u ON I.unit_id = u.id;  LIMIT ".$Limit." OFFSET ".$offset ;
+        INNER JOIN unit u ON I.unit_id = u.id  LIMIT ".$Limit." OFFSET ".$offset ;
         //var_dump($sql);
         
         // Prepare the SQL statement
