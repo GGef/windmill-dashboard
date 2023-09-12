@@ -109,15 +109,16 @@ function GetItem(pageNumber){
       // Cette fonction sera appelée en cas de succès de la requête
       // 'data' contient la réponse du serveur
       document.getElementById("ItemContainer").innerHTML= " <div id=Childnode  class='bg-white dark:bg-gray-900'  data-id='${item.id}'></div>"
-      document.getElementById("Childnode").innerHTML="  <div id=Secondchildnode class='flex justify-between items-center px-4 py-3 text-sm'></div> "
+      // document.getElementById("Childnode").innerHTML="  <div id=Secondchildnode class='flex justify-between items-center px-4 py-3 text-sm'></div> "
     
     // <div class="flex justify-between items-center px-4 py-3 text-sm"></div>
       data.data.forEach(el=>{
+        // var SecChildNode =  document.getElementById("Secondchildnode")
        let createRow = document.createElement("div")
-       createRow.setAttribute('class','w-1/3 truncate')
+       createRow.setAttribute('class','flex justify-between  items-center px-4 py-3 text-sm')
        createRow.setAttribute('data-id',`${el.id}`)
-       createRow.innerHTML = rowTable(el)
-      var Elem  =  document.getElementById("Secondchildnode")
+      createRow.innerHTML = rowTable(el)
+      var Elem  =  document.getElementById("Childnode")
       Elem.append(createRow)
       })
       $("#resultat").html("Réponse du serveur : " + data.message);
@@ -324,8 +325,7 @@ function rowTable(item){
                   </div>
                </div>
            </div>
-    </div> 
-  </div>
+
    <div class=' sam-details__box' style='display:none;' >
       <div class='sam-details__item-box'>1</div>
       <div class='sam-details__item-box fff'>
