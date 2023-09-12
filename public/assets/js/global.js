@@ -108,14 +108,17 @@ function GetItem(pageNumber){
     success: function(data) {
       // Cette fonction sera appelée en cas de succès de la requête
       // 'data' contient la réponse du serveur
-      document.getElementById("ItemContainer").innerHTML= ""
+      document.getElementById("ItemContainer").innerHTML= " <div id=Childnode  class='bg-white dark:bg-gray-900'  data-id='${item.id}'></div>"
+      document.getElementById("Childnode").innerHTML="  <div id=Secondchildnode class='flex justify-between items-center px-4 py-3 text-sm'></div> "
+    
+    // <div class="flex justify-between items-center px-4 py-3 text-sm"></div>
       data.data.forEach(el=>{
        let createRow = document.createElement("div")
-       createRow.setAttribute('class','item-row table-row-group')
+       createRow.setAttribute('class','w-1/3 truncate')
        createRow.setAttribute('data-id',`${el.id}`)
        createRow.innerHTML = rowTable(el)
-       document.getElementById("ItemContainer").append(createRow)
-        
+      var Elem  =  document.getElementById("Secondchildnode")
+      Elem.append(createRow)
       })
       $("#resultat").html("Réponse du serveur : " + data.message);
     },
@@ -287,8 +290,7 @@ document.body.addEventListener('click', function(event) {
 
 function rowTable(item){
    let newItem = `
-  <div  class='bg-white dark:bg-gray-900'  data-id='${item.id}'>
-    <div class="flex justify-between items-center px-4 py-3 text-sm">
+  
         <div class='w-1/3 truncate'>${item.id}</div>
         <div class='w-1/3 truncate'>${item.item_name}</div>
         <div class='w-1/3 truncate' >${item.type_name}</div>
