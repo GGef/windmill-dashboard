@@ -291,6 +291,36 @@ document.body.addEventListener('click', function(event) {
   });
   } 
 });
+function statusAvailble(id){
+  $.ajax({
+    url: `index1.php?action=statutActionItem&id=${id}`, // URL du script PHP à appeler
+    type: "GET",             // Méthode de la requête (GET, POST, etc.)
+    dataType: "json",   
+     // Type de données attendu en retour (json, text, html, etc.)
+    success: function(data) {
+      // Cette fonction sera appelée en cas de succès de la requête
+      // 'data' contient la réponse du serveur
+      document.getElementById("ItemContainer").innerHTML= " <div id=Childnode  class='bg-white dark:bg-gray-900'  data-id='${item.id}'></div>"
+      // document.getElementById("Childnode").innerHTML="  <div id=Secondchildnode class='flex justify-between items-center px-4 py-3 text-sm'></div> "
+    
+    // <div class="flex justify-between items-center px-4 py-3 text-sm"></div>
+      data.data.forEach(el=>{
+        // var SecChildNode =  document.getElementById("Secondchildnode")
+       let createRow = document.createElement("div")
+       createRow.setAttribute('class','flex justify-between  items-center px-4 py-3 text-sm')
+       createRow.setAttribute('data-id',`${el.id}`)
+      createRow.innerHTML = rowTable(el)
+      var Elem  =  document.getElementById("Childnode")
+      Elem.append(createRow)
+      })
+      $("#resultat").html("Réponse du serveur : " + data.message);
+    },
+    error: function() {
+      // Cette fonction sera appelée en cas d'échec de la requête
+      $("#resultat").html("Échec de la requête AJAX.");
+    }
+  });
+}
 
 function rowTable(item){
    let newItem = `
