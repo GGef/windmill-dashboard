@@ -265,15 +265,17 @@ document.querySelector('.messages-close').addEventListener('click', function() {
 function toggleDropdown(button) {
   var dropdown = button.nextElementSibling;
   closeDropdown(dropdown)
-  dropdown.classList.toggle("hidden");
+  dropdown.classList.toggle('hidden');
 }
 // Function to close all dropdowns except a specific one
 function closeDropdown(dropdown)
 {
   var dropdowns = document.querySelectorAll('.drop');
   dropdowns.forEach(function (drop) {
-    if(dropdown.id != drop.id)
-    drop.classList.add('hidden');
+    if(dropdown.id != drop.id){
+      drop.classList.add('hidden');
+    }
+    
   });
 }
 
@@ -284,6 +286,7 @@ document.body.addEventListener('click', function(event) {
   if (!clickedElement.classList.contains('dropdownbtton')) {
     var dropdowns = document.querySelectorAll('.drop');
     dropdowns.forEach(function (drop) {
+      
     drop.classList.add('hidden');
   });
   } 
@@ -313,15 +316,15 @@ function rowTable(item){
                           <circle cx='12' cy='19' r='1'></circle>
                         </svg>
                       </button>
-                </div>
-                <div id='dropdownDelay-${item.id}' class='drop absolute z-20 right-0 w-56 space-y-2 hidden text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:text-gray-300 dark:border-gray-700 dark:bg-gray-700'>
-                    <ul class='py-2 text-sm text-gray-700 dark:text-gray-200' aria-labelledby='dropdownDelayButton'>
-                      <li><a href='index1.php?action=editItem&id=${item.id}'
+                    <div id='dropdownDelay-${item.id}' class='drop absolute z-20 right-0 w-56 space-y-2 hidden text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:text-gray-300 dark:border-gray-700 dark:bg-gray-700'>
+                      <ul class='py-2 text-sm text-gray-700 dark:text-gray-200' aria-labelledby='dropdownDelayButton'>
+                        <li><a href='index1.php?action=editItem&id=${item.id}'
                       class='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white'>Modifier</a></li>
                       <li><a href='index1.php?action=reserveItem' class='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white'>Réserver</a></li>
                       <li><a onclick='return confirm('voulez vous vraiment supprimer ce utilisateur')' href='index1.php?action=destroyItem&id=${item.id}' 
                       class='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white'>Supprimer</a></li>
                     </ul>
+                  </div>
                   </div>
                </div>
            </div>
