@@ -305,7 +305,7 @@ function rowTable(item){
         <div class='w-1/3 truncate' >${item.price_per_unit}</div>
         <div class='w-1/3 truncate' >${item.unit_name}</div>
         <div class='w-1/3 truncate' >${item.avaible}</div>      
-        <div class='w-1/3 truncate' >
+        <div class='w-1/3' >
           <div class='flex  items-center space-x-4 text-sm'>
                 <div class='relative '>
                       <button class='dropdownbtton'
