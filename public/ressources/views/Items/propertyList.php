@@ -213,27 +213,28 @@ $endItem = ceil($totalItems/$itemsPerPage);
       <!-- Table container -->
       <div  class="w-full whitespace-no-wrap container mx-auto ">
         <!-- Table header -->
-        <div class="table-header-group">
+        <div class="bg-gray-50 dark:bg-gray-900">
+        <div class="flex justify-between items-center px-4 py-3 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700">
           <!-- row -->
-          <div class="table-row flex text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-              <!-- columns -->
-              <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-500 dark:border-gray-700" style="width: 16.6667%;flex-grow:0!important">ID</div>
-              <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-500 dark:border-gray-700" style="width: 16.6667%;flex-grow:0!important">NOM</div>
-              <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-500 dark:border-gray-700" style="width: 16.6667%;">TYPE</div>
-              <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-500 dark:border-gray-700" style="width: 16.6667%;"> EMPLACEMENT </div>
-              <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-500 dark:border-gray-700" style="width: 16.6667%;"> EMPLACEMENT DE L'ARTICLE </div>
-              <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-500 dark:border-gray-700" style="width: 16.6667%;"> DESCRIPTION </div>
-              <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-500 dark:border-gray-700" style="width: 16.6667%;">PROPRIÉTAIRE</div>
-              <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-500 dark:border-gray-700" style="width: 16.6667%;"> PRIX </div>
-              <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-500 dark:border-gray-700" style="width: 16.6667%;">UNITÉ </div>    
-              <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-500 dark:border-gray-700" style="width: 16.6667%;">SATUT </div>        
-              <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-500 dark:border-gray-700" style="width: 16.6667%;">ACTION </div>                      
-          </div>
-        </div>
+              <div class="w-1/3" >ID</div>
+              <div class="w-1/3" >NOM</div>
+              <div class="w-1/3" >TYPE</div>
+              <div class="w-1/3" > EMPLACEMENT </div>
+              <div class="w-1/3" > EMPLACEMENT DE L'ARTICLE </div>
+              <div class="w-1/3" > DESCRIPTION </div>
+              <div class="w-1/3" >PROPRIÉTAIRE</div>
+              <div class="w-1/3" > PRIX </div>
+              <div class="w-1/3" >UNITÉ </div>    
+              <div class="w-1/3" >SATUT </div>        
+              <div class="w-1/3" >ACTION </div> 
+                  </div> </div>    
+                  <div id ="ItemContainer"></div>                     
+         
+            
+         
             <!-- Table rows -->
-        <div id ="ItemContainer"></div>                   
+                          
       </div>  
-    
     </div>   
     <!-- <div class="grid grid-cols-2 gap-x-5 gap-y-3">
   <div class="bg-green-100 text-green-500 text-lg font-bold text-center p-14 rounded-lg">1</div>

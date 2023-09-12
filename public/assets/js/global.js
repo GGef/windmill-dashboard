@@ -287,47 +287,43 @@ document.body.addEventListener('click', function(event) {
 
 function rowTable(item){
    let newItem = `
-    <div  class='table-row flex bg-gray-50 dark:bg-gray-900 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400 h-12'  data-id='${item.id}'>
-    <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.id}</div>
-      <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.item_name}</div>
-        <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.type_name}</div>
-        <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.name}</div>
-        <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.descrLocal}</div>
-        <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.description}</div>
-        <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.username}</div>
-        <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.price_per_unit}</div>
-        <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.unit_name}</div>
-        <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>${item.avaible}</div>
-        <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>
-          <?php // echo ItemController::statutActionItem($item->getItemId()) ; ?>
-        </div>
-        <div class='table-cell px-4 py-3 p-2 text-sm' style='width: 16.6667%;'>
+  <div  class='bg-white dark:bg-gray-900'  data-id='${item.id}'>
+    <div class="flex justify-between items-center px-4 py-3 text-sm">
+        <div class='w-1/3 truncate'>${item.id}</div>
+        <div class='w-1/3 truncate'>${item.item_name}</div>
+        <div class='w-1/3 truncate' >${item.type_name}</div>
+        <div class='w-1/3 truncate' >${item.name}</div>
+        <div class='w-1/3 truncate' >${item.descrLocal}</div>
+        <div class='w-1/3 truncate' >${item.description}</div>
+        <div class='w-1/3 truncate' >${item.username}</div>
+        <div class='w-1/3 truncate' >${item.price_per_unit}</div>
+        <div class='w-1/3 truncate' >${item.unit_name}</div>
+        <div class='w-1/3 truncate' >${item.avaible}</div>      
+        <div class='w-1/3 truncate' >
           <div class='flex  items-center space-x-4 text-sm'>
-            <div class='relative '>
-            <button class='dropdownbtton'
-              type='button' onclick='toggleDropdown(this)' data-item-id='${item.id}'>
-              <svg class='dropdownbtton' xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-more-vertical'>
-                <circle cx='12' cy='12' r='1'></circle>
-                <circle cx='12' cy='5' r='1'></circle>
-                <circle cx='12' cy='19' r='1'></circle>
-              </svg>
-            </button>
-             
-            <div id='dropdownDelay-${item.id}' class='drop absolute z-20 right-0 w-56 space-y-2 hidden text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:text-gray-300 dark:border-gray-700 dark:bg-gray-700'>
-                <ul class='py-2 text-sm text-gray-700 dark:text-gray-200' aria-labelledby='dropdownDelayButton'>
-                  <li><a href='index1.php?action=editItem&id=${item.id}'
-                   class='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white'>Modifier</a></li>
-                  <li><a href='index1.php?action=reserveItem' class='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white'>Réserver</a></li>
-                  <li><a onclick='return confirm('voulez vous vraiment supprimer ce utilisateur')' href='index1.php?action=destroyItem&id=${item.id}' 
-                   class='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white'>Supprimer</a></li>
-                </ul>
-              </div>
-            </div>
+                <div class='relative '>
+                      <button class='dropdownbtton'
+                        type='button' onclick='toggleDropdown(this)' data-item-id='${item.id}'>
+                        <svg class='dropdownbtton' xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-more-vertical'>
+                          <circle cx='12' cy='12' r='1'></circle>
+                          <circle cx='12' cy='5' r='1'></circle>
+                          <circle cx='12' cy='19' r='1'></circle>
+                        </svg>
+                      </button>
+                </div>
+                <div id='dropdownDelay-${item.id}' class='drop absolute z-20 right-0 w-56 space-y-2 hidden text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:text-gray-300 dark:border-gray-700 dark:bg-gray-700'>
+                    <ul class='py-2 text-sm text-gray-700 dark:text-gray-200' aria-labelledby='dropdownDelayButton'>
+                      <li><a href='index1.php?action=editItem&id=${item.id}'
+                      class='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white'>Modifier</a></li>
+                      <li><a href='index1.php?action=reserveItem' class='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white'>Réserver</a></li>
+                      <li><a onclick='return confirm('voulez vous vraiment supprimer ce utilisateur')' href='index1.php?action=destroyItem&id=${item.id}' 
+                      class='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white'>Supprimer</a></li>
+                    </ul>
+                  </div>
+               </div>
            </div>
-        </div>
     </div> 
-  
-   </div>
+  </div>
    <div class=' sam-details__box' style='display:none;' >
       <div class='sam-details__item-box'>1</div>
       <div class='sam-details__item-box fff'>
@@ -335,7 +331,7 @@ function rowTable(item){
         <div class='sam-details__item'>3</div>
       </div>
       <div class='sam-details__item-box'>4</div>
-    `
+    </div>`
     //console.log(newItem);
 
    return newItem;
