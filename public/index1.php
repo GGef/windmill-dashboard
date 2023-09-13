@@ -74,6 +74,9 @@
             case 'paginationNumber' :
                 ItemController::paginationNumber();
             break;
+            case 'statutActionItem' :
+                ItemController::statutActionItem();
+            break;
             default :
             require 'ressources/views/404.php';
             break;

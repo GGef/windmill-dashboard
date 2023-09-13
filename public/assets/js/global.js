@@ -291,7 +291,8 @@ document.body.addEventListener('click', function(event) {
   });
   } 
 });
-function statusAvailble(id){
+ function statusAvailble(id){
+  var html ;
   $.ajax({
     url: `index1.php?action=statutActionItem&id=${id}`, // URL du script PHP à appeler
     type: "GET",             // Méthode de la requête (GET, POST, etc.)
@@ -300,19 +301,14 @@ function statusAvailble(id){
     success: function(data) {
       // Cette fonction sera appelée en cas de succès de la requête
       // 'data' contient la réponse du serveur
-      document.getElementById("ItemContainer").innerHTML= " <div id=Childnode  class='bg-white dark:bg-gray-900'  data-id='${item.id}'></div>"
-      // document.getElementById("Childnode").innerHTML="  <div id=Secondchildnode class='flex justify-between items-center px-4 py-3 text-sm'></div> "
-    
-    // <div class="flex justify-between items-center px-4 py-3 text-sm"></div>
-      data.data.forEach(el=>{
-        // var SecChildNode =  document.getElementById("Secondchildnode")
-       let createRow = document.createElement("div")
-       createRow.setAttribute('class','flex justify-between  items-center px-4 py-3 text-sm')
-       createRow.setAttribute('data-id',`${el.id}`)
-      createRow.innerHTML = rowTable(el)
-      var Elem  =  document.getElementById("Childnode")
-      Elem.append(createRow)
-      })
+
+      var avai = document.querySelectorAll('.available')
+      avai.forEach(function(el) {
+        el.innerHTML = data.data;
+      });
+    //   console.log(data.data)
+    //  avai.innerHTML = data.data;
+      
       $("#resultat").html("Réponse du serveur : " + data.message);
     },
     error: function() {
@@ -320,6 +316,7 @@ function statusAvailble(id){
       $("#resultat").html("Échec de la requête AJAX.");
     }
   });
+
 }
 
 function rowTable(item){
@@ -334,7 +331,7 @@ function rowTable(item){
         <div class='w-1/3 truncate' >${item.username}</div>
         <div class='w-1/3 truncate' >${item.price_per_unit}</div>
         <div class='w-1/3 truncate' >${item.unit_name}</div>
-        <div class='w-1/3 truncate' >${item.avaible}</div>      
+        <div class='available w-1/3 truncate' >${statusAvailble(item.id)}</div>      
         <div class='w-1/3' >
           <div class='flex  items-center space-x-4 text-sm'>
                 <div class='relative '>
