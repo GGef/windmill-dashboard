@@ -227,6 +227,7 @@ $endItem = ceil($totalItems/$itemsPerPage);
               <div class="w-1/3" >UNITÉ </div>    
               <div class="w-1/3" >SATUT </div>        
               <div class="w-1/3" >ACTION </div> 
+              <div class="w-1/3" >Details </div> 
                   </div> </div>    
                   <div id ="ItemContainer"></div>                     
                   
