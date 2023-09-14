@@ -1,17 +1,6 @@
-<?php
-namespace ressources\views\Items;
-use \app\models\Item;
-use \app\controllers\ItemController;
+export default function firstStep (data){
 
-$title = "Ajouter propriétés";
-$typeOption = ItemController::SelectOptionItem('item_type','type_name');
-$locationOption = ItemController::SelectOptionItem('location','name');
-$proprietaireOption = ItemController::SelectOptionItem('user_account','username',' role_id = 2');
-$unitOption = ItemController::SelectOptionItem('unit','unit_name');
-
-ob_start();
-?>
-<div class="container px-6 mx-auto grid">
+    return `<div class="container px-6 mx-auto grid">
     <h4 class=" my-6 mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300"> Ajouter une nouvelle propriété</h4>
     <div class="px-4 py-3 lg:mr-32 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
         <form action="index1.php?action=storeItem" method="post" >
@@ -103,9 +92,7 @@ ob_start();
             Ajouter</button> 
         </form>
     </div>
-</div>
+</div>`
+}
 
-<?php
-$crecontent = ob_get_clean();
-include_once 'ressources/views/Items/property.php';
-?>
+

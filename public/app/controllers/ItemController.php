@@ -116,6 +116,12 @@ class ItemController  extends BaseController
         
     }
 
+    public static function property()
+    {
+        static::requir("Items/property");
+        
+    }
+
     public static function storeActionItem()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

@@ -1,5 +1,12 @@
 
 //--- This function handles the toggling of user details display and API data retrieval for individual user rows in the interface ---
+import firstStep from "./tep/firstStep.js";
+
+console.log(firstStep({}))
+
+var viewTab = document.getElementById("view-tab")
+viewTab.innerHTML = ""
+viewTab.innerHTML = firstStep({})
 
 var userRows = document.querySelectorAll('.item-row');
 userRows.forEach(function (userRow) {

@@ -55,6 +55,9 @@
             case 'editItem':
                 ItemController::editActionItem();
             break;
+            case 'property':
+                ItemController::property();
+            break;
             case 'updateItem':
                 ItemController::updateActionItem();
             break;
