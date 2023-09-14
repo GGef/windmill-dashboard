@@ -1,5 +1,6 @@
 import firstTab from "./firstTab.js"
 import secondTab from "./secondTab.js"
+import thirdTab from "./thirdTab.js"
 
 var viewTab = document.getElementById("view-tab")
 
@@ -17,6 +18,11 @@ document.getElementById("b1").addEventListener("click",(e)=>{
 document.getElementById("b2").addEventListener("click",(e)=>{        
     clearTabClass(e.target)
     viewTab.innerHTML = secondTab({})
+})
+
+document.getElementById("b3").addEventListener("click",(e)=>{        
+    clearTabClass(e.target)
+    viewTab.innerHTML = thirdTab({})
 })
 
 

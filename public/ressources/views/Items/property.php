@@ -23,16 +23,21 @@ ob_start();
         Modifier une propriété
         </button>
         <button id="b3" class="text-gray-600 tab-btn py-4 px-6 block hover:text-blue-500 focus:outline-none">
-            Tab 3
-        </button><button id="b4" class="text-gray-600 tab-btn py-4 px-6 block hover:text-blue-500 focus:outline-none">
-            Tab 4
+            Reservation
+        </button>
+        <button id="b4" class="text-gray-600 tab-btn py-4 px-6 block hover:text-blue-500 focus:outline-none">
+            Historique
+        </button>
+        <button id="b5" class="text-gray-600 tab-btn py-4 px-6 block hover:text-blue-500 focus:outline-none">
+            Informations
+        </button>
+        <button id="b6" class="text-gray-600 tab-btn py-4 px-6 block hover:text-blue-500 focus:outline-none">
+            Messages
         </button>
     </nav>
 </div>
         <div id="view-tab"></div>
-    
-
-
+        
         <script type="module" src=".\assets\js\proprety.js"></script>
 
 <?php
