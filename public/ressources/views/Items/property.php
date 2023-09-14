@@ -38,6 +38,7 @@ ob_start();
 </div>
         <div id="view-tab"></div>
         
+        
         <script type="module" src=".\assets\js\proprety.js"></script>
 
 <?php

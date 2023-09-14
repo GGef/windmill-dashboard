@@ -67,24 +67,10 @@
 //   }
 
 export default function informationTab(data){
-    
-        // document.getElementById(new).innerHTML = newtext;
-        // console.log(userData);``
-        //var userRows = document.querySelectorAll('.item-row');
-    // Find the corresponding .detailsRow element for the clicked .user-row
-        var userRows = document.querySelectorAll('.item-row');
-        userRows.forEach(function (userRow) {
-        userRow.addEventListener('click', function () {
-    // Find the corresponding .detailsRow element for the clicked .user-row
-    var detailsRow = this.nextElementSibling;
-    if ( event.target.tagName !== 'A' && !event.target.closest('button')) {
-    // Check if the display property is set to 'none'
-      if (detailsRow.style.display === 'none') {
-        // Change the display property to 'table-row'
-        detailsRow.style.display = 'table-row';
-
-        // Get the user ID from the data-id attribute of the clicked row
-        var userId = userRow.dataset.id;
+  
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const userId = urlParams.get('id')
         console.log(userId)
         //  make an API call to get more details about the user.
         var apiEndpoint = 'https://www.sakane.ma/oc-content/plugins/rest/api.php?key=DOoebZRUU1ozFAelnC5u7x8hMvcqBV&type=read&object=item&action=byId&itemId=' + userId;
@@ -111,14 +97,11 @@ export default function informationTab(data){
           .catch(error => {
             console.error('Error fetching user data or pictures:', error);
           });
-      } else {
-        // If the details row is visible, hide it by setting the display property to 'none'
-        detailsRow.style.display = 'none';
-      }
+   
     }
-  });
-});
-}
+  
+
+
 
 function displayItemData(userData ) {
     // Create an HTML element using the fetched data
@@ -129,7 +112,7 @@ function displayItemData(userData ) {
     newtext += '</div> <div class="shadow-lg bg-gray-100 px-4 py-3 text-sm  p-10 rounded-lg row-span-2">';
     newtext += '<span class="font-semibold">Prix : </span> ' + userData.response.i_price + '<br> <span class="font-semibold"> Statut : </span>' + '....' +  '<br> <span class="font-bold"> contact : </span> <br> <span class="font-semibold"> Nom de proprietaire : </span>'+ userData.response.s_contact_name + '<br> <span class="font-semibold"> Numero de telephone : </span>'+ userData.response.s_contact_phone +  '<br><span class="font-semibold"> date d\'expiration : </span>'+ userData.response.dt_expiration + '<br><span class="font-semibold"> Last occup : </span>de ' + '...' + 'à ' + '...';
     newtext += '</div> <div class="shadow-lg bg-gray-100 px-4 py-3 text-sm   p-10 rounded-lg"><span class="font-semibold"> Details : </span>' + userData.response.s_description + '</div> </div>';
-    document.getElementById('new').innerHTML = newtext;
+    document.getElementById('view-tab').innerHTML = newtext;
     console.log(userData);
   }
 
