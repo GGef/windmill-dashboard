@@ -16,29 +16,24 @@ ob_start();
 
 <div class="bg-white">
     <nav class="flex flex-col sm:flex-row">
-        <button id="b1" class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none text-blue-500 border-b-2 font-medium border-blue-500">
+        <button id="b1" class="text-gray-600 tab-btn py-4 px-6 block hover:text-blue-500 focus:outline-none">
         Ajouter une nouvelle propriété
         </button>
-        <button id="b2" class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none">
+        <button id="b2" class="text-gray-600 tab-btn py-4 px-6 block hover:text-blue-500 focus:outline-none">
         Modifier une propriété
         </button>
-        <button id="b3" class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none">
+        <button id="b3" class="text-gray-600 tab-btn py-4 px-6 block hover:text-blue-500 focus:outline-none">
             Tab 3
-        </button><button id="b4" class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none">
+        </button><button id="b4" class="text-gray-600 tab-btn py-4 px-6 block hover:text-blue-500 focus:outline-none">
             Tab 4
         </button>
     </nav>
 </div>
-        <div id="view-tab">
-            <script type="module" src=".\assets\js\firstTab.js"></script>
-        </div>
-        <div id="view-tab2">
-            <script type="module" src=".\assets\js\secondTab.js"></script>
-        </div>
+        <div id="view-tab"></div>
+    
 
 
-
-
+        <script type="module" src=".\assets\js\proprety.js"></script>
 
 <?php
 $content = ob_get_clean();
