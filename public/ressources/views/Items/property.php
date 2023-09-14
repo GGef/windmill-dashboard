@@ -17,10 +17,10 @@ ob_start();
 <div class="bg-white">
     <nav class="flex flex-col sm:flex-row">
         <button id="b1" class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none text-blue-500 border-b-2 font-medium border-blue-500">
-            Tab 1
+        Ajouter une nouvelle propriété
         </button>
         <button id="b2" class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none">
-            Tab 2
+        Modifier une propriété
         </button>
         <button id="b3" class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none">
             Tab 3
@@ -31,6 +31,9 @@ ob_start();
 </div>
         <div id="view-tab">
             <script type="module" src=".\assets\js\firstTab.js"></script>
+        </div>
+        <div id="view-tab2">
+            <script type="module" src=".\assets\js\secondTab.js"></script>
         </div>
 
 
