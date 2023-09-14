@@ -82,7 +82,6 @@
   class="flex h-screen bg-gray-50 dark:bg-gray-900"
   :class="{ 'overflow-hidden': isSideMenuOpen}"
   >
-  <script type="module" src=".\assets\js\global.js"></script>
       <?php include 'header.php';
       ?>
       <main class="h-full pb-16 overflow-y-auto">

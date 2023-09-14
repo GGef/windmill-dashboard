@@ -16,22 +16,24 @@ ob_start();
 
 <div class="bg-white">
     <nav class="flex flex-col sm:flex-row">
-        <button class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none text-blue-500 border-b-2 font-medium border-blue-500">
-        Ajouter une nouvelle propriété
+        <button id="b1" class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none text-blue-500 border-b-2 font-medium border-blue-500">
+            Tab 1
         </button>
-
-        <button class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none">
+        <button id="b2" class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none">
             Tab 2
-        </button><button class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none">
+        </button>
+        <button id="b3" class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none">
             Tab 3
-        </button><button class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none">
+        </button><button id="b4" class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none">
             Tab 4
         </button>
     </nav>
 </div>
-<div id="view-tab"></div>
+        <div id="view-tab">
+            <script type="module" src=".\assets\js\firstTab.js"></script>
+        </div>
 
-<script type="module" src=".\assets\js\proprety.js"></script>
+
 
 
 
