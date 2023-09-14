@@ -1,29 +1,48 @@
-import firstTab from "./firstTab.js"
-import secondTab from "./secondTab.js"
-import thirdTab from "./thirdTab.js"
+import addTab from "./addTab.js"
+import modifyTab from "./ModifyTab.js"
+import reservationTab from "./reservationTab.js"
+import historyTab from "./historyTab.js"
+import informationTab from "./informationTab.js"
+import messagesTab from "./messagesTab.js"
 
 var viewTab = document.getElementById("view-tab")
 
 clearTabClass(document.getElementById("b1"))
-viewTab.innerHTML = firstTab({})
+viewTab.innerHTML = addTab({})
 
 
 
 
 document.getElementById("b1").addEventListener("click",(e)=>{        
     clearTabClass(e.target)
-    viewTab.innerHTML = firstTab({})
+    viewTab.innerHTML = addTab({})
 })
 
 document.getElementById("b2").addEventListener("click",(e)=>{        
     clearTabClass(e.target)
-    viewTab.innerHTML = secondTab({})
+    viewTab.innerHTML = modifyTab({})
 })
 
 document.getElementById("b3").addEventListener("click",(e)=>{        
     clearTabClass(e.target)
-    viewTab.innerHTML = thirdTab({})
+    viewTab.innerHTML = reservationTab({})
 })
+
+document.getElementById("b4").addEventListener("click",(e)=>{        
+    clearTabClass(e.target)
+    viewTab.innerHTML = historyTab({})
+})
+
+document.getElementById("b5").addEventListener("click",(e)=>{        
+    clearTabClass(e.target)
+    viewTab.innerHTML = informationTab({})
+})
+
+document.getElementById("b6").addEventListener("click",(e)=>{        
+    clearTabClass(e.target)
+    viewTab.innerHTML = messagesTab({})
+})
+
 
 
 function clearTabClass(e){
