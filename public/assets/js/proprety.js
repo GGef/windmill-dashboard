@@ -4,6 +4,7 @@ import reservationTab from "./reservationTab.js"
 import historyTab from "./historyTab.js"
 import informationTab from "./informationTab.js"
 import messagesTab from "./messagesTab.js"
+import calendrierTab from "./calendrierTab.js"
 
 var viewTab = document.getElementById("view-tab")
 
@@ -42,6 +43,11 @@ document.getElementById("b6").addEventListener("click",(e)=>{
     clearTabClass(e.target)
     viewTab.innerHTML = messagesTab({})
 })
+document.getElementById("b7").addEventListener("click",(e)=>{        
+    clearTabClass(e.target)
+    viewTab.innerHTML = calendrierTab({})
+})
+
 
 
 

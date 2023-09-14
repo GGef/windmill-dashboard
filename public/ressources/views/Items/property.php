@@ -34,6 +34,9 @@ ob_start();
         <button id="b6" class="text-gray-600 tab-btn py-4 px-6 block hover:text-blue-500 focus:outline-none">
             Messages
         </button>
+        <button id="b7" class="text-gray-600 tab-btn py-4 px-6 block hover:text-blue-500 focus:outline-none">
+            Calendrier
+        </button>
     </nav>
 </div>
         <div id="view-tab"></div>
