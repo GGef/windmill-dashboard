@@ -45,7 +45,20 @@ document.getElementById("b6").addEventListener("click",(e)=>{
 })
 document.getElementById("b7").addEventListener("click",(e)=>{        
     clearTabClass(e.target)
-    viewTab.innerHTML = calendrierTab({})
+    $.ajax({
+        url: 'assets/js/calendrierTab.php', // Replace with the correct path to your PHP file
+        type: 'GET',
+        dataType: 'html', // Specify the expected data type
+        success: function(data) {
+          // When the PHP page is successfully loaded, insert its content into a div with id "content"
+          viewTab.innerHTML =data;
+          calendrierTab();
+        },
+        error: function() {
+          // Handle errors if the PHP page couldn't be loaded
+          console.error('Error loading PHP page.');
+        }
+      });
 })
 
 
@@ -56,3 +69,4 @@ function clearTabClass(e){
     document.querySelectorAll(".tab-btn").forEach(el => el.classList.remove("text-blue-500","border-b-2","font-medium","border-blue-500"))
     e.classList.add("text-blue-500","border-b-2","font-medium","border-blue-500")
 }
+
