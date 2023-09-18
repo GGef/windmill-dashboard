@@ -64,6 +64,7 @@ document.getElementById("b7").addEventListener("click",(e)=>{
 
 
 
+
 function clearTabClass(e){
     document.getElementById("view-tab").innerHTML = ""
     document.querySelectorAll(".tab-btn").forEach(el => el.classList.remove("text-blue-500","border-b-2","font-medium","border-blue-500"))
