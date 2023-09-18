@@ -67,12 +67,19 @@ export default async function informationTab(data) {
     const picturesData = await picturesDataResponse.json();
 
     // Traiter les données utilisateur et images en fonction de userAction
-    if (userAction === 'modify') {
-      modifyItemData(userData);
-    } else {
+    
       displayItemData(userData);
       displayItemPictures(picturesData);
-    }
+
+      
+      document.getElementById("buttonModifier").addEventListener("click",(e)=>{        
+        clearTabClass(e.target)
+        modifyItemData(userData)
+        displayItemPictures(picturesData);
+        
+        
+    })
+    
   } catch (error) {
     console.error('Erreur lors de la récupération des données utilisateur ou des images :', error);
   }
@@ -81,7 +88,11 @@ export default async function informationTab(data) {
     
     function modifyItemData(userData) {
       // Créez un formulaire pour afficher les données et permettre la modification
-      var newtext = '<div class="grid grid-cols-3 gap-4 p-5">';
+      var newtext = '<div class="flex justify-end">'
+      newtext +='<button id="annuler-button" class="bg-blue-500 text-white rounded-md py-2 px-4 mt-2 hover:bg-blue-600" >Annuler</button>';
+      newtext +='<button id="modifier-button" class="bg-blue-500 text-white rounded-md py-2 px-4 mt-2 hover:bg-blue-600 ml-2" >Enregistrer</button>';
+      newtext += '</div>'
+      newtext += '<div class="grid grid-cols-3 gap-4 p-5">';
       newtext += '<div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg row-span-2" id="swiper-img"></div>';
       newtext += '<div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg">';
       newtext += '<form id="item-form">';
@@ -109,7 +120,6 @@ export default async function informationTab(data) {
       newtext += '<div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg">';
       newtext += '<span class="font-semibold">Détails : </span> <input type="text" id="expiration-input" value="' + userData.response.s_description + '" class="bg-gray-200 rounded-md p-2 mb-2"><br>';
       newtext += '</div>';
-      newtext += '<button id="modifier-button" class="bg-blue-500 text-white rounded-md py-2 px-4 mt-2 hover:bg-blue-600">Enregistrer</button>';
       newtext += '</div>';
     
       document.getElementById('view-tab').innerHTML = newtext;
@@ -135,15 +145,15 @@ export default async function informationTab(data) {
       newtext += '<button id="buttonModifier" class="bg-blue-500 text-white rounded-md py-2 px-4 mt-2 hover:bg-blue-600">Modifier</button>';
       document.getElementById('view-tab').innerHTML = newtext;
 
-      document.getElementById("buttonModifier").addEventListener("click",(e)=>{        
-        clearTabClass(e.target)
-        modifyItemData(userData)
-    })
+
       console.log(userData);
     }
     
 
   function displayItemPictures(picturesData) {
+
+
+   
     // Create the initial HTML structure for the Swiper slides
     var text = '<div class="swiper gallery-top">';
     text += '<div class="swiper-pagination" ></div><div class="swiper-wrapper">';
