@@ -75,7 +75,7 @@ export default async function informationTab(data) {
       document.getElementById("buttonModifier").addEventListener("click",(e)=>{        
         clearTabClass(e.target)
         modifyItemData(userData)
-        displayItemPictures(picturesData);
+        modifyItemPictures(picturesData);
         
         
     })
@@ -123,7 +123,7 @@ export default async function informationTab(data) {
       newtext += '</div>';
     
       document.getElementById('view-tab').innerHTML = newtext;
-      console.log(userData);
+      //console.log(userData);
     
       // Ajouter un gestionnaire d'événements pour le bouton "Modifier"
       document.getElementById('modifier-button').addEventListener('click', function () {
@@ -149,6 +149,7 @@ export default async function informationTab(data) {
       console.log(userData);
     }
     
+
 
   function displayItemPictures(picturesData) {
 
@@ -249,6 +250,141 @@ export default async function informationTab(data) {
        });
      });
   }
+  
+  var imageUrls = [];
+  function modifyItemPictures(picturesData) {
+    // Créer un tableau pour stocker les URLs des images
+    var text = `<div id="images-container"><div class="flex-row"></div></div>`
+  
+        text += `<div id="selected-images" class="swiper-container">
+          <div class="swiper-wrapper">
+          </div>
+          </div>`;
+    
+    // Créer la structure HTML pour les Swiper slides
+    document.getElementById('swiper-img').innerHTML = text;
+    // Loop à travers les éléments dans la réponse de l'API
+    picturesData.response.forEach(function (item) {
+      var itemId = item.pk_i_id;
+      var extension = item.s_extension;
+      var path = item.s_path;
+  
+      // Créer l'URL de l'image
+      var imageUrl = `https://sakane.ma/${path}${itemId}.${extension}`;
+  
+      // Ajouter l'URL à notre tableau imageUrls
+      imageUrls.push(imageUrl);
+  
+      // Créer la structure HTML pour chaque slide en utilisant les propriétés extraites
+    });
+  
+    // Fermer la structure HTML
+    
+  
+  
+    
+  
+    // Créer une instance Swiper pour le slider principal
+    const swiper = new Swiper('.swiper', {
+      speed: 400,
+      spaceBetween: 100,
+  
+      pagination: {
+        el: '.swiper-pagination',
+        type: 'bullets',
+        nextButton: '#js-prev1',
+        prevButton: '#js-next1',
+      },
+    });
+  
+    // Créer une instance Swiper pour les miniatures
+    const galleryThumbs = new Swiper('.gallery-thumbs', {
+      spaceBetween: 10,
+      slidesPerView: 3,
+      freeMode: true,
+      watchSlidesVisibility: true,
+      watchSlidesProgress: true,
+      nextButton: '#js-prev1',
+      prevButton: '#js-next1',
+    });
+  
+    // Synchroniser le slider principal avec les miniatures
+    swiper.controller.control = galleryThumbs;
+    galleryThumbs.controller.control = swiper;
+  
+    // Ajouter des écouteurs d'événements de clic aux miniatures
+    const thumbnailImages = document.querySelectorAll('.gallery-thumbs img');
+    thumbnailImages.forEach(function (thumbnailImage) {
+      thumbnailImage.addEventListener('click', function () {
+        const slideIndex = parseInt(this.getAttribute('data-slide-index'));
+        swiper.slideTo(slideIndex);
+      });
+    });
+  
+    // Maintenant, vous avez un tableau imageUrls contenant les URLs des images
+    console.log(imageUrls.length);
+    for (var i = 0; i < imageUrls.length; i++) {
+
+      addImage(imageUrls[i]);
+
+    }
+  
+    // Vous pouvez utiliser le tableau imageUrls comme bon vous semble
+  }
+  var imagesContainer;
+  var selectedImagesContainer;
+  var selectedImageWrapper;
+  var tableUrl = [];
+  function addImage(imageUrls) {
+    imagesContainer = document.getElementById("images-container");
+    selectedImagesContainer = document.getElementById("selected-images");
+  
+    var imageElement = document.createElement("img");
+    imageElement.src = imageUrls;
+    imageElement.alt = "Uploaded Image";
+    imageElement.classList.add("w-32", "h-16", "object-cover", "rounded", "image-pop");
+  
+    selectedImageWrapper = document.createElement("div");
+    selectedImageWrapper.classList.add("swiper-slide");
+    selectedImageWrapper.appendChild(imageElement.cloneNode(true));
+    selectedImagesContainer.appendChild(selectedImageWrapper);
+  
+    (function(imageElement) {
+      var deleteButton = document.createElement("button");
+      deleteButton.classList.add("delete-button", "absolute", "top-0", "right-0", "text-red-500", "hover:text-red-700", "p-1");
+  
+      deleteButton.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M6.293 4.293a1 1 0 011.414 0L10 8.586l2.293-2.293a1 1 0 011.414 1.414L11.414 10l2.293 2.293a1 1 0 01-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 01-1.414-1.414L8.586 10 6.293 7.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+        </svg> `;
+      deleteButton.addEventListener("click", function() {
+        var imageContainer = this.parentNode;
+        var selectedImageContainer = imageContainer.parentNode.parentNode;
+        imagesContainer.querySelector(".flex-row").removeChild(imageContainer);
+  
+        var selectedImageWrappers = document.querySelectorAll(".swiper-slide");
+        selectedImageWrappers.forEach(function(wrapper) {
+          var image = wrapper.querySelector("img");
+          if (image.src === imageElement.src) {
+            wrapper.parentNode.removeChild(wrapper);
+            supprimerOccurrencesDeSource(imageElement.src);
+          }
+  
+        });
+      });
+      var imageWrapper = document.createElement("div");
+      imageWrapper.classList.add("mr-2", "mb-2", "relative");
+      imageWrapper.appendChild(imageElement);
+      imageWrapper.appendChild(deleteButton);
+  
+      imagesContainer.querySelector(".flex-row").appendChild(imageWrapper);
+    })(imageElement);
+  }
+  function supprimerOccurrencesDeSource(source) {
+
+    tableUrl = tableUrl.filter(item => item !== source);
+  }
+  
 
 
 
