@@ -35,4 +35,17 @@ overflow: hidden;
     row-gap: 8px;
     
 }
+.swiper-slide {
+    width: 100%; /* Définit la largeur à 100% du conteneur parent */
+    height: 100%; /* Définit la hauteur à 100% du conteneur parent */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
+.swiper-slide img {
+    max-width: 100%; /* Assure que l'image ne dépasse pas la largeur du conteneur */
+    max-height: 100%; /* Assure que l'image ne dépasse pas la hauteur du conteneur */
+    width: auto;
+    height: auto;
+}

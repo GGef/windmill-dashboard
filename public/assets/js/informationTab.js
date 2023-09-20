@@ -316,21 +316,17 @@ export default async function informationTab(data) {
           <div class="swiper gallery-top swiper-initialized swiper-horizontal swiper-backface-hidden">
               <div class="swiper-pagination swiper-pagination-bullets swiper-pagination-horizontal">
               </div>
-              <div id="selected-images" class="swiper-wrapper" style="width: 229px; margin-right: 100px;" aria-live="polite">
-              </div>
+              <div id="selected-images" class="swiper-wrapper" aria-live="polite"></div>
               <div id="js-prev1" class="swiper-button-prev"></div>
               <div id="js-next1" class="swiper-button-next"></div>
-              <div class="swiper-container gallery-thumbs swiper-initialized swiper-horizontal swiper-free-mode swiper-watch-progress swiper-backface-hidden">
-                  <div class="mt-2" id="images-container">
+              <div  class="swiper-container gallery-thumbs swiper-initialized swiper-horizontal swiper-free-mode swiper-watch-progress swiper-backface-hidden">
+                  <div class="swiper-wrapper" id="swiper-wrapper-4fd16d0a9b23ba16" aria-live="polite">
+                  <div id="images-container" >
                       <div class="flex flex-row">
                       </div>
                   </div>
-                  <div class="swiper-wrapper" id="swiper-wrapper-4fd16d0a9b23ba16" aria-live="polite">
-                      <div class="swiper-slide-container"></div>
                   </div>
-                  <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
               </div>
-              <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
           </div>
           `;
         }
@@ -448,7 +444,7 @@ thumbnailImages.forEach(function (thumbnailImage) {
         </svg> `;
       deleteButton.addEventListener("click", function() {
         var imageContainer = this.parentNode;
-        //var selectedImageContainer = imageContainer.parentNode.parentNode;
+        var selectedImageContainer = imageContainer.parentNode.parentNode;
         
         imagesContainer.querySelector(".flex-row").removeChild(imageContainer);
   
