@@ -208,7 +208,7 @@ export default async function informationTab(data) {
     text += '</div>';
     text += '</div>'; // Closing the gallery-thumbs div
   
-    console.log(text);
+    //console.log(text);
   
     document.getElementById('swiper-img').innerHTML = text;
   
@@ -254,12 +254,18 @@ export default async function informationTab(data) {
   var imageUrls = [];
   function modifyItemPictures(picturesData) {
     // Créer un tableau pour stocker les URLs des images
-    var text = `<div id="images-container"><div class="flex-row"></div></div>`
+    var text = `<div class="swiper-container mod-swiper">
+    <div id="selected-images" class=" swiper-wrapper">
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-pagination"></div>
+    </div>
+     
+  </div> `
   
-        text += `<div id="selected-images" class="swiper-container">
-          <div class="swiper-wrapper">
-          </div>
-          </div>`;
+        text += `<div class="mt-2" id="images-container">
+        <div class="flex flex-row"></div>
+        </div>`;
     
     // Créer la structure HTML pour les Swiper slides
     document.getElementById('swiper-img').innerHTML = text;
@@ -278,49 +284,12 @@ export default async function informationTab(data) {
       // Créer la structure HTML pour chaque slide en utilisant les propriétés extraites
     });
   
-    // Fermer la structure HTML
     
   
   
     
   
-    // Créer une instance Swiper pour le slider principal
-    const swiper = new Swiper('.swiper', {
-      speed: 400,
-      spaceBetween: 100,
-  
-      pagination: {
-        el: '.swiper-pagination',
-        type: 'bullets',
-        nextButton: '#js-prev1',
-        prevButton: '#js-next1',
-      },
-    });
-  
-    // Créer une instance Swiper pour les miniatures
-    const galleryThumbs = new Swiper('.gallery-thumbs', {
-      spaceBetween: 10,
-      slidesPerView: 3,
-      freeMode: true,
-      watchSlidesVisibility: true,
-      watchSlidesProgress: true,
-      nextButton: '#js-prev1',
-      prevButton: '#js-next1',
-    });
-  
-    // Synchroniser le slider principal avec les miniatures
-    swiper.controller.control = galleryThumbs;
-    galleryThumbs.controller.control = swiper;
-  
-    // Ajouter des écouteurs d'événements de clic aux miniatures
-    const thumbnailImages = document.querySelectorAll('.gallery-thumbs img');
-    thumbnailImages.forEach(function (thumbnailImage) {
-      thumbnailImage.addEventListener('click', function () {
-        const slideIndex = parseInt(this.getAttribute('data-slide-index'));
-        swiper.slideTo(slideIndex);
-      });
-    });
-  
+    
     // Maintenant, vous avez un tableau imageUrls contenant les URLs des images
     console.log(imageUrls.length);
     for (var i = 0; i < imageUrls.length; i++) {
@@ -328,13 +297,26 @@ export default async function informationTab(data) {
       addImage(imageUrls[i]);
 
     }
-  
+    swiper.controller.control = galleryThumbs;
+    galleryThumbs.controller.control = swiper;
+
+// Ajouter des écouteurs d'événements de clic aux miniatures
+const thumbnailImages = document.querySelectorAll('.gallery-thumbs img');
+thumbnailImages.forEach(function (thumbnailImage) {
+  thumbnailImage.addEventListener('click', function () {
+    const slideIndex = parseInt(this.getAttribute('data-slide-index'));
+    swiper.slideTo(slideIndex);
+  });
+});
+    swiperimages();
     // Vous pouvez utiliser le tableau imageUrls comme bon vous semble
   }
+  
   var imagesContainer;
   var selectedImagesContainer;
   var selectedImageWrapper;
   var tableUrl = [];
+
   function addImage(imageUrls) {
     imagesContainer = document.getElementById("images-container");
     selectedImagesContainer = document.getElementById("selected-images");
@@ -379,12 +361,50 @@ export default async function informationTab(data) {
   
       imagesContainer.querySelector(".flex-row").appendChild(imageWrapper);
     })(imageElement);
+
+
+
+
+
+
+
+
+    
   }
   function supprimerOccurrencesDeSource(source) {
 
     tableUrl = tableUrl.filter(item => item !== source);
   }
   
+  function swiperimages(){
+    // Créer une instance Swiper pour le slider principal
+const swiper = new Swiper('.mod-swiper', {
+
+});
+
+// Créer une instance Swiper pour les miniatures
+const galleryThumbs = new Swiper('.gallery-thumbs', {
+  spaceBetween: 10,
+  slidesPerView: 3,
+  freeMode: true,
+  watchSlidesVisibility: true,
+  watchSlidesProgress: true,
+
+});
+
+// Synchroniser le slider principal avec les miniatures
+swiper.controller.control = galleryThumbs;
+galleryThumbs.controller.control = swiper;
+
+// Ajouter des écouteurs d'événements de clic aux miniatures
+const thumbnailImages = document.querySelectorAll('.gallery-thumbs img');
+thumbnailImages.forEach(function (thumbnailImage) {
+  thumbnailImage.addEventListener('click', function () {
+    const slideIndex = parseInt(this.getAttribute('data-slide-index'));
+    swiper.slideTo(slideIndex);
+  });
+});
+  }
 
 
 
