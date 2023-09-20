@@ -269,48 +269,82 @@ export default async function informationTab(data) {
         // </div>`;
 
 
-        var text = '<div class="swiper gallery-top">';
-        text += '<div class="swiper-pagination" ></div><div id="selected-images" class="swiper-wrapper">';
+        // var text = '<div class="swiper gallery-top">';
+        // text += '<div class="swiper-pagination" ></div><div id="selected-images" class="swiper-wrapper">';
       
-        // Loop through the items in the API response
-          // Assuming each item has a "s_name" property containing the image name
+        // // Loop through the items in the API response
+        //   // Assuming each item has a "s_name" property containing the image name
           
       
-          // Create the HTML structure for each slide using the extracted properties
-          text += '<div class="swiper-slide">';
-          text += `<div class="swiper-slide-container">
+        //   // Create the HTML structure for each slide using the extracted properties
+        //   text += '<div class="swiper-slide">';
+        //   text += `<div class="swiper-slide-container">
           
-                  </div>`;
-          text += '</div>';
+        //           </div>`;
+        //           text += `<div class="mt-2" id="images-container">
+        //           <div class="flex flex-row"></div>
+        //           </div>`;
+        //   text += '</div>';
           
-        // Close the HTML structure
-        text += '</div>';
-        text += `<div class="mt-2" id="images-container">
-           <div class="flex flex-row"></div>
-           </div>`;
-        text +=  ` <div id="js-prev1" class="swiper-button-prev"></div>
-        <div id="js-next1" class="swiper-button-next"></div>`;
-      
-        // Add thumbnails section
-        text += '<div class="swiper-container gallery-thumbs">';
-        text += '<div class="swiper-wrapper">'
+        // // Close the HTML structure
+        // text += '</div>';
         
-        // Loop through the items again to create thumbnails
+        // text +=  ` <div id="js-prev1" class="swiper-button-prev"></div>
+        // <div id="js-next1" class="swiper-button-next"></div>`;
       
-          // Create the HTML structure for each thumbnail using the extracted properties
-          text += '<div class="swiper-slide">'
-          text += `<div class="swiper-slide-container">
-                  </div>`
+        // // Add thumbnails section
+        // text += '<div class="swiper-container gallery-thumbs">';
+        // text += '<div class="swiper-wrapper">'
+        
+        // // Loop through the items again to create thumbnails
+      
+        //   // Create the HTML structure for each thumbnail using the extracted properties
+        //   text += '<div class="swiper-slide">'
+        //   text += `<div class="swiper-slide-container">
+        //           </div>`
           
-          // <img src="https://sakane.ma/${path}${itemId}.${extension}" alt="Item Thumbnail">`;
-          text += '</div>';
+        //   // <img src="https://sakane.ma/${path}${itemId}.${extension}" alt="Item Thumbnail">`;
+        //   text += '</div>';
       
-        // Close the thumbnails section
-        text += '</div>';
-        text += '</div>';
+        // // Close the thumbnails section
+        // text += '</div>';
+        // text += '</div>';
 
 
+        function generateTopGallery() {
+          return `
+            <div class="swiper gallery-top">
+              <div class="swiper-pagination"></div>
+              <div id="selected-images" class="swiper-wrapper" style="width: 229px; margin-right: 100px;">
+              
+                </div>
+                <div id="js-prev1" class="swiper-button-prev"></div>
+              <div id="js-next1" class="swiper-button-next"></div>
+              </div>
+              
+            </div>
+          `;
+        }
+        
+        function generateThumbnailGallery() {
+          return `
+            <div class="swiper-container gallery-thumbs">
+                <div class="mt-2" id="images-container">
+                      <div class="flex flex-row"></div>
+                    </div>
+              <div class="swiper-wrapper">
 
+                  <div class="swiper-slide-container"></div>
+                
+              </div>
+            </div>
+          `;
+        }
+        
+        // Maintenant, vous pouvez utiliser ces fonctions pour générer la structure HTML
+        
+        var text = generateTopGallery();
+        text += generateThumbnailGallery();
 
 
 
@@ -419,12 +453,16 @@ thumbnailImages.forEach(function (thumbnailImage) {
         </svg> `;
       deleteButton.addEventListener("click", function() {
         var imageContainer = this.parentNode;
-        var selectedImageContainer = imageContainer.parentNode.parentNode;
+        //var selectedImageContainer = imageContainer.parentNode.parentNode;
+        
         imagesContainer.querySelector(".flex-row").removeChild(imageContainer);
   
         var selectedImageWrappers = document.querySelectorAll(".swiper-slide");
+        //console.log(selectedImageWrappers)
         selectedImageWrappers.forEach(function(wrapper) {
+          //console.log(wrapper)
           var image = wrapper.querySelector("img");
+          //console.log(image)
           if (image.src === imageElement.src) {
             wrapper.parentNode.removeChild(wrapper);
             supprimerOccurrencesDeSource(imageElement.src);
@@ -454,35 +492,6 @@ thumbnailImages.forEach(function (thumbnailImage) {
     tableUrl = tableUrl.filter(item => item !== source);
   }
   
-  function swiperimages(){
-    // Créer une instance Swiper pour le slider principal
-const swiper = new Swiper('.mod-swiper', {
-
-});
-
-// Créer une instance Swiper pour les miniatures
-const galleryThumbs = new Swiper('.gallery-thumbs', {
-  spaceBetween: 10,
-  slidesPerView: 3,
-  freeMode: true,
-  watchSlidesVisibility: true,
-  watchSlidesProgress: true,
-
-});
-
-// Synchroniser le slider principal avec les miniatures
-swiper.controller.control = galleryThumbs;
-galleryThumbs.controller.control = swiper;
-
-// Ajouter des écouteurs d'événements de clic aux miniatures
-const thumbnailImages = document.querySelectorAll('.gallery-thumbs img');
-thumbnailImages.forEach(function (thumbnailImage) {
-  thumbnailImage.addEventListener('click', function () {
-    const slideIndex = parseInt(this.getAttribute('data-slide-index'));
-    swiper.slideTo(slideIndex);
-  });
-});
-  }
 
 
 
