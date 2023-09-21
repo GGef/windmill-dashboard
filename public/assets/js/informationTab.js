@@ -265,11 +265,8 @@ export default async function informationTab(data) {
               <div id="js-prev1" class="swiper-button-prev"></div>
               <div id="js-next1" class="swiper-button-next"></div>
               <div  class="swiper-container gallery-thumbs swiper-initialized swiper-horizontal swiper-free-mode swiper-watch-progress swiper-backface-hidden">
-                  <div class="swiper-wrapper" id="swiper-wrapper-4fd16d0a9b23ba16" aria-live="polite">
-                  <div id="images-container" >
-                      <div class="flex flex-row">
-                      </div>
-                  </div>
+                  <div id="images-container" class="swiper-wrapper " aria-live="polite">
+                    
                   </div>
               </div>
           </div>
@@ -436,7 +433,7 @@ if (imagesContainer) {
         var imageContainer = this.parentNode;
         var selectedImageContainer = imageContainer.parentNode.parentNode;
         
-        imagesContainer.querySelector(".flex-row").removeChild(imageContainer);
+        imagesContainer.removeChild(imageContainer);
   
         var selectedImageWrappers = document.querySelectorAll(".swiper-slide");
         //console.log(selectedImageWrappers)
@@ -452,11 +449,11 @@ if (imagesContainer) {
         });
       });
       var imageWrapper = document.createElement("div");
-      imageWrapper.classList.add("mr-2", "mb-2", "relative");
+      imageWrapper.classList.add("swiper-slide");
       imageWrapper.appendChild(imageElement);
       imageWrapper.appendChild(deleteButton);
   
-      imagesContainer.querySelector(".flex-row").appendChild(imageWrapper);
+      imagesContainer.appendChild(imageWrapper);
     })(imageElement);
 
 
