@@ -264,7 +264,7 @@ export default async function informationTab(data) {
               <div id="selected-images" class="swiper-wrapper" aria-live="polite"></div>
               <div id="js-prev1" class="swiper-button-prev"></div>
               <div id="js-next1" class="swiper-button-next"></div>
-              <div  class="swiper-container gallery-thumbs swiper-initialized swiper-horizontal swiper-free-mode swiper-watch-progress swiper-backface-hidden">
+              <div  class="swiper-container gallery-thumbs swiper-initialized swiper-horizontal swiper-free-mode swiper-watch-progress swiper-backface-hidden" style ="margin-top: 10px">
                   <div id="images-container" class="swiper-wrapper " aria-live="polite">
                     
                   </div>
