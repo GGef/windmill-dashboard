@@ -309,29 +309,30 @@ export default async function informationTab(data) {
       // Créer la structure HTML pour chaque slide en utilisant les propriétés extraites
     });
   
-    const swiper = new Swiper('.swiper', {
+    const swiper = new Swiper('.gallery-top', {
       speed: 400,
-     
-        pagination: {
-        el: '.swiper-pagination',
-        type: 'bullets',
-        nextButton: '#js-prev1',
-        prevButton: '#js-next1',
+      navigation: {
+        nextEl: '#js-next1',
+        prevEl: '#js-prev1',
       },
     });
-  
-    // Create a Swiper instance for the thumbnails
+    
+    // Créez une instance Swiper pour les miniatures
     const galleryThumbs = new Swiper('.gallery-thumbs', {
       spaceBetween: 10,
       slidesPerView: 3,
       freeMode: true,
       watchSlidesVisibility: true,
       watchSlidesProgress: true,
-          // navigation arrows
-          nextButton: '#js-prev1',
-          prevButton: '#js-next1',
+      navigation: {
+        nextEl: '#js-next1',
+        prevEl: '#js-prev1',
+      },
     });
-  
+    
+    // Associez les instances Swiper pour qu'elles se contrôlent mutuellement
+    swiper.controller.control = galleryThumbs;
+    galleryThumbs.controller.control = swiper;
    
     
   
@@ -343,8 +344,6 @@ export default async function informationTab(data) {
       addImage(imageUrls[i]);
 
     }
-    swiper.controller.control = galleryThumbs;
-    galleryThumbs.controller.control = swiper;
 
 // Ajouter des écouteurs d'événements de clic aux miniatures
 const thumbnailImages = document.querySelectorAll('.gallery-thumbs img');
