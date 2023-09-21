@@ -80,6 +80,7 @@ export default async function informationTab(data) {
         
     })
     
+    
   } catch (error) {
     console.error('Erreur lors de la récupération des données utilisateur ou des images :', error);
   }
@@ -89,7 +90,7 @@ export default async function informationTab(data) {
     function modifyItemData(userData) {
       // Créez un formulaire pour afficher les données et permettre la modification
       var newtext = '<div class="flex justify-end">'
-      newtext +='<button id="annuler-button" class="bg-blue-500 text-white rounded-md py-2 px-4 mt-2 hover:bg-blue-600" >Annuler</button>';
+      newtext +='<a href="index1.php?action=propertyList"><button class="bg-blue-500 text-white rounded-md py-2 px-4 mt-2 hover:bg-blue-600" >Annuler</button>';
       newtext +='<button id="modifier-button" class="bg-blue-500 text-white rounded-md py-2 px-4 mt-2 hover:bg-blue-600 ml-2" >Enregistrer</button>';
       newtext += '</div>'
       newtext += '<div class="grid grid-cols-3 gap-4 p-5">';
@@ -129,6 +130,7 @@ export default async function informationTab(data) {
       document.getElementById('modifier-button').addEventListener('click', function () {
         saveModifiedData(userData);
       });
+      
     }
 
 
@@ -253,62 +255,6 @@ export default async function informationTab(data) {
   
   var imageUrls = [];
   function modifyItemPictures(picturesData) {
-    // Créer un tableau pour stocker les URLs des images
-  //   var text = `<div class="swiper gallery-top">
-  //   <div id="selected-images" class=" swiper-wrapper">
-  //   <div class="swiper-button-next"></div>
-  //   <div class="swiper-button-prev"></div>
-  //   <div class="swiper-pagination"></div>
-  //   </div>
-     
-  // </div> `
-
-  
-        // text += `<div class="mt-2" id="images-container">
-        // <div class="flex flex-row"></div>
-        // </div>`;
-
-
-        // var text = '<div class="swiper gallery-top">';
-        // text += '<div class="swiper-pagination" ></div><div id="selected-images" class="swiper-wrapper">';
-      
-        // // Loop through the items in the API response
-        //   // Assuming each item has a "s_name" property containing the image name
-          
-      
-        //   // Create the HTML structure for each slide using the extracted properties
-        //   text += '<div class="swiper-slide">';
-        //   text += `<div class="swiper-slide-container">
-          
-        //           </div>`;
-        //           text += `<div class="mt-2" id="images-container">
-        //           <div class="flex flex-row"></div>
-        //           </div>`;
-        //   text += '</div>';
-          
-        // // Close the HTML structure
-        // text += '</div>';
-        
-        // text +=  ` <div id="js-prev1" class="swiper-button-prev"></div>
-        // <div id="js-next1" class="swiper-button-next"></div>`;
-      
-        // // Add thumbnails section
-        // text += '<div class="swiper-container gallery-thumbs">';
-        // text += '<div class="swiper-wrapper">'
-        
-        // // Loop through the items again to create thumbnails
-      
-        //   // Create the HTML structure for each thumbnail using the extracted properties
-        //   text += '<div class="swiper-slide">'
-        //   text += `<div class="swiper-slide-container">
-        //           </div>`
-          
-        //   // <img src="https://sakane.ma/${path}${itemId}.${extension}" alt="Item Thumbnail">`;
-        //   text += '</div>';
-      
-        // // Close the thumbnails section
-        // text += '</div>';
-        // text += '</div>';
 
 
         function generateTopGallery() {

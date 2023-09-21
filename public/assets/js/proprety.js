@@ -1,5 +1,4 @@
-import addTab from "./addTab.js"
-import modifyTab from "./ModifyTab.js"
+
 import reservationTab from "./reservationTab.js"
 import historyTab from "./historyTab.js"
 import informationTab from "./informationTab.js"
@@ -9,41 +8,32 @@ import calendrierTab from "./calendrierTab.js"
 var viewTab = document.getElementById("view-tab")
 
 clearTabClass(document.getElementById("b1"))
-viewTab.innerHTML = addTab({})
-
+viewTab.innerHTML = informationTab({})
 
 
 
 document.getElementById("b1").addEventListener("click",(e)=>{        
     clearTabClass(e.target)
-    viewTab.innerHTML = addTab({})
+    viewTab.innerHTML = informationTab({})
 })
 
 document.getElementById("b2").addEventListener("click",(e)=>{        
     clearTabClass(e.target)
-    viewTab.innerHTML = modifyTab({})
+    viewTab.innerHTML = reservationTab({})
 })
 
 document.getElementById("b3").addEventListener("click",(e)=>{        
     clearTabClass(e.target)
-    viewTab.innerHTML = reservationTab({})
-})
-
-document.getElementById("b4").addEventListener("click",(e)=>{        
-    clearTabClass(e.target)
     viewTab.innerHTML = historyTab({})
 })
 
-document.getElementById("b5").addEventListener("click",(e)=>{        
-    clearTabClass(e.target)
-    viewTab.innerHTML = informationTab({})
-})
 
-document.getElementById("b6").addEventListener("click",(e)=>{        
+
+document.getElementById("b4").addEventListener("click",(e)=>{        
     clearTabClass(e.target)
     viewTab.innerHTML = messagesTab({})
 })
-document.getElementById("b7").addEventListener("click",(e)=>{        
+document.getElementById("b5").addEventListener("click",(e)=>{        
     clearTabClass(e.target)
     $.ajax({
         url: 'assets/js/calendrierTab.php', // Replace with the correct path to your PHP file

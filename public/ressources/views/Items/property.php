@@ -17,25 +17,19 @@ ob_start();
 <div class="bg-white">
     <nav class="flex flex-col sm:flex-row">
         <button id="b1" class="text-gray-600 tab-btn py-4 px-6 block hover:text-blue-500 focus:outline-none">
-        Ajouter une nouvelle propriété
+        Informations
         </button>
         <button id="b2" class="text-gray-600 tab-btn py-4 px-6 block hover:text-blue-500 focus:outline-none">
-        Modifier une propriété
+        Reservation
         </button>
         <button id="b3" class="text-gray-600 tab-btn py-4 px-6 block hover:text-blue-500 focus:outline-none">
-            Reservation
+        Historique
         </button>
         <button id="b4" class="text-gray-600 tab-btn py-4 px-6 block hover:text-blue-500 focus:outline-none">
-            Historique
+        Messages
         </button>
         <button id="b5" class="text-gray-600 tab-btn py-4 px-6 block hover:text-blue-500 focus:outline-none">
-            Informations
-        </button>
-        <button id="b6" class="text-gray-600 tab-btn py-4 px-6 block hover:text-blue-500 focus:outline-none">
-            Messages
-        </button>
-        <button id="b7" class="text-gray-600 tab-btn py-4 px-6 block hover:text-blue-500 focus:outline-none">
-            Calendrier
+        Calendrier
         </button>
     </nav>
 </div>
