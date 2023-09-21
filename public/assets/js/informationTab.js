@@ -148,7 +148,7 @@ export default async function informationTab(data) {
       document.getElementById('view-tab').innerHTML = newtext;
 
 
-      console.log(userData);
+      //console.log(userData);
     }
     
 
@@ -260,8 +260,7 @@ export default async function informationTab(data) {
         function generateTopGallery() {
           return `
           <div class="swiper gallery-top swiper-initialized swiper-horizontal swiper-backface-hidden">
-              <div class="swiper-pagination swiper-pagination-bullets swiper-pagination-horizontal">
-              </div>
+              
               <div id="selected-images" class="swiper-wrapper" aria-live="polite"></div>
               <div id="js-prev1" class="swiper-button-prev"></div>
               <div id="js-next1" class="swiper-button-next"></div>
@@ -338,7 +337,7 @@ export default async function informationTab(data) {
   
     
     // Maintenant, vous avez un tableau imageUrls contenant les URLs des images
-    console.log(imageUrls.length);
+    //console.log(imageUrls.length);
     for (var i = 0; i < imageUrls.length; i++) {
 
       addImage(imageUrls[i]);
@@ -355,6 +354,52 @@ thumbnailImages.forEach(function (thumbnailImage) {
     swiper.slideTo(slideIndex);
   });
 });
+const imagesContainer = document.getElementById("images-container");
+
+// Assurez-vous que l'élément a été trouvé
+if (imagesContainer) {
+  // Ajoutez le formulaire à l'élément div
+  const form = document.createElement("form");
+  const fileInput = document.createElement("input");
+  fileInput.type = "file";
+  fileInput.id = "fileInput"; // Ajoutez un ID pour référencer l'input plus tard si nécessaire
+
+  // Ajouter un label pour l'input de type file (optionnel)
+  const fileLabel = document.createElement("label");
+  fileLabel.textContent = "Sélectionner une photo";
+  fileLabel.htmlFor = "fileInput";
+
+  // Ajouter le formulaire à votre structure HTML
+  document.body.appendChild(form);
+  //form.appendChild(fileLabel);
+  form.appendChild(fileInput);
+
+  // Ajouter un gestionnaire d'événement pour détecter la sélection de fichier
+  fileInput.addEventListener("change", (event) => {
+    const selectedFile = event.target.files[0];
+
+    // Vérifier si un fichier a été sélectionné
+    if (selectedFile) {
+      // Vous pouvez maintenant traiter le fichier, par exemple, en l'ajoutant à imageUrls
+      // Assurez-vous que selectedFile est une image avant de l'ajouter
+
+      // Exemple : Vérifier si le type de fichier est une image
+      if (selectedFile.type.startsWith("image/")) {
+        const imageUrl = URL.createObjectURL(selectedFile);
+        imageUrls.push(imageUrl);
+
+        // Mettez à jour la galerie d'images avec la nouvelle image
+        addImage(imageUrl);
+      } else {
+        alert("Veuillez sélectionner une image.");
+      }
+    }
+  });
+  imagesContainer.appendChild(form);
+} else {
+  console.error("L'élément avec l'ID 'images-container' n'a pas été trouvé.");
+}
+
 
 
     //swiperimages();
