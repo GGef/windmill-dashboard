@@ -342,58 +342,60 @@ export default async function informationTab(data) {
 
     const imagesContainer = document.getElementById("addPic");
 
-// Assurez-vous que l'élément a été trouvé
-if (imagesContainer) {
-  // Ajoutez le formulaire à l'élément div
-  const thumbnailImages = document.querySelectorAll('.gallery-thumbs img');
-thumbnailImages.forEach(function (thumbnailImage) {
-  thumbnailImage.addEventListener('click', function () {
-    const slideIndex = parseInt(this.getAttribute('data-slide-index'));
-    swiper.slideTo(slideIndex);
-  });
-});
-
- const form = document.createElement("form");
-  const fileInput = document.createElement("input");
-  fileInput.type = "file";
-  fileInput.id = "fileInput"; // Ajoutez un ID pour référencer l'input plus tard si nécessaire
-
-  // Ajouter un label pour l'input de type file (optionnel)
-  const fileLabel = document.createElement("label");
-  fileLabel.textContent = "Sélectionner une photo";
-  fileLabel.htmlFor = "fileInput";
-
-  // Ajouter le formulaire à votre structure HTML
-  document.body.appendChild(form);
-  //form.appendChild(fileLabel);
-  form.appendChild(fileInput);
-
-  // Ajouter un gestionnaire d'événement pour détecter la sélection de fichier
-  fileInput.addEventListener("change", (event) => {
-    const selectedFile = event.target.files[0];
-
-    // Vérifier si un fichier a été sélectionné
-    if (selectedFile) {
-      // Vous pouvez maintenant traiter le fichier, par exemple, en l'ajoutant à imageUrls
-      // Assurez-vous que selectedFile est une image avant de l'ajouter
-
-      // Exemple : Vérifier si le type de fichier est une image
-      if (selectedFile.type.startsWith("image/")) {
-        const imageUrl = URL.createObjectURL(selectedFile);
-        imageUrls.push(imageUrl);
-
-        // Mettez à jour la galerie d'images avec la nouvelle image
-        addImage(imageUrl);
-      } else {
-        alert("Veuillez sélectionner une image.");
-      }
+    // Assurez-vous que l'élément a été trouvé
+    if (imagesContainer) {
+      // Ajoutez le formulaire à l'élément div
+      const thumbnailImages = document.querySelectorAll('.gallery-thumbs img');
+      thumbnailImages.forEach(function (thumbnailImage) {
+        thumbnailImage.addEventListener('click', function () {
+          const slideIndex = parseInt(this.getAttribute('data-slide-index'));
+          swiper.slideTo(slideIndex);
+        });
+      });
+    
+      const fileInput = document.createElement("input");
+      fileInput.type = "file";
+      fileInput.style.display = "none"; // Cacher l'input
+    
+      // Créez un bouton cliquable avec des classes Tailwind CSS
+      const clickableButton = document.createElement("button");
+      clickableButton.textContent = "Ajouter une image";
+      clickableButton.classList.add(
+        "bg-blue-500", // Couleur d'arrière-plan bleue
+        "hover:bg-blue-700", // Couleur d'arrière-plan au survol
+        "text-white", // Couleur du texte blanc
+        "font-bold", // Texte en gras
+        "py-2", // Rembourrage vertical
+        "px-4", // Rembourrage horizontal
+        "rounded" // Coins arrondis
+      );
+      clickableButton.style.cursor = "pointer"; // Changez le curseur pour montrer que le bouton est cliquable
+      clickableButton.style.width = "308px";
+      clickableButton.addEventListener("click", () => {
+        fileInput.click();
+      });
+    
+      // Ajouter l'input et le bouton à votre structure HTML
+      imagesContainer.appendChild(fileInput);
+      imagesContainer.appendChild(clickableButton);
+    
+      // Ajouter un gestionnaire d'événement pour détecter la sélection de fichier
+      fileInput.addEventListener("change", (event) => {
+        const selectedFile = event.target.files[0];
+    
+        if (selectedFile) {
+          if (selectedFile.type.startsWith("image/")) {
+            const imageUrl = URL.createObjectURL(selectedFile);
+            imageUrls.push(imageUrl);
+            addImage(imageUrl);
+          } else {
+            alert("Veuillez sélectionner une image.");
+          }
+        }
+      });
+    } else {
+      console.error("L'élément avec l'ID 'images-container' n'a pas été trouvé.");
     }
-  });
-
-  imagesContainer.appendChild(form);
-} else {
-  console.error("L'élément avec l'ID 'images-container' n'a pas été trouvé.");
-}
 // Ajouter des écouteurs d'événements de clic aux miniatures
 
 
