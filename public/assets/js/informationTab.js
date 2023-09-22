@@ -90,7 +90,7 @@ export default async function informationTab(data) {
     function modifyItemData(userData) {
       // Créez un formulaire pour afficher les données et permettre la modification
       var newtext = '<div class="flex justify-end">'
-      newtext +=`<a href="index1.php?action=property&id=${userData.response.pk_i_id}"><button class="bg-blue-500 text-white rounded-md py-2 px-4 mt-2 hover:bg-blue-600" >Annuler</button>`;
+      newtext +=`<button onclick="window.location.href='index1.php?action=property&id=${userData.response.pk_i_id}';" class="bg-blue-500 text-white rounded-md py-2 px-4 mt-2 hover:bg-blue-600" >Annuler</button>`;
       newtext +='<button id="modifier-button" class="bg-blue-500 text-white rounded-md py-2 px-4 mt-2 hover:bg-blue-600 ml-2" >Enregistrer</button>';
       newtext += '</div>'
       newtext += '<div class="grid grid-cols-3 gap-4 p-5">';
@@ -185,7 +185,7 @@ export default async function informationTab(data) {
     <div id="js-next1" class="swiper-button-next"></div>`;
   
     // Add thumbnails section
-    text += '<div class="swiper-container gallery-thumbs">';
+    text += '<div class="swiper-container gallery-thumbs" style="margin-top: 10px">';
     text += '<div class="swiper-wrapper">'
     
     // Loop through the items again to create thumbnails
@@ -215,28 +215,25 @@ export default async function informationTab(data) {
     document.getElementById('swiper-img').innerHTML = text;
   
     // Create a Swiper instance for the main slider
-    const swiper = new Swiper('.swiper', {
+    const swiper = new Swiper('.gallery-top', {
       speed: 400,
-      spaceBetween: 100,
-     
-        pagination: {
-        el: '.swiper-pagination',
-        type: 'bullets',
-        nextButton: '#js-prev1',
-        prevButton: '#js-next1',
+      navigation: {
+        nextEl: '#js-next1',
+        prevEl: '#js-prev1',
       },
     });
-  
-    // Create a Swiper instance for the thumbnails
+    
+    // Créez une instance Swiper pour les miniatures
     const galleryThumbs = new Swiper('.gallery-thumbs', {
       spaceBetween: 10,
       slidesPerView: 3,
       freeMode: true,
       watchSlidesVisibility: true,
       watchSlidesProgress: true,
-          // navigation arrows
-          nextButton: '#js-prev1',
-          prevButton: '#js-next1',
+      navigation: {
+        nextEl: '#js-next1',
+        prevEl: '#js-prev1',
+      },
     });
   
     // Synchronize the main slider with the thumbnails
