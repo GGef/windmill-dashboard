@@ -90,7 +90,7 @@ export default async function informationTab(data) {
     function modifyItemData(userData) {
       // Créez un formulaire pour afficher les données et permettre la modification
       var newtext = '<div class="flex justify-end">'
-      newtext +='<a href="index1.php?action=propertyList"><button class="bg-blue-500 text-white rounded-md py-2 px-4 mt-2 hover:bg-blue-600" >Annuler</button>';
+      newtext +=`<a href="index1.php?action=property&id=${userData.response.pk_i_id}"><button class="bg-blue-500 text-white rounded-md py-2 px-4 mt-2 hover:bg-blue-600" >Annuler</button>`;
       newtext +='<button id="modifier-button" class="bg-blue-500 text-white rounded-md py-2 px-4 mt-2 hover:bg-blue-600 ml-2" >Enregistrer</button>';
       newtext += '</div>'
       newtext += '<div class="grid grid-cols-3 gap-4 p-5">';
@@ -268,6 +268,7 @@ export default async function informationTab(data) {
                   <div id="images-container" class="swiper-wrapper " aria-live="polite">
                     
                   </div>
+                  <div id="addPic" style = "margin-top : 10px" ></div>
               </div>
           </div>
           `;
@@ -342,20 +343,20 @@ export default async function informationTab(data) {
 
     }
 
-// Ajouter des écouteurs d'événements de clic aux miniatures
-const thumbnailImages = document.querySelectorAll('.gallery-thumbs img');
+    const imagesContainer = document.getElementById("addPic");
+
+// Assurez-vous que l'élément a été trouvé
+if (imagesContainer) {
+  // Ajoutez le formulaire à l'élément div
+  const thumbnailImages = document.querySelectorAll('.gallery-thumbs img');
 thumbnailImages.forEach(function (thumbnailImage) {
   thumbnailImage.addEventListener('click', function () {
     const slideIndex = parseInt(this.getAttribute('data-slide-index'));
     swiper.slideTo(slideIndex);
   });
 });
-const imagesContainer = document.getElementById("images-container");
 
-// Assurez-vous que l'élément a été trouvé
-if (imagesContainer) {
-  // Ajoutez le formulaire à l'élément div
-  const form = document.createElement("form");
+ const form = document.createElement("form");
   const fileInput = document.createElement("input");
   fileInput.type = "file";
   fileInput.id = "fileInput"; // Ajoutez un ID pour référencer l'input plus tard si nécessaire
@@ -391,10 +392,12 @@ if (imagesContainer) {
       }
     }
   });
+
   imagesContainer.appendChild(form);
 } else {
   console.error("L'élément avec l'ID 'images-container' n'a pas été trouvé.");
 }
+// Ajouter des écouteurs d'événements de clic aux miniatures
 
 
 
