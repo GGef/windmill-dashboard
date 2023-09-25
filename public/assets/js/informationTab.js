@@ -67,9 +67,15 @@ export default async function informationTab(data) {
     const picturesData = await picturesDataResponse.json();
 
     // Traiter les données utilisateur et images en fonction de userAction
-    
+    if(userData.response.pk_i_id != null){
       displayItemData(userData);
       displayItemPictures(picturesData);
+    }
+    else{
+      addItemData()
+      addItemPictures() 
+    }
+     
 
       
       document.getElementById("buttonModifier").addEventListener("click",(e)=>{        
@@ -132,8 +138,205 @@ export default async function informationTab(data) {
       });
       
     }
+    function addItemData() {
+      // Créez un formulaire pour afficher les données et permettre la modification
+      var newtext = `<div class="flex justify-end">
+      <button class="bg-blue-500 text-white rounded-md py-2 px-4 mt-2 hover:bg-blue-600">Annuler</button>
+      <button id="modifier-button" class="bg-blue-500 text-white rounded-md py-2 px-4 mt-2 hover:bg-blue-600 ml-2">Enregistrer</button>
+  </div>
+  <div class="grid grid-cols-3 gap-4 p-5">
+      <div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg row-span-2" id="swiper-img"></div>
+      <div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg">
+          <form id="item-form">
+              <span class="font-semibold">Titre : </span> <input type="text" id="titre-input" value="" class="bg-gray-200 rounded-md p-2 mb-2"><br>
+              <span class="font-semibold">Adresse : </span> <input type="text" id="adresse-input" value="" class="bg-gray-200 rounded-md p-2 mb-2">
+          </form>
+      </div>
+      <div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg">
+          <form id="item-form">
+              <span class="font-semibold">Prix : </span> <input type="text" id="prix-input" value="" class="bg-gray-200 rounded-md p-2 mb-2"><br>
+              <span class="font-semibold">Statut : </span> <input type="text" id="statut-input" value="" class="bg-gray-200 rounded-md p-2 mb-2"><br>
+          </form>
+      </div>
+      <div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg">
+          <form id="item-form">
+              <span class="font-bold">Contact : </span> <br>
+              <span class="font-semibold">Nom de propriétaire : </span> <input type="text" id="nom-input" value="" class="bg-gray-200 rounded-md p-2 mb-2"><br>
+              <span class="font-semibold">Numéro de téléphone : </span> <input type="text" id="tel-input" value="" class="bg-gray-200 rounded-md p-2 mb-2"><br>
+          </form>
+      </div>
+      <div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg">
+          <span class="font-semibold">Date d'expiration : </span> <input type="text" id="expiration-input" value="" class="bg-gray-200 rounded-md p-2 mb-2"><br>
+          <span class="font-semibold">Last occup : </span> <input type="text" id="last-occup-input" value="" class="bg-gray-200 rounded-md p-2 mb-2"><br>
+      </div>
+      <div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg">
+          <span class="font-semibold">Détails : </span> <input type="text" id="expiration-input" value="" class="bg-gray-200 rounded-md p-2 mb-2"><br>
+      </div>
+  </div>`
+  
+    
+      document.getElementById('view-tab').innerHTML = newtext;
+      //console.log(userData);
+    
+      // Ajouter un gestionnaire d'événements pour le bouton "Modifier"
+      document.getElementById('modifier-button').addEventListener('click', function () {
+        saveModifiedData(userData);
+      });
+      
+    }
+    var imageUrls = [];
+  function addItemPictures() {
 
 
+        function generateTopGallery() {
+          return `
+          <div class="swiper gallery-top swiper-initialized swiper-horizontal swiper-backface-hidden">
+              
+              <div id="selected-images" class="swiper-wrapper" aria-live="polite"></div>
+              <div id="js-prev1" class="swiper-button-prev"></div>
+              <div id="js-next1" class="swiper-button-next"></div>
+              <div  class="swiper-container gallery-thumbs swiper-initialized swiper-horizontal swiper-free-mode swiper-watch-progress swiper-backface-hidden" style ="margin-top: 10px">
+                  <div id="images-container" class="swiper-wrapper " aria-live="polite">
+                    
+                  </div>
+                  <div id="addPic" style = "margin-top : 10px" ></div>
+              </div>
+          </div>
+          `;
+        }
+        
+        
+        // Maintenant, vous pouvez utiliser ces fonctions pour générer la structure HTML
+        
+        var text = generateTopGallery();
+        //text += generateThumbnailGallery();
+
+
+
+
+
+
+
+
+
+
+    
+    // Créer la structure HTML pour les Swiper slides
+    document.getElementById('swiper-img').innerHTML = text;
+    // Loop à travers les éléments dans la réponse de l'API
+    picturesData.response.forEach(function (item) {
+      var itemId = item.pk_i_id;
+      var extension = item.s_extension;
+      var path = item.s_path;
+  
+      // Créer l'URL de l'image
+      var imageUrl = `https://sakane.ma/${path}${itemId}.${extension}`;
+  
+      // Ajouter l'URL à notre tableau imageUrls
+      imageUrls.push(imageUrl);
+  
+      // Créer la structure HTML pour chaque slide en utilisant les propriétés extraites
+    });
+  
+    const swiper = new Swiper('.gallery-top', {
+      speed: 400,
+      navigation: {
+        nextEl: '#js-next1',
+        prevEl: '#js-prev1',
+      },
+    });
+    
+    // Créez une instance Swiper pour les miniatures
+    const galleryThumbs = new Swiper('.gallery-thumbs', {
+      spaceBetween: 10,
+      slidesPerView: 3,
+      freeMode: true,
+      watchSlidesVisibility: true,
+      watchSlidesProgress: true,
+      navigation: {
+        nextEl: '#js-next1',
+        prevEl: '#js-prev1',
+      },
+    });
+    
+    // Associez les instances Swiper pour qu'elles se contrôlent mutuellement
+    swiper.controller.control = galleryThumbs;
+    galleryThumbs.controller.control = swiper;
+   
+    
+  
+    
+    // Maintenant, vous avez un tableau imageUrls contenant les URLs des images
+    //console.log(imageUrls.length);
+    for (var i = 0; i < imageUrls.length; i++) {
+
+      addImage(imageUrls[i]);
+
+    }
+
+    const imagesContainer = document.getElementById("addPic");
+
+    // Assurez-vous que l'élément a été trouvé
+    if (imagesContainer) {
+      // Ajoutez le formulaire à l'élément div
+      const thumbnailImages = document.querySelectorAll('.gallery-thumbs img');
+      thumbnailImages.forEach(function (thumbnailImage) {
+        thumbnailImage.addEventListener('click', function () {
+          const slideIndex = parseInt(this.getAttribute('data-slide-index'));
+          swiper.slideTo(slideIndex);
+        });
+      });
+    
+      const fileInput = document.createElement("input");
+      fileInput.type = "file";
+      fileInput.style.display = "none"; // Cacher l'input
+    
+      // Créez un bouton cliquable avec des classes Tailwind CSS
+      const clickableButton = document.createElement("button");
+      clickableButton.textContent = "Ajouter une image";
+      clickableButton.classList.add(
+        "bg-blue-500", // Couleur d'arrière-plan bleue
+        "hover:bg-blue-700", // Couleur d'arrière-plan au survol
+        "text-white", // Couleur du texte blanc
+        "font-bold", // Texte en gras
+        "py-2", // Rembourrage vertical
+        "px-4", // Rembourrage horizontal
+        "rounded" // Coins arrondis
+      );
+      clickableButton.style.cursor = "pointer"; // Changez le curseur pour montrer que le bouton est cliquable
+      clickableButton.style.width = "308px";
+      clickableButton.addEventListener("click", () => {
+        fileInput.click();
+      });
+    
+      // Ajouter l'input et le bouton à votre structure HTML
+      imagesContainer.appendChild(fileInput);
+      imagesContainer.appendChild(clickableButton);
+    
+      // Ajouter un gestionnaire d'événement pour détecter la sélection de fichier
+      fileInput.addEventListener("change", (event) => {
+        const selectedFile = event.target.files[0];
+    
+        if (selectedFile) {
+          if (selectedFile.type.startsWith("image/")) {
+            const imageUrl = URL.createObjectURL(selectedFile);
+            imageUrls.push(imageUrl);
+            addImage(imageUrl);
+          } else {
+            alert("Veuillez sélectionner une image.");
+          }
+        }
+      });
+    } else {
+      console.error("L'élément avec l'ID 'images-container' n'a pas été trouvé.");
+    }
+// Ajouter des écouteurs d'événements de clic aux miniatures
+
+
+
+    //swiperimages();
+    // Vous pouvez utiliser le tableau imageUrls comme bon vous semble
+  }
 
     async function displayItemData(userData) {
       // Create an HTML element using the fetched data
