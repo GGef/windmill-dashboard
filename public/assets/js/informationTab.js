@@ -197,29 +197,45 @@ export default async function informationTab(data) {
     // Ajoutez un gestionnaire d'événement au bouton "Enregistrer"
     enregistrerButton.addEventListener("click", function() {
         // Récupérez les valeurs des champs
-        var titre = titreInput.value;
-        var adresse = adresseInput.value;
-        var prix = prixInput.value;
-        var statut = statutInput.value;
-        var nom = nomInput.value;
-        var tel = telInput.value;
-        var expiration = expirationInput.value;
-        var lastOccup = lastOccupInput.value;
-        var details = detailsInput.value;
 
+          var titre = titreInput.value;
+          var adresse = adresseInput.value;
+          var prix = prixInput.value;
+          var statut = statutInput.value;
+          var nom = nomInput.value;
+          var tel = telInput.value;
+          var expiration = expirationInput.value;
+          var lastOccup = lastOccupInput.value;
+          var details = detailsInput.value;
+
+          if (
+            titre.trim() === "" ||
+            adresse.trim() === "" ||
+            prix.trim() === "" ||
+            statut.trim() === "" ||
+            nom.trim() === "" ||
+            tel.trim() === "" ||
+            expiration.trim() === "" ||
+            lastOccup.trim() === "" ||
+            details.trim() === ""
+          ) {
+            alert("Veuillez remplir tous les champs.");
+          } else {
+            var data = {
+              titre: titre,
+              adresse: adresse,
+              prix: prix,
+              statut: statut,
+              nom: nom,
+              tel: tel,
+              expiration: expiration,
+              lastOccup: lastOccup,
+              details: details
+            };
+            console.log(data);
+          }
         // Créez un objet contenant les données à envoyer à l'API
-        var data = {
-            titre: titre,
-            adresse: adresse,
-            prix: prix,
-            statut: statut,
-            nom: nom,
-            tel: tel,
-            expiration: expiration,
-            lastOccup: lastOccup,
-            details: details
-        };
-
+        
         // Utilisez la méthode fetch pour envoyer les données à l'API
         // fetch('URL_DE_VOTRE_API', {
         //     method: 'POST',
