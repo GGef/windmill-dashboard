@@ -142,8 +142,8 @@ export default async function informationTab(data) {
     function addItemData() {
       // Créez un formulaire pour afficher les données et permettre la modification
       var newtext = `<div class="flex justify-end">
-      <button class="bg-blue-500 text-white rounded-md py-2 px-4 mt-2 hover:bg-blue-600">Annuler</button>
-      <button id="modifier-button" class="bg-blue-500 text-white rounded-md py-2 px-4 mt-2 hover:bg-blue-600 ml-2">Enregistrer</button>
+      <button onclick="window.location.href='index1.php?action=propertyList'" class="bg-blue-500 text-white rounded-md py-2 px-4 mt-2 hover:bg-blue-600">Annuler</button>
+      <button id="save-button" class="bg-blue-500 text-white rounded-md py-2 px-4 mt-2 hover:bg-blue-600 ml-2">Enregistrer</button>
   </div>
   <div class="grid grid-cols-3 gap-4 p-5">
       <div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg row-span-2" id="swiper-img"></div>
@@ -171,7 +171,7 @@ export default async function informationTab(data) {
           <span class="font-semibold">Last occup : </span> <input type="text" id="last-occup-input" value="" class="bg-gray-200 rounded-md p-2 mb-2"><br>
       </div>
       <div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg">
-          <span class="font-semibold">Détails : </span> <input type="text" id="expiration-input" value="" class="bg-gray-200 rounded-md p-2 mb-2"><br>
+          <span class="font-semibold">Détails : </span> <input type="text" id="details-input" value="" class="bg-gray-200 rounded-md p-2 mb-2"><br>
       </div>
   </div>`
   
@@ -179,9 +179,74 @@ export default async function informationTab(data) {
       document.getElementById('view-tab').innerHTML = newtext;
       //console.log(userData);
     
-      // Ajouter un gestionnaire d'événements pour le bouton "Modifier"
-      document.getElementById('modifier-button').addEventListener('click', function () {
-        saveModifiedData(userData);
+      // Ajouter un gestionnaire d'événements pour le bouton "Enregistrer"
+      document.getElementById('save-button').addEventListener('click', function () {
+        var titreInput = document.getElementById("titre-input");
+    var adresseInput = document.getElementById("adresse-input");
+    var prixInput = document.getElementById("prix-input");
+    var statutInput = document.getElementById("statut-input");
+    var nomInput = document.getElementById("nom-input");
+    var telInput = document.getElementById("tel-input");
+    var expirationInput = document.getElementById("expiration-input");
+    var lastOccupInput = document.getElementById("last-occup-input");
+    var detailsInput = document.getElementById("details-input");
+
+    // Obtenez une référence au bouton "Enregistrer"
+    var enregistrerButton = document.getElementById("save-button");
+
+    // Ajoutez un gestionnaire d'événement au bouton "Enregistrer"
+    enregistrerButton.addEventListener("click", function() {
+        // Récupérez les valeurs des champs
+        var titre = titreInput.value;
+        var adresse = adresseInput.value;
+        var prix = prixInput.value;
+        var statut = statutInput.value;
+        var nom = nomInput.value;
+        var tel = telInput.value;
+        var expiration = expirationInput.value;
+        var lastOccup = lastOccupInput.value;
+        var details = detailsInput.value;
+
+        // Créez un objet contenant les données à envoyer à l'API
+        var data = {
+            titre: titre,
+            adresse: adresse,
+            prix: prix,
+            statut: statut,
+            nom: nom,
+            tel: tel,
+            expiration: expiration,
+            lastOccup: lastOccup,
+            details: details
+        };
+
+        // Utilisez la méthode fetch pour envoyer les données à l'API
+        // fetch('URL_DE_VOTRE_API', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify(data)
+        // })
+        // .then(function(response) {
+        //     // Traitez la réponse de l'API ici
+        //     if (response.ok) {
+        //         // La requête a réussi
+        //         return response.json(); // Si l'API renvoie JSON
+        //     } else {
+        //         // La requête a échoué
+        //         throw new Error('Erreur lors de la requête à l\'API');
+        //     }
+        // })
+        // .then(function(data) {
+        //     // Traitez les données renvoyées par l'API ici
+        //     console.log(data);
+        // })
+        // .catch(function(error) {
+        //     // Gérez les erreurs ici
+        //     console.error(error);
+        // });
+    });
       });
       
     }
