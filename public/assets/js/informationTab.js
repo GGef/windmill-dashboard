@@ -70,6 +70,13 @@ export default async function informationTab(data) {
     if(userData.response.pk_i_id != null){
       displayItemData(userData);
       displayItemPictures(picturesData);
+      document.getElementById("buttonModifier").addEventListener("click",(e)=>{        
+        clearTabClass(e.target)
+        modifyItemData(userData)
+        modifyItemPictures(picturesData);
+        
+        
+    })
     }
     else{
       addItemData()
@@ -78,13 +85,7 @@ export default async function informationTab(data) {
      
 
       
-      document.getElementById("buttonModifier").addEventListener("click",(e)=>{        
-        clearTabClass(e.target)
-        modifyItemData(userData)
-        modifyItemPictures(picturesData);
-        
-        
-    })
+    
     
     
   } catch (error) {
@@ -223,20 +224,7 @@ export default async function informationTab(data) {
     
     // Créer la structure HTML pour les Swiper slides
     document.getElementById('swiper-img').innerHTML = text;
-    // Loop à travers les éléments dans la réponse de l'API
-    picturesData.response.forEach(function (item) {
-      var itemId = item.pk_i_id;
-      var extension = item.s_extension;
-      var path = item.s_path;
-  
-      // Créer l'URL de l'image
-      var imageUrl = `https://sakane.ma/${path}${itemId}.${extension}`;
-  
-      // Ajouter l'URL à notre tableau imageUrls
-      imageUrls.push(imageUrl);
-  
-      // Créer la structure HTML pour chaque slide en utilisant les propriétés extraites
-    });
+   
   
     const swiper = new Swiper('.gallery-top', {
       speed: 400,
