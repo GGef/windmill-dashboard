@@ -74,15 +74,16 @@ export default async function informationTab(data) {
         clearTabClass(e.target)
         modifyItemData(userData)
         modifyItemPictures(picturesData);
-        
-        
     })
     }
     else{
       addItemData()
       addItemPictures() 
     }
-     
+   
+    document.getElementById("buttonReservation").addEventListener("click",(e)=>{        
+      console.log("reservation cliqué")
+  })
 
       
     
@@ -156,7 +157,10 @@ export default async function informationTab(data) {
       <div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg">
           <form id="item-form">
               <span class="font-semibold">Prix : </span> <input type="number" id="prix-input" value="" class="bg-gray-200 rounded-md p-2 mb-2"><br>
-              <span class="font-semibold">Statut : </span> <input type="text" id="statut-input" value="" class="bg-gray-200 rounded-md p-2 mb-2"><br>
+              <span class="font-semibold">Statut : </span> <select id="statut-input" class="bg-gray-200 rounded-md p-2 mb-2">
+              <option value="occupé">Occupée</option>
+              <option value="disponible">Disponible</option>
+          </select><br>
           </form>
       </div>
       <div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg">
@@ -424,17 +428,19 @@ export default async function informationTab(data) {
     //swiperimages();
     // Vous pouvez utiliser le tableau imageUrls comme bon vous semble
   }
-
-    async function displayItemData(userData) {
+ async function displayItemData(userData) {
       // Create an HTML element using the fetched data
-      var newtext = '<div class="grid grid-cols-3 gap-4 p-5">';
+      var newtext = '<div class="flex justify-end">'
+      newtext += `<button id="buttonReservation" class="bg-blue-500 text-white rounded-md py-2 px-4 mt-2 hover:bg-blue-600" >Réservation</button>`
+      newtext += '<button id="buttonModifier" class="bg-blue-500 text-white rounded-md py-2 px-4 mt-2 hover:bg-blue-600 ml-2" ; style ="margin-right: 21px" >Modifier</button>'
+      newtext += '</div>'; 
+      newtext += '<div class="grid grid-cols-3 gap-4 p-5">';
       newtext += '<div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg row-span-2" id="swiper-img"></div>';
       newtext += '<div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg">';
       newtext += '<span class="font-semibold">Titre : </span> ' + userData.response.s_title + '<br><span class="font-semibold"> adresse : </span>' + userData.response.s_address;
       newtext += '</div> <div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg row-span-2">';
       newtext += '<span class="font-semibold">Prix : </span> ' + userData.response.i_price + '<br> <span class="font-semibold"> Statut : </span>' + '....' + '<br> <span class="font-bold"> contact : </span> <br> <span class="font-semibold"> Nom de proprietaire : </span>' + userData.response.s_contact_name + '<br> <span class="font-semibold"> Numero de telephone : </span>' + userData.response.s_contact_phone + '<br><span class="font-semibold"> date d\'expiration : </span>' + userData.response.dt_expiration + '<br><span class="font-semibold"> Last occup : </span>de ' + '...' + 'à ' + '...';
       newtext += '</div> <div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg"><span class="font-semibold"> Details : </span>' + userData.response.s_description + '</div>';
-      newtext += '<button id="buttonModifier" class="bg-blue-500 text-white rounded-md py-2 px-4 mt-2 hover:bg-blue-600">Modifier</button>';
       document.getElementById('view-tab').innerHTML = newtext;
 
 
