@@ -155,7 +155,7 @@ export default async function informationTab(data) {
       </div>
       <div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg">
           <form id="item-form">
-              <span class="font-semibold">Prix : </span> <input type="text" id="prix-input" value="" class="bg-gray-200 rounded-md p-2 mb-2"><br>
+              <span class="font-semibold">Prix : </span> <input type="number" id="prix-input" value="" class="bg-gray-200 rounded-md p-2 mb-2"><br>
               <span class="font-semibold">Statut : </span> <input type="text" id="statut-input" value="" class="bg-gray-200 rounded-md p-2 mb-2"><br>
           </form>
       </div>
@@ -163,12 +163,13 @@ export default async function informationTab(data) {
           <form id="item-form">
               <span class="font-bold">Contact : </span> <br>
               <span class="font-semibold">Nom de propriétaire : </span> <input type="text" id="nom-input" value="" class="bg-gray-200 rounded-md p-2 mb-2"><br>
-              <span class="font-semibold">Numéro de téléphone : </span> <input type="text" id="tel-input" value="" class="bg-gray-200 rounded-md p-2 mb-2"><br>
+              <span class="font-semibold">Numéro de téléphone :  </span><input type="text" id="tel-input" value="" class="bg-gray-200 rounded-md p-2 mb-2"><br>
+                <p id="error-message" style="color: red;"></p>
           </form>
       </div>
       <div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg">
-          <span class="font-semibold">Date d'expiration : </span> <input type="text" id="expiration-input" value="" class="bg-gray-200 rounded-md p-2 mb-2"><br>
-          <span class="font-semibold">Last occup : </span> <input type="text" id="last-occup-input" value="" class="bg-gray-200 rounded-md p-2 mb-2"><br>
+          <span class="font-semibold">Date d'expiration : </span> <input type="date" id="expiration-input" value="" class="bg-gray-200 rounded-md p-2 mb-2"><br>
+          <span class="font-semibold">Last occup : </span> <input type="date" id="last-occup-input" value="" class="bg-gray-200 rounded-md p-2 mb-2"><br>
       </div>
       <div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg">
           <span class="font-semibold">Détails : </span> <input type="text" id="details-input" value="" class="bg-gray-200 rounded-md p-2 mb-2"><br>
@@ -178,7 +179,24 @@ export default async function informationTab(data) {
     
       document.getElementById('view-tab').innerHTML = newtext;
       //console.log(userData);
-    
+      const telInput = document.getElementById('tel-input');
+      const errorMessage = document.getElementById('error-message');
+
+      // Fonction pour valider le numéro de téléphone
+      function validatePhoneNumber() {
+          const phoneNumber = telInput.value;
+          const phoneNumberPattern = /^\d{10}$/; // Format : 10 chiffres
+
+          if (phoneNumberPattern.test(phoneNumber)) {
+              errorMessage.textContent = ''; // Numéro de téléphone valide
+          } else {
+              errorMessage.textContent = 'Le numéro de téléphone doit contenir 10 chiffres.';
+          }
+      }
+
+      // Écouteur d'événements pour valider lorsque l'utilisateur saisit quelque chose
+      telInput.addEventListener('input', validatePhoneNumber);
+
       // Ajouter un gestionnaire d'événements pour le bouton "Enregistrer"
       document.getElementById('save-button').addEventListener('click', function () {
         var titreInput = document.getElementById("titre-input");
