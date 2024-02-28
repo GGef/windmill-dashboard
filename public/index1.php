@@ -1,8 +1,6 @@
 <?php
   require "vendor/autoload.php";
 
-
-
    use \app\controllers\UserController;
    use \app\controllers\BaseController;
    use \app\controllers\ItemController;
@@ -79,7 +77,11 @@
             break;
             case 'statutActionItem' :
                 ItemController::statutActionItem();
+            case "ItemLeasedDetails":
+                // echo 'hello' ;
+             DashController::dashFile('ItemLeased/itemLeasedDetails');
             break;
+           
             default :
             require 'ressources/views/404.php';
             break;
