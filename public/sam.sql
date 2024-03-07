@@ -20,7 +20,10 @@ SET time_zone = "+00:00";
 --
 -- Database: `sam`
 --
+CREATE DATABASE IF NOT EXISTS `sam` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
+-- Sélection de la base de données `sam`
+USE `sam`;
 -- --------------------------------------------------------
 
 --
