@@ -8,17 +8,17 @@ use PDO;
 
 class ItemLeased extends Model
 {
-    // private $id;
-    private $item_id;
-    private $renter_id;
-    private $time_from;
-    private $time_to;
-    private $unit_id;
-    private $price_per_unit;
-    private $discount;
-    private $fee;
-    private $price_total;
-    private $rentier_grade_description;
+    public $id;
+    public $item_id;
+    public $renter_id;
+    public $time_from;
+    public $time_to;
+    public $unit_id;
+    public $price_per_unit;
+    public $discount;
+    public $fee;
+    public $price_total;
+    public $rentier_grade_description;
 
 
 
@@ -154,6 +154,22 @@ class ItemLeased extends Model
         return  $statement->fetchAll(PDO::FETCH_CLASS, __CLASS__);
     }
 
+    public static function getDataOffset($limit, $offset) 
+    {
+        $sql = 'SELECT IL.id, I.item_name, U.username, IL.time_from, IL.time_to, IL.price_total
+                FROM item_leased IL
+                INNER JOIN item I ON IL.item_id = I.id
+                INNER JOIN user_account U  ON IL.renter_id = U.id
+                WHERE NOW() < IL.time_to
+                LIMIT '.$limit.' OFFSET '.$offset ;
+        $stmt = static::database()->prepare($sql);
+        
+        // Execute the prepared statement  
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__);
+    }
+    
+
     public function findItemLeased( $searchType, $searchValue)
     {
         // Define the allowed search types (you can customize this as needed)
@@ -224,6 +240,18 @@ class ItemLeased extends Model
         WHERE IL.item_id = ' . $id);
 
         return $statement->fetchAll(PDO::FETCH_ASSOC); // Fetch as associative array
+    }
+    
+    public static function reserved()
+    {
+        // Execute a query to count the number of rows where items are leased and exist in the item table
+        $comm = 'SELECT COUNT(*) FROM item_leased IL
+                INNER JOIN item I ON I.id = IL.item_id
+                WHERE NOW() < IL.time_to';
+    
+        $requete = static::database()->query($comm);
+        // Fetch the result of the query and return the count
+        return $requete->fetchColumn();
     }
     
 }

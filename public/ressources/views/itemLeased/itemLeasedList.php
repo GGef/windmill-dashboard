@@ -11,7 +11,7 @@ $totalItems = ItemLeasedController::lengthActionItemLeased();
 $newLeasedItems = ItemLeasedController::CountNewItemLeased();
 
 // Define the number of items to display per page
-$itemsPerPage = 3;
+$itemsPerPage = 5;
 
 // Calculate the total number of pages
 $totalPages = ceil($totalItems / $itemsPerPage);
@@ -30,6 +30,8 @@ $startItem = ($current_page - 1) * $itemsPerPage + 1;
 $endItem = min($startItem + $itemsPerPage - 1, $totalItems);
 
 ?>
+    <input id="pageCount" type="hidden" name="" value="<?= $totalItems ?>">
+    <input id="endPage" type="hidden" name="" value="<?= $endItem ?>">
     <div class="container grid px-6 mx-auto">
     <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">propriétés réservées</h2>
 
@@ -161,9 +163,9 @@ $endItem = min($startItem + $itemsPerPage - 1, $totalItems);
       <!-- Pagination-->
       <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
         <nav aria-label="Table navigation">
-          <ul class="inline-flex items-center">
+        <ul class="inline-flex items-center">
             <li>
-              <button class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous" >
+            <button id="PreviousButton"  data-current-id = "1" class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous" >
                 <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20" >
                   <path
                     d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
@@ -177,16 +179,16 @@ $endItem = min($startItem + $itemsPerPage - 1, $totalItems);
                   for($i=1; $i<=$totalPages; $i++) {
             ?>
             <li>
-              <a class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple" 
-              href="?action=itemLeasedList&page=<?= $i ?>" >
+              <button class="pagination px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple" 
+              href="?action=propertyList&page=<?= $i ?> " data-id=<?= $i ?> >
                 <?=  $i  ?>
-              </a>
+                  </button>
             </li>
             <?php } ?>
-
             <li>
-              <button
-                class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple"
+            <button id="NextButton"
+                data-current-id="1"
+                class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" 
                 aria-label="Next" >
                 <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20" >
                   <path
@@ -204,78 +206,29 @@ $endItem = min($startItem + $itemsPerPage - 1, $totalItems);
 
     <div class="w-full overflow-x-auto">
       <!-- Table container -->
-      <div class="w-full whitespace-no-wrap container mx-auto ">
+      <div  class="w-full whitespace-no-wrap container mx-auto ">
         <!-- Table header -->
-        <div class="table-header-group">
+        <div class="bg-gray-50 dark:bg-gray-900">
+        <div class="flex justify-between items-center px-4 py-3 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700">
           <!-- row -->
-          <div class="table-row flex text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-                
-            <!-- columns -->
-            <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-500 dark:border-gray-700" style="width: 16.6667%;">NOM </div>
-            <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-500 dark:border-gray-700" style="width: 16.6667%;">LOCATAIRE</div>
-            <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-500 dark:border-gray-700" style="width: 16.6667%;">à partir de </div>
-            <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-500 dark:border-gray-700" style="width: 16.6667%;">jusqu'à</div>
-            <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-500 dark:border-gray-700" style="width: 16.6667%;">Prix total</div>
-            <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-500 dark:border-gray-700" style="width: 16.6667%;">Action</div>                  
-          </div>
-        </div>
+              <div class="w-1/3" >ID</div>
+              <div class="w-1/3" >NOM</div>
+              <div class="w-1/3" >LOCATAIRE</div>
+              <div class="w-1/3" > à partir de </div>
+              <div class="w-1/3" > jusqu'à </div>
+              <div class="w-1/3" >Prix total</div>      
+              <div class="w-1/3" >ACTION </div> 
+                  </div> </div>    
+                  <div id ="ItemContainer"></div>         
             <!-- Table rows -->
-        <div class="table-row-group ">
-          <?php 
-            /** @var \app\models\ItemLeased[] $data */
-            if (is_array($data) || is_object($data)) {
-              foreach ($data as $item): ?>
-            <div id="itemLeased-row"  class=" table-row flex bg-gray-50 dark:bg-gray-900 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400 h-12" data-id="<?php echo $item->getItemLeasedId()?>">
-                <div class="table-cell px-4 py-3 p-2 text-sm" style="width: 16.6667%;"><?= $item->item_name?></div>
-                <div class="table-cell px-4 py-3 p-2 text-sm" style="width: 16.6667%;"><?= $item->username ?></div>
-                <div class="table-cell px-4 py-3 p-2 text-sm" style="width: 16.6667%;"><?= $item->getTimeFrom()?></div>
-                <div class="table-cell px-4 py-3 p-2 text-sm" style="width: 16.6667%;"><?= $item->getTimeTo() ?></div>
-                <div class="table-cell px-4 py-3 p-2 text-sm" style="width: 16.6667%;"><?= $item->getPriceTotal()?></div>
-                <div class="table-cell px-4 py-3 p-2 text-sm" style="width: 16.6667%;">
-                  <div class="flex items-center space-x-4 text-sm">
-                    <button>
-                      <a class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
-                        aria-label="Edit"
-                        href="index1.php?action=editItem&id=<?php echo $item->getItemLeasedId()?>">
-                        <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
-                          <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path>
-                        </svg>
-                      </a>
-                    </button>
-                    <button>
-                      <a
-                        class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
-                        aria-label="Delete" onclick="return confirm('voulez vous vraiment supprimer ce utilisateur')" 
-                        href="index1.php?action=destroyItem&id=<?php echo $item->getItemLeasedId()?>" >
-                        <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" >
-                          <path
-                            fill-rule="evenodd"
-                            d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                            clip-rule="evenodd" >
-                          </path>
-                        </svg>
-                      </a>
-                    </button> 
-                      
-                  </div>
-            
-
-                </div>
-            </div>
-                      
-          <?php endforeach;}
-          else {
-            echo "No data available";
-          } ?>
-                   
-        </div>
-        
-    
-
-    
+                          
       </div>  
-    
-    </div>   
+    </div> 
+    <script>
+  <?php
+  include_once 'assets/js/itemLeased.js';
+  ?>
+</script>
 
 <?php
 $content = ob_get_clean();

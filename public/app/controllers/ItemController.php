@@ -239,6 +239,20 @@ class ItemController  extends BaseController
        exit;
     }
 
+  public static function SearchItem()
+{
+    $query = $_GET['query'];
+    var_dump($query); // For debugging
+
+    $result = static::getModelItem()::search($query);
+
+    header('Content-type: application/json');
+    echo json_encode(array(
+        'data' => $result 
+    ));
+    exit;
+}
+
     public static function sendData($id)
     {
         $item = static::getModelItem() ;

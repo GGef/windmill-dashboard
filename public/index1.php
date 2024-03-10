@@ -53,6 +53,9 @@
             case 'editItem':
                 ItemController::editActionItem();
             break;
+            case 'SearchItem':
+                ItemController::SearchItem();
+            break;
             case 'property':
                 ItemController::property();
             break;
@@ -81,7 +84,9 @@
                 // echo 'hello' ;
              DashController::dashFile('ItemLeased/itemLeasedDetails');
             break;
-           
+            case 'paginationItemL' :
+                ItemLeasedController::paginationNumber();
+            break;
             default :
             require 'ressources/views/404.php';
             break;

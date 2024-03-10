@@ -59,6 +59,7 @@ document.addEventListener("DOMContentLoaded", function() {
   //Obtenez une référence vers le bouton
   var bottonNext = document.getElementById("NextButton");
   var bottonPrevius = document.getElementById("PreviousButton");
+  var searchInput = document.getElementById("searchInput");
   var page = 1;
   GetItem(page)
   //Utilisez addEventListener pour détecter le clic sur le bouton
@@ -83,6 +84,13 @@ document.addEventListener("DOMContentLoaded", function() {
     bottonPrevius.setAttribute("data-current-id",`${page}`)
     }
   });
+
+  // Add event listener for search input
+  searchInput.addEventListener("input", function() {
+    console.log('search')
+    console.log(this.value.trim())
+    searchItems(this.value.trim());
+  });
 });
 
 //----------------Fonction 2-----------------------
@@ -97,6 +105,7 @@ document.addEventListener("DOMContentLoaded", function() {
   el.addEventListener("click",(e)=>{
     var bottonNext = document.getElementById("NextButton");
     var bottonPrevius = document.getElementById("PreviousButton");
+    var searchInput = document.getElementById("searchInput");
     GetItem(e.target.getAttribute("data-id"));
     bottonNext.setAttribute("data-current-id",`${e.target.getAttribute("data-id")}`)
     bottonPrevius.setAttribute("data-current-id",`${e.target.getAttribute("data-id")}`)
@@ -108,7 +117,7 @@ document.addEventListener("DOMContentLoaded", function() {
 function GetItem(pageNumber){
   console.log(`Le Nombre a été cliqué !${pageNumber}`);
   $.ajax({
-    url: `index1.php?action=paginationNumber&limit=6&prepa=${pageNumber}`, // URL du script PHP à appeler
+    url: `index1.php?action=paginationNumber&limit=5&prepa=${pageNumber}`, // URL du script PHP à appeler
     type: "GET",             // Méthode de la requête (GET, POST, etc.)
     dataType: "json",   
      // Type de données attendu en retour (json, text, html, etc.)
@@ -118,7 +127,6 @@ function GetItem(pageNumber){
       document.getElementById("ItemContainer").innerHTML= " <div id=Childnode  class='bg-white dark:bg-gray-900'  data-id='${item.id}'></div>"
       // document.getElementById("Childnode").innerHTML="  <div id=Secondchildnode class='flex justify-between items-center px-4 py-3 text-sm'></div> "
     
-    // <div class="flex justify-between items-center px-4 py-3 text-sm"></div>
       data.data.forEach(el=>{
         // var SecChildNode =  document.getElementById("Secondchildnode")
        let createRow = document.createElement("div")
@@ -135,7 +143,34 @@ function GetItem(pageNumber){
       $("#resultat").html("Échec de la requête AJAX.");
     }
   });
-
+}
+  function searchItems(query) {
+    if (query !== "") {
+      $.ajax({
+        url: `index1.php?action=SearchItem&query=${query}`,
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+          document.getElementById("ItemContainer").innerHTML = "";
+          data.data.forEach(el => {
+            let createRow = document.createElement("div");
+            createRow.setAttribute('class', 'flex justify-between items-center px-4 py-3 text-sm');
+            createRow.setAttribute('data-id', `${el.id}`);
+            createRow.innerHTML = rowTable(el);
+            var Elem = document.getElementById("Childnode");
+            Elem.append(createRow);
+          });
+          $("#resultat").html("Réponse du serveur : " + data.message);
+        },
+        error: function() {
+          $("#resultat").html("Échec de la requête AJAX.");
+        }
+      });
+    }   
+  // else {
+  //   // If search input is empty, display all items (similar to initial page load)
+  //   GetItem(page);
+  // }
 }
 
 //---------------- Function to display the fetched user data ----------------

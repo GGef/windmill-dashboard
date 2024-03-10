@@ -187,6 +187,27 @@ class Item extends Model
         return $statement->execute($parameters);
     }
 
+    public function search($value)
+{
+    $statement = static::database()->prepare('SELECT I.id, I.item_name, It.type_name, l.name, I.item_location, I.description,
+        U.username, I.price_per_unit, Un.unit_name, I.avaible FROM user_account U 
+        INNER JOIN item I ON I.owner_id = U.id 
+        INNER JOIN item_type It ON I.item_type_id = It.id 
+        INNER JOIN location l ON I.location_id = l.id 
+        INNER JOIN unit Un ON I.unit_id = Un.id 
+        WHERE I.item_name LIKE :value OR I.id LIKE :value');
+
+    // Bind the value parameter
+    $statement->bindValue(':value', "%$value%");
+
+    // Execute the prepared statement
+    $statement->execute();
+
+    // Fetch all rows as an array of objects of the current class and return the result
+    return $statement->fetchAll(PDO::FETCH_CLASS, __CLASS__);
+}
+
+
     public function findItem( $searchType, $searchValue)
     {
         // Define the allowed search types (you can customize this as needed)

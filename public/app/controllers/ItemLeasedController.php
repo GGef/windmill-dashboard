@@ -78,7 +78,7 @@ class ItemLeasedController  extends BaseController
     public static function lengthActionItemLeased()
     {
         // Retrieve the length of the "item" table
-        return static::getModelItemLeased()->length('item_leased' , ' NOW() < time_to;');
+        return static::getModelItemLeased()->reserved();
     }
 
     public static function CountNewItemLeased()
@@ -88,5 +88,17 @@ class ItemLeasedController  extends BaseController
     }
 
 
-
+    public static function paginationNumber()
+    {
+        $limit = $_GET['limit'];
+        $numberOfPage = $_GET['prepa'] -1 ;
+        $offset = $limit * $numberOfPage ;
+       $result = static::getModelItemLeased()::getDataOffset($limit,$offset);
+    //    var_dump($result);
+       header('Content-type: application/json');
+       echo json_encode(array(
+        'data' => $result 
+        ));
+       exit;
+    }
 }
