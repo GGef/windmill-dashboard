@@ -243,7 +243,6 @@ $endItem = ceil($totalItems/$itemsPerPage);
         </nav>
       </span>               
     </div>
-
     <div class="w-full overflow-x-auto">
       <!-- Table container -->
       <div  class="w-full whitespace-no-wrap container mx-auto ">

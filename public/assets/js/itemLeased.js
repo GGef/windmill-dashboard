@@ -67,7 +67,7 @@ function GetItem(pageNumber){
         data.data.forEach(el=>{
             // var SecChildNode =  document.getElementById("Secondchildnode")
             let createRow = document.createElement("div")
-            createRow.setAttribute('class','flex justify-between  items-center px-4 py-3 text-sm')
+            createRow.setAttribute('class','flex justify-between  items-center px-4 py-3 text-sm  bg-gray-50 dark:bg-gray-900 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400 h-12')
             createRow.setAttribute('data-id',`${el.id}`)
             createRow.innerHTML = rowTable(el)
             console.log(el);
@@ -87,12 +87,12 @@ function GetItem(pageNumber){
 function rowTable(item){
    let newItem = `
   
-        <div class='w-1/3 truncate'>${item.id}</div>
-        <div class='w-1/3 truncate'>${item.item_name}</div>
-        <div class='w-1/3 truncate' >${item.username}</div>
-        <div class='w-1/3 truncate' >${item.time_from}</div>
-        <div class='w-1/3 truncate' >${item.time_to}</div>
-        <div class='w-1/3 truncate' >${item.price_total}</div>
+        <div class='table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase  border-gray-500 dark:border-gray-700 truncate'>${item.id}</div>
+        <div class='table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase  border-gray-500 dark:border-gray-700 truncate'>${item.item_name}</div>
+        <div class='table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase  border-gray-500 dark:border-gray-700 truncate' >${item.username}</div>
+        <div class='table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase  border-gray-500 dark:border-gray-700 truncate' >${item.time_from}</div>
+        <div class='table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase  border-gray-500 dark:border-gray-700 truncate' >${item.time_to}</div>
+        <div class='table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase  border-gray-500 dark:border-gray-700 truncate' >${item.price_total}</div>
          
         <div class="flex items-center space-x-4 text-sm">
                     <button>

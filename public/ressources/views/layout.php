@@ -8,7 +8,7 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
     rel="stylesheet"
   />
-  <!-- <link rel="stylesheet" href="/SAM/public/assets/css/tailwind.output.css" /> -->
+  <link rel="stylesheet" href="/SAM/public/assets/css/tailwind.output.css" />
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/SAM/public/assets/css/style.css" />
 
@@ -23,6 +23,7 @@
   rel="stylesheet"
   href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
 />
+<!-- <script> -->
 
 <!-- CSS for full calender -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css" rel="stylesheet" />

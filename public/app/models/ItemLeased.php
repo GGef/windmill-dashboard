@@ -156,7 +156,7 @@ class ItemLeased extends Model
 
     public static function getDataOffset($limit, $offset) 
     {
-        $sql = 'SELECT IL.id, I.item_name, U.username, IL.time_from, IL.time_to, IL.price_total
+        $sql = 'SELECT IL.id, IL.item_id, I.item_name, U.username, IL.time_from, IL.time_to, IL.price_total
                 FROM item_leased IL
                 INNER JOIN item I ON IL.item_id = I.id
                 INNER JOIN user_account U  ON IL.renter_id = U.id

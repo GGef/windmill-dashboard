@@ -211,13 +211,13 @@ $endItem = min($startItem + $itemsPerPage - 1, $totalItems);
         <div class="bg-gray-50 dark:bg-gray-900">
         <div class="flex justify-between items-center px-4 py-3 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700">
           <!-- row -->
-              <div class="w-1/3" >ID</div>
-              <div class="w-1/3" >NOM</div>
-              <div class="w-1/3" >LOCATAIRE</div>
-              <div class="w-1/3" > à partir de </div>
-              <div class="w-1/3" > jusqu'à </div>
-              <div class="w-1/3" >Prix total</div>      
-              <div class="w-1/3" >ACTION </div> 
+              <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-gray-500 dark:border-gray-700" >ID</div>
+              <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-gray-500 dark:border-gray-700" >NOM</div>
+              <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-gray-500 dark:border-gray-700" >LOCATAIRE</div>
+              <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-gray-500 dark:border-gray-700" > à partir de </div>
+              <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-gray-500 dark:border-gray-700" > jusqu'à </div>
+              <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-gray-500 dark:border-gray-700" >Prix total</div>      
+              <div class="table-cell px-4 py-3 p-2 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-gray-500 dark:border-gray-700" >ACTION </div> 
                   </div> </div>    
                   <div id ="ItemContainer"></div>         
             <!-- Table rows -->

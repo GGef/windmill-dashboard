@@ -90,7 +90,6 @@ document.addEventListener("DOMContentLoaded", function() {
     console.log('search')
     console.log(this.value.trim())
     searchItems(this.value.trim());
-    console.log("searched")
   });
 });
 
@@ -131,8 +130,7 @@ function GetItem(pageNumber){
       data.data.forEach(el=>{
         // var SecChildNode =  document.getElementById("Secondchildnode")
        let createRow = document.createElement("div")
-      //  createRow.setAttribute('class','flex justify-between  items-center px-4 py-3 text-sm')
-      createRow.setAttribute('class','flex justify-between  items-center px-4 py-3 text-sm  bg-gray-50 dark:bg-gray-900 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400 h-12')
+       createRow.setAttribute('class','flex justify-between  items-center px-4 py-3 text-sm')
        createRow.setAttribute('data-id',`${el.id}`)
       createRow.innerHTML = rowTable(el)
       var Elem  =  document.getElementById("Childnode")
@@ -153,20 +151,14 @@ function GetItem(pageNumber){
         type: "GET",
         dataType: "json",
         success: function(data) {
-          // Cette fonction sera appelée en cas de succès de la requête
-          // 'data' contient la réponse du serveur
-          document.getElementById("ItemContainer").innerHTML= " <div id=Childnode  class='bg-white dark:bg-gray-900'  data-id='${item.id}'></div>"
-          // document.getElementById("Childnode").innerHTML="  <div id=Secondchildnode class='flex justify-between items-center px-4 py-3 text-sm'></div> "
-        
-          data.data.forEach(el=>{
-            // var SecChildNode =  document.getElementById("Secondchildnode")
-           let createRow = document.createElement("div")
-          //  createRow.setAttribute('class','flex justify-between  items-center px-4 py-3 text-sm')
-          createRow.setAttribute('class','flex justify-between  items-center px-4 py-3 text-sm  bg-gray-50 dark:bg-gray-900 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400 h-12')
-           createRow.setAttribute('data-id',`${el.id}`)
-          createRow.innerHTML = rowTable(el)
-          var Elem  =  document.getElementById("Childnode")
-          Elem.append(createRow)
+          document.getElementById("ItemContainer").innerHTML = "";
+          data.data.forEach(el => {
+            let createRow = document.createElement("div");
+            createRow.setAttribute('class', 'flex justify-between items-center px-4 py-3 text-sm');
+            createRow.setAttribute('data-id', `${el.id}`);
+            createRow.innerHTML = rowTable(el);
+            var Elem = document.getElementById("Childnode");
+            Elem.append(createRow);
           });
           $("#resultat").html("Réponse du serveur : " + data.message);
         },
@@ -175,10 +167,10 @@ function GetItem(pageNumber){
         }
       });
     }   
-  else {
-    // If search input is empty, display all items (similar to initial page load)
-    GetItem(1);
-  }
+  // else {
+  //   // If search input is empty, display all items (similar to initial page load)
+  //   GetItem(page);
+  // }
 }
 
 //---------------- Function to display the fetched user data ----------------
@@ -413,14 +405,14 @@ function rowTable(item){
                       </button>
            </div>
 
-        <div class=' sam-details__box' style='display:none;' >
-          <div class='sam-details__item-box'>1</div>
-          <div class='sam-details__item-box fff'>
-            <div class='sam-details__item'>2</div>          
-            <div class='sam-details__item'>3</div>
-          </div>
-          <div class='sam-details__item-box'>4</div>
-        </div>`
+   <div class=' sam-details__box' style='display:none;' >
+      <div class='sam-details__item-box'>1</div>
+      <div class='sam-details__item-box fff'>
+        <div class='sam-details__item'>2</div>          
+        <div class='sam-details__item'>3</div>
+      </div>
+      <div class='sam-details__item-box'>4</div>
+    </div>`
     //console.log(newItem);
 
    return newItem;

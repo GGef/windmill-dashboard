@@ -187,7 +187,7 @@ class Item extends Model
         return $statement->execute($parameters);
     }
 
-    public function search($value)
+    public static function search($value)
 {
     $statement = static::database()->prepare('SELECT I.id, I.item_name, It.type_name, l.name, I.item_location, I.description,
         U.username, I.price_per_unit, Un.unit_name, I.avaible FROM user_account U 
