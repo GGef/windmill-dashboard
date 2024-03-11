@@ -101,4 +101,18 @@ class ItemLeasedController  extends BaseController
         ));
        exit;
     }
+
+    public static function SearchItemLeased()
+    {
+        $query = $_GET['query'];
+        // var_dump($query); // For debugging
+
+        $result = static::getModelItemLeased()::search($query);
+
+        header('Content-type: application/json');
+        echo json_encode(array(
+            'data' => $result 
+        ));
+        exit;
+    }
 }

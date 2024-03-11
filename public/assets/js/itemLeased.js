@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
   //Obtenez une référence vers le bouton
   var bottonNext = document.getElementById("NextButton");
   var bottonPrevius = document.getElementById("PreviousButton");
+  var searchInput = document.getElementById("searchInput");
   var page = 1;
   GetItem(page)
   //Utilisez addEventListener pour détecter le clic sur le bouton
@@ -27,6 +28,14 @@ document.addEventListener("DOMContentLoaded", function() {
     bottonPrevius.setAttribute("data-current-id",`${page}`)
     }
   });
+
+    // Add event listener for search input
+    searchInput.addEventListener("input", function() {
+      console.log('search')
+      console.log(this.value.trim())
+      searchItems(this.value.trim());
+      console.log("searched")
+    });
 });
 
 //----------------Fonction 2-----------------------
@@ -83,6 +92,41 @@ function GetItem(pageNumber){
   });
 
 }
+function searchItems(query) {
+  if (query !== "") {
+    $.ajax({
+      url: `index1.php?action=SearchItemLeased&query=${query}`,
+      type: "GET",
+      dataType: "json",
+      success: function(data) {
+        // Cette fonction sera appelée en cas de succès de la requête
+        // 'data' contient la réponse du serveur
+        document.getElementById("ItemContainer").innerHTML= " <div id=Childnode  class='bg-white dark:bg-gray-900'  data-id='${item.id}'></div>"
+        // document.getElementById("Childnode").innerHTML="  <div id=Secondchildnode class='flex justify-between items-center px-4 py-3 text-sm'></div> "
+      
+        data.data.forEach(el=>{
+          // var SecChildNode =  document.getElementById("Secondchildnode")
+         let createRow = document.createElement("div")
+        //  createRow.setAttribute('class','flex justify-between  items-center px-4 py-3 text-sm')
+        createRow.setAttribute('class','flex justify-between  items-center px-4 py-3 text-sm  bg-gray-50 dark:bg-gray-900 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400 h-12')
+         createRow.setAttribute('data-id',`${el.id}`)
+        createRow.innerHTML = rowTable(el)
+        var Elem  =  document.getElementById("Childnode")
+        Elem.append(createRow)
+        });
+        $("#resultat").html("Réponse du serveur : " + data.message);
+      },
+      error: function() {
+        $("#resultat").html("Échec de la requête AJAX.");
+      }
+    });
+  }   
+else {
+  // If search input is empty, display all items (similar to initial page load)
+  GetItem(1);
+}
+}
+
 
 function rowTable(item){
    let newItem = `

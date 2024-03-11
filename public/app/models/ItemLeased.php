@@ -200,6 +200,25 @@ class ItemLeased extends Model
         return $statement->fetchAll(PDO::FETCH_CLASS, __CLASS__);
     }
 
+    
+    public static function search($value)
+    {
+        $statement = static::database()->prepare('SELECT IL.id, I.item_name, U.username, IL.time_from, IL.time_to, IL.Price_total
+        FROM item_leased IL
+        INNER JOIN item I ON IL.item_id = I.id
+        INNER JOIN user_account U ON IL.renter_id = U.id
+        WHERE (I.item_name LIKE :value OR I.id LIKE :value) AND NOW() < IL.time_to');
+
+        // Bind the value parameter
+        $statement->bindValue(':value', "%$value%");
+
+        // Execute the prepared statement
+        $statement->execute();
+
+        // Fetch all rows as an array of objects of the current class and return the result
+        return $statement->fetchAll(PDO::FETCH_CLASS, __CLASS__);
+    }
+
     public static function TimeDifference($dateTo)
     {
         $currentDateTime = new \DateTime();

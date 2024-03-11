@@ -41,7 +41,6 @@
                 UserController::updateAction();
             break;
             case 'propertyList':
-                case 'searchpropertyList' :
                 ItemController::indexActionItem();
             break;
             case 'createItem':
@@ -69,8 +68,10 @@
                 ItemController::reserveActionItem();
             break;
             case 'itemLeasedList':
-                case 'searchitemLeasedList' :
                 ItemLeasedController::indexActionItemLeased();
+            break;
+            case 'SearchItemLeased' :
+                ItemLeasedController::SearchItemLeased();
             break;
             case 'calendar' :
                 CalendarController::calendarFile();
