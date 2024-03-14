@@ -21,11 +21,18 @@
                 UserController::createAction();
             break;
             case 'list' :
-                case 'searchlist': 
                 UserController::indexAction(2);
             break;
+            case 'paginationClient':
+                UserController::paginationNumber();
+            break;
+            case 'SearchClient' :
+                UserController::SearchClient();
+            break;
+            case 'lengthUser':
+                UserController::lengthUser();
+            break;
             case 'listRenter' :
-                case 'searchlistRenter': 
                     UserController::indexAction(3);
             break;
             case 'store':

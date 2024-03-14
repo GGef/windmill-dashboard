@@ -9,15 +9,16 @@ use PDO;
 
 class User extends Model
 {
-    private $username;
-    private $password;
-    private $location_id;
-    private $location_details;
-    private $phone;
-    private $mobile;
-    private $email;
-    private $role_id;
-    private $registration_time;
+    public $id;
+    public $username;
+    public $password;
+    public $location_id;
+    public $location_details;
+    public $phone;
+    public $mobile;
+    public $email;
+    public $role_id;
+    public $registration_time;
     
     
 
@@ -125,36 +126,73 @@ class User extends Model
   {
       // Construct the SQL query with placeholders for left and right limit values
       $sql = "SELECT * FROM item LIMIT ".$Limit;
-      
       // Prepare the SQL statement
       $stmt = static::database()->prepare($sql);
-      
       // Execute the prepared statement
       $stmt->execute();
-     // var_dump($stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__));
-      // Fetch all rows as an array of objects of the current class
-      //var_dump($stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__));
       return $stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__);
-      
   }
 
-  public static function getDataOffset($Limit,$offset) 
-  {
-      // Construct the SQL query with placeholders for left and right limit values
-      $sql = "SELECT * FROM item LIMIT ".$Limit." OFFSET ".$offset ;
+  public static function search($value, $type)
+{
+    $statement = static::database()->prepare('SELECT U.*, L.name FROM user_account U
+        INNER JOIN location L ON L.id = U.location_id
+        WHERE (U.id LIKE :value OR U.username LIKE :value) AND U.role_id = :type ');
 
-      
-      // Prepare the SQL statement
-      $stmt = static::database()->prepare($sql);
-      
-      // Execute the prepared statement
-      $stmt->execute();
-     // var_dump($stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__));
-      // Fetch all rows as an array of objects of the current class
-      //var_dump($stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__));
-      return $stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__);
-      
-  }
+    // Bind the value parameter
+    $statement->bindValue(':value', "%$value%");
+
+    // Bind the type parameter (no % signs here)
+    $statement->bindValue(':type', $type);
+
+    // Execute the prepared statement
+    $statement->execute();
+
+    // Fetch all rows as an array of objects of the current class and return the result
+    return $statement->fetchAll(PDO::FETCH_CLASS, __CLASS__);
+}
+
+
+  public static function getDataOffset($Limit, $offset, $type) 
+{
+    // Construct the SQL query with placeholders for limit, offset, and type
+    $sql = "SELECT U.* , L.name FROM user_account U
+            INNER JOIN location L ON L.id = U.location_id
+            WHERE role_id = :type
+            LIMIT :limit OFFSET :offset";
+
+    // Prepare the SQL statement
+    $stmt = static::database()->prepare($sql);
+
+    // Bind values to the placeholders
+    $stmt->bindParam(':type', $type, PDO::PARAM_INT);
+    $stmt->bindParam(':limit', $Limit, PDO::PARAM_INT);
+    $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+
+    // Execute the prepared statement
+    $stmt->execute();
+
+    // Fetch and return the results
+    return $stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__);
+}
+
+public static function lengthClient($type) 
+{
+    // Construct the SQL query with placeholders for limit, offset, and type
+    $sql = "SELECT  COUNT(*) FROM user_account
+            WHERE role_id = :type ";
+
+    // Prepare the SQL statement
+    $stmt = static::database()->prepare($sql);
+
+    // Bind values to the placeholders
+    $stmt->bindParam(':type', $type, PDO::PARAM_INT);
+    // Execute the prepared statement
+    $stmt->execute();
+    // Fetch and return the results
+    return $stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__);
+}
+
 
 //   public function getLimitProducts($leftLimit, $rightLimit , $key) 
 //   {

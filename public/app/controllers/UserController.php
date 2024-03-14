@@ -75,6 +75,44 @@ class UserController extends BaseController
         static::requir("Users/$file", $users);
     }
 
+    public static function paginationNumber()
+    {
+        $limit = $_GET['limit'];
+        $numberOfPage = $_GET['prepa'] -1 ;
+        $type = intval($_GET['type']);
+        $offset = $limit * $numberOfPage ;
+        $result = static::getModel()::getDataOffset($limit,$offset,$type);
+        //var_dump($result);
+        header('Content-type: application/json');
+        echo json_encode(array(
+            'data' => $result 
+        ));
+        exit;
+    }
+    public static function lengthUser()
+    {
+        $type = intval($_GET['type']);
+        $result = static::getModel()::lengthClient($type);
+        //var_dump($result);
+        header('Content-type: application/json');
+        echo json_encode(array(
+            'data' => $result 
+        ));
+        exit;
+    }
+
+    public static function SearchClient()
+    {
+        $query = $_GET['query'];
+        $type = intval($_GET['type']);
+        $result = static::getModel()::search($query,$type);
+        header('Content-type: application/json');
+        echo json_encode(array(
+            'data' => $result 
+        ));
+        exit;
+    }
+    
     public static function CountNewUsers()
     {
         // Retrieve the length of the "item" table

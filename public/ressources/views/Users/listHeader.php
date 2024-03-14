@@ -125,14 +125,15 @@ $totalUesrs = UserController::lengthAction() ;
             </div>
 
         <div class="flex grid  mb-8  md:grid-cols-2  p-6 sm:rounded-md font-semibold text-gray-600 dark:text-gray-300">
-          <a href="index1.php?action=list" class="flex-1">
-            <button class="w-full px-6 py-3 font-semibold hover:border-gray-500 transition-all duration-200 ease-in-out  border  rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-purple-300">
+          <!-- <a href="index1.php?action=list" class="flex-1"> -->
+          <button id="proprietaire" class="pagination-btn w-full px-6 py-3 font-semibold hover:border-gray-500 transition-all duration-200 ease-in-out border active:bg-purple-600  rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-purple-300 active" data-type="proprietaire">
               Propriétaire
-            </button>
-          </a>
-          <a href="index1.php?action=listRenter" class="flex-1">
-            <button class="w-full px-6 py-3 font-semibold hover:border-gray-500  transition-all duration-200 ease-in-outborder border  rounded-lg shadow-md  focus:outline-none focus:ring-2 focus:ring-purple-300 dark:focus:ring-purple-600">
-              Locataire
-            </button>
-          </a>
+          </button>
+
+          <!-- </a> -->
+          <!-- <a  href="index1.php?action=listRenter" class="flex-1"> -->
+          <button id="locataire" class="pagination-btn w-full px-6 py-3 font-semibold hover:border-gray-500 transition-all duration-200 ease-in-out border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-purple-300 active:bg-purple-600" data-type="proprietaire">
+            Locataire
+          </button>
+          <!-- </a> -->
       </div>
