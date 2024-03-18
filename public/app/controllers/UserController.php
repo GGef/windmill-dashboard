@@ -75,44 +75,98 @@ class UserController extends BaseController
         static::requir("Users/$file", $users);
     }
 
-    public static function paginationNumber()
-    {
-        $limit = $_GET['limit'];
-        $numberOfPage = $_GET['prepa'] -1 ;
-        $type = intval($_GET['type']);
-        $offset = $limit * $numberOfPage ;
-        $result = static::getModel()::getDataOffset($limit,$offset,$type);
-        //var_dump($result);
+    // public static function paginationNumber()
+    // {
+    //     $limit = $_GET['limit'];
+    //     $numberOfPage = $_GET['prepa'] -1 ;
+    //     $type = intval($_GET['type']);
+    //     $query = $_GET['query']?$_GET['query']:null;
+    //     $offset = $limit * $numberOfPage ;
+    //     $result = static::getModel()::getDataOffset($limit,$offset,$type,$query);
+    //     //var_dump($result);
+    //     header('Content-type: application/json');
+    //     echo json_encode(array(
+    //         'data' => $result 
+    //     ));
+    //     exit;
+    // }
+    // public static function lengthUser()
+    // {
+    //     $type = intval($_GET['type']);
+    //     $query = $_GET['query']?$_GET['query']:null;
+    //     $result = static::getModel()::lengthClient($type,$query);
+    //     //var_dump($result);
+    //     header('Content-type: application/json');
+    //     echo json_encode(array(
+    //         'data' => $result 
+    //     ));
+    //     exit;
+    // }
+
+    // public static function SearchClient()
+    // {
+    //     $query = $_GET['query'];
+    //     $type = intval($_GET['type']);
+    //     $result = static::getModel()::search($query,$type);
+    //     header('Content-type: application/json');
+    //     echo json_encode(array(
+    //         'data' => $result 
+    //     ));
+    //     exit;
+    // }
+    
+    public static function paginationNumber() {
+        // Extract necessary parameters from $_GET
+        $limit = $_GET['limit'] ?? 5;
+        $numberOfPage = $_GET['prepa'] ?? 1;
+        $type = $_GET['type'] ?? 2; // Default type
+        $query = $_GET['query'] ?? null;
+        $offset = $limit * ($numberOfPage - 1);
+        
+        // Call your actual model function to fetch data based on pagination
+        $result = static::getModel()::getDataOffset($limit, $offset, $type, $query);
+
+        // Return JSON response
         header('Content-type: application/json');
-        echo json_encode(array(
-            'data' => $result 
-        ));
-        exit;
-    }
-    public static function lengthUser()
-    {
-        $type = intval($_GET['type']);
-        $result = static::getModel()::lengthClient($type);
-        //var_dump($result);
-        header('Content-type: application/json');
-        echo json_encode(array(
-            'data' => $result 
-        ));
+        echo json_encode(array('data' => $result));
         exit;
     }
 
-    public static function SearchClient()
-    {
-        $query = $_GET['query'];
-        $type = intval($_GET['type']);
-        $result = static::getModel()::search($query,$type);
+    // Function to get the length of users
+    public static function lengthUser() {
+        // Extract necessary parameters from $_GET
+        $type = $_GET['type'] ?? 2; // Default type
+        $query = $_GET['query'] ?? null;
+
+        // Call your actual model function to get the length of users
+        $result = static::getModel()::lengthClient($type, $query);
+
+        // Return JSON response
         header('Content-type: application/json');
-        echo json_encode(array(
-            'data' => $result 
-        ));
+        echo json_encode(array('data' => $result));
         exit;
     }
-    
+
+    // Function to search for clients
+    public static function searchClient() {
+        // Extract necessary parameters from $_GET
+        $query = isset($_GET['query']) && $_GET['query'] !== '' ? $_GET['query'] : null;
+        $type = $_GET['type'] ?? 2; // Default type
+        $page = $_GET['prepa'] ?? 1;
+        $limit = 5;
+
+        // Calculate offset based on page number
+        $offset = ($page - 1) * $limit;
+
+        // Call your actual model function to perform the search
+        $result = static::getModel()::getDataOffset($limit, $offset, $type, $query);
+
+        // Return JSON response
+        header('Content-type: application/json');
+        echo json_encode(array('data' => $result));
+        exit;
+    }
+
     public static function CountNewUsers()
     {
         // Retrieve the length of the "item" table

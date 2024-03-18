@@ -153,40 +153,63 @@ class User extends Model
 }
 
 
-  public static function getDataOffset($Limit, $offset, $type) 
+public static function getDataOffset($limit, $offset, $type, $query) 
 {
     // Construct the SQL query with placeholders for limit, offset, and type
     $sql = "SELECT U.* , L.name FROM user_account U
             INNER JOIN location L ON L.id = U.location_id
-            WHERE role_id = :type
-            LIMIT :limit OFFSET :offset";
+            WHERE role_id = :type ";
+
+    // Add search condition if query is provided
+    if($query != null) {
+        $sql .= " AND (U.id LIKE :value OR U.username LIKE :value) ";
+        // Bind the search value
+        $queryValue = "%$query%";
+    }
+
+    $sql .= " LIMIT :limit OFFSET :offset";
 
     // Prepare the SQL statement
     $stmt = static::database()->prepare($sql);
 
     // Bind values to the placeholders
     $stmt->bindParam(':type', $type, PDO::PARAM_INT);
-    $stmt->bindParam(':limit', $Limit, PDO::PARAM_INT);
+    $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
     $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+
+    // Bind search value if provided
+    if($query != null) {
+        $stmt->bindParam(':value', $queryValue, PDO::PARAM_STR);
+    }
 
     // Execute the prepared statement
     $stmt->execute();
 
     // Fetch and return the results
-    return $stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-public static function lengthClient($type) 
+
+public static function lengthClient($type,$query) 
 {
     // Construct the SQL query with placeholders for limit, offset, and type
     $sql = "SELECT  COUNT(*) FROM user_account
-            WHERE role_id = :type ";
+            WHERE role_id = :type";
 
+    if ($query != null) {
+        $sql .= " AND (id LIKE :value OR username LIKE :value)";
+        // Bind the search value
+        $queryValue = "%$query%";
+    }
+    
     // Prepare the SQL statement
     $stmt = static::database()->prepare($sql);
 
     // Bind values to the placeholders
     $stmt->bindParam(':type', $type, PDO::PARAM_INT);
+    if ($query != null) {
+        $stmt->bindParam(':value', $queryValue, PDO::PARAM_STR);
+    }
     // Execute the prepared statement
     $stmt->execute();
     // Fetch and return the results
