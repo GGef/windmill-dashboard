@@ -1,71 +1,111 @@
 
 //---------------------------------------------------------------------
 var limit = 5
+var sort = "id";
+var direction = "asc"
+
 document.addEventListener("DOMContentLoaded", function() {
   //Obtenez une référence vers le bouton
   var bottonNext = document.getElementById("NextButton");
   var bottonPrevius = document.getElementById("PreviousButton");
+  var page = (bottonNext.getAttribute("data-current-id") * 1) - 1;
+
   var searchInput = document.getElementById("searchInput");
   var page = 1;
-  GetItem(page)
+  GetItem(page);
   //Utilisez addEventListener pour détecter le clic sur le bouton
   bottonNext.addEventListener("click", (e) => {
-    page = (bottonNext.getAttribute("data-current-id") * 1) + 1;
-    if ((bottonNext.getAttribute("data-current-id") * 1) + 1 < document.getElementById("endPage").value) {
-      console.log(page);
-      GetItem(page);
-      bottonNext.setAttribute("data-current-id", `${page}`);
-      bottonPrevius.setAttribute("data-current-id", `${page}`);
+    var page = (bottonNext.getAttribute("data-current-id")*1) +1
+    if((bottonNext.getAttribute("data-current-id")*1)+1 < document.getElementById("endPage").value){
+      console.log(page)
+      GetItem(page)
+      bottonNext.setAttribute("data-current-id",`${page}`)
+      bottonPrevius.setAttribute("data-current-id",`${page}`)
+    }
+          
+  });
+
+  bottonPrevius.addEventListener("click", function(e) {
+    var page = (bottonNext.getAttribute("data-current-id")*1) -1
+    if((bottonNext.getAttribute("data-current-id")*1)-1 >= 1){
+      console.log(page)
+      GetItem(page)
+      bottonNext.setAttribute("data-current-id",`${page}`)
+      bottonPrevius.setAttribute("data-current-id",`${page}`)
     }
   });
 
-  bottonPrevius.addEventListener("click", (e) => {
-    // Effectuez une action AJAX ici (par exemple, récupérez des données du serveur)
-    var page = (bottonNext.getAttribute("data-current-id")*1) -1
-    if((bottonNext.getAttribute("data-current-id")*1)-1 >= 1){
-    console.log(page)
-    GetItem(page)
-    bottonNext.setAttribute("data-current-id",`${page}`)
-    bottonPrevius.setAttribute("data-current-id",`${page}`)
-    }
+  searchInput.addEventListener("input", function() {
+      GetItem(1); // Trigger item retrieval when input changes
   });
 
     // Add event listener for search input
-    searchInput.addEventListener("input", function() {
-      console.log('search : ' + this.value.trim())
-        GetItem(1);
-        console.log("searched")      
-    });
+    // searchInput.addEventListener("input", function() {
+    //   console.log('search : ' + this.value.trim())
+    //     GetItem(1);
+    //     console.log("searched")      
+    // });
 
     document.addEventListener("click", function(event) {
       if (event.target.matches(".pagination")) {
-          var pageNumber = parseInt(event.target.getAttribute("data-id"));
-          console.log(`Page number clicked: ${pageNumber}`);
-          if (pageNumber <= document.getElementById("endPage").value && pageNumber >=1) {
-            GetItem(pageNumber);
-            bottonNext.setAttribute("data-current-id", `${pageNumber}`);
-            bottonPrevius.setAttribute("data-current-id", `${pageNumber}`);
+        const pageNumber = parseInt(event.target.getAttribute("data-id"));
+        console.log(`Page number clicked: ${pageNumber}`);
+              GetItem(pageNumber);
+              bottonNext.setAttribute("data-current-id", `${pageNumber}`);
+              bottonPrevius.setAttribute("data-current-id", `${pageNumber}`);
+          
         }
-      }
-  });
-});
+    });
 
-//----------------Fonction 2-----------------------
-// document.addEventListener("DOMContentLoaded", function() {
-//   // Obtenez une référence vers le bouton
-//   var btns = document.querySelectorAll(".pagination")
-//   // Utilisez addEventListener pour détecter le clic sur le bouton
-//   btns.forEach(el=>{
-//   el.addEventListener("click",(e)=>{
-//     var bottonNext = document.getElementById("NextButton");
-//     var bottonPrevius = document.getElementById("PreviousButton");
-//     GetItem(e.target.getAttribute("data-id"));
-//     bottonNext.setAttribute("data-current-id",`${e.target.getAttribute("data-id")}`)
-//     bottonPrevius.setAttribute("data-current-id",`${e.target.getAttribute("data-id")}`)
-    
-//   })
-//   })
-// });
+  //--------------------sorting && limit---------------------
+  var tableHeaders = document.querySelectorAll("th.sorting, th.sorting-asc, th.sorting-desc");
+  var columnSortMapping = {
+      "ID": "id",
+      "NOM": "item_name",
+      "LOCATAIRE": "username",
+      "À PARTIR DE": "time_from",
+      "JUSQU'À": "time_to",
+      "PRIX TOTAL": "price_total"
+  };
+  tableHeaders.forEach(function(header) {
+      header.addEventListener("click", function() {
+          var sortDirection = "sorting-asc";
+          if (header.classList.contains("sorting-asc")) {
+              sortDirection = "sorting-desc";
+          }
+
+          // Reset sorting classes on all headers
+          tableHeaders.forEach(function(header) {
+              header.classList.remove("sorting-asc", "sorting-desc");
+              header.classList.add("sorting");
+          });
+
+          // Set sorting class and direction on clicked header
+          header.classList.remove("sorting");
+          header.classList.add(sortDirection);
+
+          // Perform sorting logic or return the value of the clicked header
+          var columnHeader = header.textContent.trim(); // Get the text content of the header
+          sort = columnSortMapping[columnHeader];
+          direction = sortDirection.substring(sortDirection.indexOf("-") + 1);
+          GetItem(page);
+
+      });
+  });
+   // Get the select element for the limit
+   var selectElement = document.getElementById("limit");
+
+   // Initialize the limit variable with the default value
+   limit = selectElement.value;
+
+   // Add event listener to the select element
+   selectElement.addEventListener("change", function() {
+       // Update the limit variable with the selected value
+       limit = this.value;
+       GetItem(page);
+   });
+
+});
 
 function GetItem(pageNumber){
   console.log(`Le Nombre a été cliqué !${pageNumber}`);
@@ -76,23 +116,33 @@ function GetItem(pageNumber){
   pagination(pageNumber, inputValue); // Update pagination
 
   $.ajax({
-    url: `index1.php?action=${action}&limit=${limit}&prepa=${pageNumber}${queryParam}`, // URL du script PHP à appeler
+    url: `index1.php?action=${action}&limit=${limit}&sort=${sort}&direction=${direction}&prepa=${pageNumber}${queryParam}`, // URL du script PHP à appeler
     type: "GET",             // Méthode de la requête (GET, POST, etc.)
     dataType: "json",   
      // Type de données attendu en retour (json, text, html, etc.)
      success: function(data) {
       console.log('Data received:', data);
-      var tableBody = document.getElementById("data-table-body");
-      tableBody.innerHTML = ""; // Clear existing rows
-      
-      data.data.forEach(el => {
-          let createRow = document.createElement("tr");
-          // createRow.setAttribute('class', 'flex justify-between  items-center px-4 py-3 text-sm  bg-gray-50 dark:bg-gray-900 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400 h-12');
-          // createRow.setAttribute('data-id', `${el.id}`);
-          createRow.innerHTML = rowTable(el);
-          tableBody.appendChild(createRow); // Append row to table body
-      });  
-        $("#resultat").html("Réponse du serveur : " + data.message);
+      if(data.data.length!=0)
+      {
+        var tableBody = document.getElementById("ItemContainer");
+        tableBody.innerHTML = ""; // Clear existing rows
+        
+        data.data.forEach(el => {
+            let createRow = document.createElement("tr");
+            createRow.setAttribute('class',' px-4 py-3 text-sm  bg-gray-50 dark:bg-gray-900 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400 h-12')
+            createRow.setAttribute('data-id', `${el.id}`);
+            createRow.innerHTML = rowTable(el);
+            tableBody.appendChild(createRow); // Append row to table body
+        });  
+      }
+      else
+      {
+        createRow = document.createElement("tr")
+        createRow.setAttribute('class',' px-4 py-3 text-sm  bg-gray-50 dark:bg-gray-900 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400 h-12')
+        createRow.innerHTML = "No data available in table"
+        document.getElementById("ItemContainer").append(createRow)
+      }
+      $("#resultat").html("Réponse du serveur : " + data.message);
     },
     error: function() {
       // Cette fonction sera appelée en cas d'échec de la requête
@@ -123,7 +173,8 @@ function pagination(pageNumber, query) {
 
 function updatePaginationInfo(pageNumber, totalItems) {
   var startItem = (pageNumber - 1) * limit + 1;
-  var endItem = Math.min(startItem + 4, totalItems);
+  let lm = limit - 1 ;
+  var endItem = Math.min(startItem + lm, totalItems);
   var paginationInfo = `AFFICHAGE ${startItem}-${endItem} SUR ${totalItems}`;
   document.getElementById("affichage").innerHTML = paginationInfo;
 }
@@ -139,14 +190,13 @@ function updatePagination(totalPages) {
 function rowTable(item){
    let newItem = `
   
-        <td>${item.id}</td>
-        <td>${item.item_name}</td>
-        <td>${item.username}</td>
-        <td>${item.time_from}</td>
-        <td>${item.time_to}</td>
-        <td>${item.price_total}</td>
-         
-        <td >
+        <td class="px-4 py-3">${item.id}</td>
+        <td class="px-4 py-3">${item.item_name}</td>
+        <td class="px-4 py-3">${item.username}</td>
+        <td class="px-4 py-3">${item.time_from}</td>
+        <td class="px-4 py-3">${item.time_to}</td>
+        <td class="px-4 py-3">${item.price_total}</td>
+        <td class="px-4 py-3" >
           <button>
             <a class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
               aria-label="Edit"

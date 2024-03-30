@@ -153,23 +153,8 @@ class ItemLeased extends Model
 
         return  $statement->fetchAll(PDO::FETCH_CLASS, __CLASS__);
     }
-
-    // public static function getDataOffset($limit, $offset) 
-    // {
-    //     $sql = 'SELECT IL.id, IL.item_id, I.item_name, U.username, IL.time_from, IL.time_to, IL.price_total
-    //             FROM item_leased IL
-    //             INNER JOIN item I ON IL.item_id = I.id
-    //             INNER JOIN user_account U  ON IL.renter_id = U.id
-    //             WHERE NOW() < IL.time_to
-    //             LIMIT '.$limit.' OFFSET '.$offset ;
-    //     $stmt = static::database()->prepare($sql);
-        
-    //     // Execute the prepared statement  
-    //     $stmt->execute();
-    //     return $stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__);
-    // }
     
-    public static function getDataOffset($limit, $offset, $query) {
+    public static function getDataOffset($limit, $offset, $query, $sort, $direction) {
         // Construct the SQL query
         $sql = "SELECT IL.id, IL.item_id, I.item_name, U.username, IL.time_from, IL.time_to, IL.price_total
                 FROM item_leased IL
@@ -178,9 +163,11 @@ class ItemLeased extends Model
                 WHERE NOW() < IL.time_to";
         // Add search condition if query is provided
         if ($query !== null) {
-            $sql .= " AND (I.item_name LIKE :value OR I.id LIKE :value) ";
+            $sql .= " AND (I.item_name LIKE :value OR IL.id LIKE :value) ";
             $queryValue = "%$query%"; // Prepare search value
         }
+        // Add sorting condition
+        $sql .= " ORDER BY $sort $direction";
         // Add LIMIT and OFFSET clauses
         $sql .= " LIMIT :limit OFFSET :offset";
         // Prepare the SQL statement
@@ -204,7 +191,7 @@ class ItemLeased extends Model
                 INNER JOIN item I ON IL.item_id = I.id
                 WHERE NOW() < time_to ";
         if ($query != null) {
-            $sql .= " AND (I.item_name LIKE :value OR I.id LIKE :value) ";
+            $sql .= " AND (I.item_name LIKE :value OR IL.id LIKE :value) ";
             // Bind the search value
             $queryValue = "%$query%";
         }

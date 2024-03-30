@@ -281,9 +281,6 @@ document.addEventListener("DOMContentLoaded", function() {
    });
 });
 
-
-
-
  //---------------- Dropdown function: modify, reserve, and delete ----------------
 
 // Function to toggle a dropdown and close others

@@ -166,14 +166,13 @@ $endItem = ceil($totalItems/$itemsPerPage);
       <div class="flex items-center col-span-6" >
         <label>Afficher <select name="example_length" id="limit" aria-controls="example" class="">
             <option value="5">5</option>
-            <option value="10">10</option>
+            <option value="2">10</option>
             <option value="20">20</option>
             <option value="50">50</option>
           </select> entrées
         </label>
       </div>
       <!-- Search input -->
-      <!-- <form class="relative w-full max-w-xl mr-6 focus-within:text-purple-500" action="index1.php?action=search<?= $actionValue?>" method="post"> -->
       <div class="flex justify-center flex-1 col-span-3">
         <div class="relative w-full max-w-xl mr-6 focus-within:text-purple-500" >
           <div class="absolute inset-y-0 flex items-center pl-2">
