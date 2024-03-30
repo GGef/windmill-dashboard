@@ -1,13 +1,5 @@
 
 //--- This function handles the toggling of user details display and API data retrieval for individual user rows in the interface ---
-// import firstStep from "./tep/firstStep.js";
-
-// console.log(firstStep({}))
-
-// var viewTab = document.getElementById("view-tab")
-// viewTab.innerHTML = ""
-// viewTab.innerHTML = firstStep({})
-
 var userRows = document.querySelectorAll('.item-row');
 userRows.forEach(function (userRow) {
   userRow.addEventListener('click', function () {
@@ -93,93 +85,6 @@ document.addEventListener("DOMContentLoaded", function() {
     console.log("searched")
   });
 });
-
-//----------------Fonction 2-----------------------
-document.addEventListener("DOMContentLoaded", function() {
-  // Obtenez une référence vers le bouton
-  // var bouton = document.getElementById("paginationNumber");
-  var btns = document.querySelectorAll(".pagination")
-  //console.log("======== ",bouton);
-  // Utilisez addEventListener pour détecter le clic sur le bouton
-  //console.log("Le Nombre a été cliqué !");
-  btns.forEach(el=>{
-  el.addEventListener("click",(e)=>{
-    var bottonNext = document.getElementById("NextButton");
-    var bottonPrevius = document.getElementById("PreviousButton");
-    var searchInput = document.getElementById("searchInput");
-    GetItem(e.target.getAttribute("data-id"));
-    bottonNext.setAttribute("data-current-id",`${e.target.getAttribute("data-id")}`)
-    bottonPrevius.setAttribute("data-current-id",`${e.target.getAttribute("data-id")}`)
-    
-  })
-  })
-});
-
-function GetItem(pageNumber){
-  console.log(`Le Nombre a été cliqué !${pageNumber}`);
-  $.ajax({
-    url: `index1.php?action=paginationNumber&limit=5&prepa=${pageNumber}`, // URL du script PHP à appeler
-    type: "GET",             // Méthode de la requête (GET, POST, etc.)
-    dataType: "json",   
-     // Type de données attendu en retour (json, text, html, etc.)
-    success: function(data) {
-      // Cette fonction sera appelée en cas de succès de la requête
-      // 'data' contient la réponse du serveur
-      document.getElementById("ItemContainer").innerHTML= " <div id=Childnode  class='bg-white dark:bg-gray-900'  data-id='${item.id}'></div>"
-      // document.getElementById("Childnode").innerHTML="  <div id=Secondchildnode class='flex justify-between items-center px-4 py-3 text-sm'></div> "
-    
-      data.data.forEach(el=>{
-        // var SecChildNode =  document.getElementById("Secondchildnode")
-       let createRow = document.createElement("div")
-      //  createRow.setAttribute('class','flex justify-between  items-center px-4 py-3 text-sm')
-      createRow.setAttribute('class','flex justify-between  items-center px-4 py-3 text-sm  bg-gray-50 dark:bg-gray-900 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400 h-12')
-       createRow.setAttribute('data-id',`${el.id}`)
-      createRow.innerHTML = rowTable(el)
-      var Elem  =  document.getElementById("Childnode")
-      Elem.append(createRow)
-      })
-      $("#resultat").html("Réponse du serveur : " + data.message);
-    },
-    error: function() {
-      // Cette fonction sera appelée en cas d'échec de la requête
-      $("#resultat").html("Échec de la requête AJAX.");
-    }
-  });
-}
-  function searchItems(query) {
-    if (query !== "") {
-      $.ajax({
-        url: `index1.php?action=SearchItem&query=${query}`,
-        type: "GET",
-        dataType: "json",
-        success: function(data) {
-          // Cette fonction sera appelée en cas de succès de la requête
-          // 'data' contient la réponse du serveur
-          document.getElementById("ItemContainer").innerHTML= " <div id=Childnode  class='bg-white dark:bg-gray-900'  data-id='${item.id}'></div>"
-          // document.getElementById("Childnode").innerHTML="  <div id=Secondchildnode class='flex justify-between items-center px-4 py-3 text-sm'></div> "
-        
-          data.data.forEach(el=>{
-            // var SecChildNode =  document.getElementById("Secondchildnode")
-           let createRow = document.createElement("div")
-          //  createRow.setAttribute('class','flex justify-between  items-center px-4 py-3 text-sm')
-          createRow.setAttribute('class','flex justify-between  items-center px-4 py-3 text-sm  bg-gray-50 dark:bg-gray-900 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400 h-12')
-           createRow.setAttribute('data-id',`${el.id}`)
-          createRow.innerHTML = rowTable(el)
-          var Elem  =  document.getElementById("Childnode")
-          Elem.append(createRow)
-          });
-          $("#resultat").html("Réponse du serveur : " + data.message);
-        },
-        error: function() {
-          $("#resultat").html("Échec de la requête AJAX.");
-        }
-      });
-    }   
-  else {
-    // If search input is empty, display all items (similar to initial page load)
-    GetItem(1);
-  }
-}
 
 //---------------- Function to display the fetched user data ----------------
 function displayItemData(userData ) {
@@ -309,38 +214,7 @@ document.querySelector('.messages-close').addEventListener('click', function() {
   document.querySelector('.messages-section').classList.remove('show');
 });
 
-//---------------- Dropdown function: modify, reserve, and delete ----------------
 
-// Function to toggle a dropdown and close others
-function toggleDropdown(button) {
-  var dropdown = button.nextElementSibling;
-  closeDropdown(dropdown)
-  dropdown.classList.toggle('hidden');
-}
-// Function to close all dropdowns except a specific one
-function closeDropdown(dropdown)
-{
-  var dropdowns = document.querySelectorAll('.drop');
-  dropdowns.forEach(function (drop) {
-    if(dropdown.id != drop.id){
-      drop.classList.add('hidden');
-    }
-    
-  });
-}
-
-// Event listener for clicks on the body
-document.body.addEventListener('click', function(event) {
-  var clickedElement = event.target;
-  
-  if (!clickedElement.classList.contains('dropdownbtton')) {
-    var dropdowns = document.querySelectorAll('.drop');
-    dropdowns.forEach(function (drop) {
-      
-    drop.classList.add('hidden');
-  });
-  } 
-});
  function statusAvailble(id){
   var html ;
   $.ajax({
@@ -369,60 +243,3 @@ document.body.addEventListener('click', function(event) {
 
 }
 
-function rowTable(item){
-   let newItem = `
-  
-        <div class='w-1/3 truncate'>${item.id}</div>
-        <div class='w-1/3 truncate'>${item.item_name}</div>
-        <div class='w-1/3 truncate' >${item.type_name}</div>
-        <div class='w-1/3 truncate' >${item.name}</div>
-        <div class='w-1/3 truncate' >${item.descrLocal}</div>
-        <div class='w-1/3 truncate' >${item.description}</div>
-        <div class='w-1/3 truncate' >${item.username}</div>
-        <div class='w-1/3 truncate' >${item.price_per_unit}</div>
-        <div class='w-1/3 truncate' >${item.unit_name}</div>
-        <div class='available w-1/3 truncate' >${statusAvailble(item.id)}</div>      
-        <div class='w-1/3' >
-          <div class='flex  items-center space-x-4 text-sm'>
-                <div class='relative '>
-                      <button class='dropdownbtton'
-                        type='button' onclick='toggleDropdown(this)' data-item-id='${item.id}'>
-                        <svg class='dropdownbtton' xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-more-vertical'>
-                          <circle cx='12' cy='12' r='1'></circle>
-                          <circle cx='12' cy='5' r='1'></circle>
-                          <circle cx='12' cy='19' r='1'></circle>
-                        </svg>
-                      </button>
-                    <div id='dropdownDelay-${item.id}' class='drop absolute z-20 right-0 w-56 space-y-2 hidden text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:text-gray-300 dark:border-gray-700 dark:bg-gray-700'>
-                      <ul class='py-2 text-sm text-gray-700 dark:text-gray-200' aria-labelledby='dropdownDelayButton'>
-                        <li><a href='index1.php?action=editItem&id=${item.id}'
-                      class='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white'>Modifier</a></li>
-                      <li><a href='index1.php?action=reserveItem' class='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white'>Réserver</a></li>
-                      <li><a onclick='return confirm('voulez vous vraiment supprimer ce utilisateur')' href='index1.php?action=destroyItem&id=${item.id}' 
-                      class='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white'>Supprimer</a></li>
-                    </ul>
-                  </div>
-                  </div>
-               </div>
-           </div>
-           <div class='w-1/3 truncate' >
-           <button class='dropdownbtton'
-                        type='button' data-item-id='${item.id}'>
-                        <a href='index1.php?action=property&id=${item.id}'</a>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16"> <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/> <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/> </svg>
-                      </button>
-           </div>
-
-        <div class=' sam-details__box' style='display:none;' >
-          <div class='sam-details__item-box'>1</div>
-          <div class='sam-details__item-box fff'>
-            <div class='sam-details__item'>2</div>          
-            <div class='sam-details__item'>3</div>
-          </div>
-          <div class='sam-details__item-box'>4</div>
-        </div>`
-    //console.log(newItem);
-
-   return newItem;
- 
-}

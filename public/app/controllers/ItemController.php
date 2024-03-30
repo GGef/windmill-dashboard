@@ -215,7 +215,10 @@ class ItemController  extends BaseController
     {
         $limit = $_GET['limit'];
         $numberOfPage = $_GET['prepa'] -1 ;
-        $offset = $limit * $numberOfPage ;
+        // $offset = $limit * $numberOfPage ;
+        $offset = $limit * ($numberOfPage - 1);
+        $sort = $_GET['sort'];
+        $direction = $_GET['direction'];
         $result = static::getModelItem()::getDataOffset($limit,$offset);
         header('Content-type: application/json');
         echo json_encode(array(
@@ -276,12 +279,6 @@ class ItemController  extends BaseController
         return null; // Return null if user data is not found or there's an error
     }
 
-/*
-    public static function lengthAction()
-    {
-        return static::getModel()::length();
-    }
-*/
 }
 
 

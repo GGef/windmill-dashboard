@@ -32,7 +32,7 @@ $endItem = ceil($totalItems/$itemsPerPage);
 
 
 ?>
-  <main class="h-full pb-16 overflow-y-auto">
+<main class="h-full pb-16 overflow-y-auto">
     <input id="pageCount" type="hidden" name="" value="<?= $totalItems ?>">
     <input id="endPage" type="hidden" name="" value="<?= $endItem ?>">
     <div class="container grid px-6 mx-auto">
@@ -153,40 +153,7 @@ $endItem = ceil($totalItems/$itemsPerPage);
   </h4>
       <!-- With actions -->
       <div class="flex flex-col justify-between flex-wrap mb-4 space-y-4 md:flex-row md:items-end md:space-x-4">
-        <!-- Search input -->
-        <!-- <form class="relative w-full max-w-xl mr-6 focus-within:text-purple-500" action="index1.php?action=search<?= $actionValue?>" method="post"> -->
-            <div class="flex justify-center flex-1 lg:mr-32">
-              <div class="relative w-full max-w-xl mr-6 focus-within:text-purple-500" >
-                <div class="absolute inset-y-0 flex items-center pl-2">
-                  <svg
-                    class="w-4 h-4"
-                    aria-hidden="true"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    
-                    <path
-                      fill-rule="evenodd"
-                      d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                      clip-rule="evenodd"
-                    ></path>
-                  </svg>
-                </div>
-                <input
-                  class="search w-full pl-8 pr-2 p-2 text-sm text-gray-700 placeholder-gray-600 bg-gray-100 border-0 rounded-md dark:placeholder-gray-500 dark:focus:shadow-outline-gray dark:focus:placeholder-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:placeholder-gray-500 focus:border-purple-300 focus:outline-none focus:shadow-outline-purple form-input"
-                  type="text" name="search" id="searchInput"
-                  placeholder="Recherche selon..."
-                  aria-label="Search"
-                />
-              </div>
-                <!-- <label class="inline-flex items-center">
-                  <select name="search_type" class="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white py-2 px-4 rounded-md shadow-sm  focus:outline-none focus:ring-2 focus:ring-purple-300 ">
-                      <option value="id">ID</option>
-                      <option value="username">Name</option>
-                  </select>
-                </label> -->
-                
-            </div>
+        
               
             <!-- </form> -->
        <!-- With actions -->
@@ -195,102 +162,81 @@ $endItem = ceil($totalItems/$itemsPerPage);
   </a>
   </div>  
   <div class="w-full overflow-hidden rounded-lg shadow-xs">
-    <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800" >
-      <span class="flex items-center col-span-3">
-        <?php echo "AFFICHAGE $startItem-$endItem SUR $totalItems"; ?>
-      </span>
+    <div  class=" grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800" >
+      <div class="flex items-center col-span-6" >
+        <label>Afficher <select name="example_length" id="limit" aria-controls="example" class="">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+          </select> entrées
+        </label>
+      </div>
+      <!-- Search input -->
+      <!-- <form class="relative w-full max-w-xl mr-6 focus-within:text-purple-500" action="index1.php?action=search<?= $actionValue?>" method="post"> -->
+      <div class="flex justify-center flex-1 col-span-3">
+        <div class="relative w-full max-w-xl mr-6 focus-within:text-purple-500" >
+          <div class="absolute inset-y-0 flex items-center pl-2">
+            <svg class="w-4 h-4" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+            </svg>
+          </div>
+          <input
+            class="search w-full pl-8 pr-2 p-2 text-sm text-gray-700 placeholder-gray-600 bg-gray-100 border-0 rounded-md dark:placeholder-gray-500 dark:focus:shadow-outline-gray dark:focus:placeholder-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:placeholder-gray-500 focus:border-purple-300 focus:outline-none focus:shadow-outline-purple form-input"
+            type="text" name="search" id="searchInput"
+            placeholder="Recherche selon..."
+            aria-label="Search"/>
+        </div>              
+      </div>
+    </div>
+    <div class="w-full whitespace-no-wrap container mx-auto overflow-y-auto">
+      <!-- Table container -->
+      <table id="example" style="width:100%; padding-top: 1em; padding-bottom: 1em;">
+        <thead class="bg-gray-50 dark:bg-gray-900">
+            <!-- Table header row -->
+            <tr class="px-4 py-3 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700">
+                <!-- Table header columns -->
+                <th class="sorting-asc px-4 py-3">ID</th>
+                <th class="sorting px-4 py-3">NOM</th>
+                <th class="sorting px-4 py-3">TYPE</th>
+                <th class="sorting px-4 py-3"> EMPLACEMENT </th>
+                <th class="sorting px-4 py-3"> EMPLACEMENT DE L'ARTICLE </th>
+                <th class="sorting px-4 py-3"> DESCRIPTION </th>
+                <th class="sorting px-4 py-3">PROPRIÉTAIRE</th>
+                <th class="sorting px-4 py-3"> PRIX </th>
+                <th class="sorting px-4 py-3">UNITÉ </th>    
+                <th class="sorting px-4 py-3">SATUT </th>        
+                <th class="px-4 py-3">ACTION </th> 
+                <th class="px-4 py-3">Details </th> 
+            </tr> 
+        </thead>    
+        <!-- Table body -->
+        <tbody id="ItemContainer"></tbody>                     
+      </table> 
+
+    </div> 
+    <div  class=" grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800" >
+      <span id="affichage" class="flex items-center col-span-3"></span> 
       <span class="col-span-2"></span>
+      
       <!-- Pagination-->
       <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
         <nav aria-label="Table navigation">
-          <ul class="inline-flex items-center">
-            <li>
-            <button id="PreviousButton"  data-current-id = "1" class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous" >
-                <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20" >
-                  <path
-                    d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                    clip-rule="evenodd"
-                    fill-rule="evenodd" >
-                  </path>
-                </svg>
-              </button>
-            </li>
-            <?php
-                  for($i=1; $i<=$totalPages; $i++) {
-            ?>
-            <li>
-              <button class="pagination px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple" 
-              href="?action=propertyList&page=<?= $i ?> " data-id=<?= $i ?> >
-                <?=  $i  ?>
-                  </button>
-            </li>
-            <?php } ?>
-            <li>
-            <button id="NextButton"
-                data-current-id="1"
-                class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" 
-                aria-label="Next" >
-                <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20" >
-                  <path
-                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                    clip-rule="evenodd"
-                    fill-rule="evenodd" >
-                  </path>
-                </svg>
-              </button>
-            </li>
-          </ul>
-        </nav>
-      </span>               
-    </div>
-    <div class="w-full overflow-x-auto">
-      <!-- Table container -->
-      <div  class="w-full whitespace-no-wrap container mx-auto ">
-        <!-- Table header -->
-        <div class="bg-gray-50 dark:bg-gray-900">
-        <div class="flex justify-between items-center px-4 py-3 text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700">
-          <!-- row -->
-              <div class="w-1/3" >ID</div>
-              <div class="w-1/3" >NOM</div>
-              <div class="w-1/3" >TYPE</div>
-              <div class="w-1/3" > EMPLACEMENT </div>
-              <div class="w-1/3" > EMPLACEMENT DE L'ARTICLE </div>
-              <div class="w-1/3" > DESCRIPTION </div>
-              <div class="w-1/3" >PROPRIÉTAIRE</div>
-              <div class="w-1/3" > PRIX </div>
-              <div class="w-1/3" >UNITÉ </div>    
-              <div class="w-1/3" >SATUT </div>        
-              <div class="w-1/3" >ACTION </div> 
-              <div class="w-1/3" >Details </div> 
-                  </div> </div>    
-                  <div id ="ItemContainer"></div>                     
-                  
-            
-         
-            <!-- Table rows -->
-                          
-      </div>  
-    </div>   
-    <!-- <div class="grid grid-cols-2 gap-x-5 gap-y-3">
-  <div class="bg-green-100 text-green-500 text-lg font-bold text-center p-14 rounded-lg">1</div>
-  <div class="bg-green-100 text-green-500 text-lg font-bold text-center p-14 rounded-lg">2</div>
-  <div class="bg-green-100 text-green-500 text-lg font-bold text-center p-14 rounded-lg">3</div>
-  <div class="bg-green-100 text-green-500 text-lg font-bold text-center p-14 rounded-lg">4</div>
-</div> -->
-
-<!-- <div class="grid grid-cols-3 gap-4 p-5">
-            <div class="shadow-lg bg-green-100 text-green-500 text-lg font-bold text-center p-10 rounded-lg row-span-2">1</div>
-            <div class="shadow-lg bg-green-100 text-green-500 text-lg font-bold text-center p-10 rounded-lg">2</div>
-            
-            <div class="shadow-lg bg-green-100 text-green-500 text-lg font-bold text-center p-10 rounded-lg row-span-2">3</div>
-            <div class="shadow-lg bg-green-100 text-green-500 text-lg font-bold text-center p-10 rounded-lg">4</div>
-            </div> 
-  </div> -->
-
+            <ul class="inline-flex items-center">
+              <li><button id="PreviousButton" class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
+              <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20"><path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path></svg></button></li>
+              <div  id="pagination" class="inline-flex "></div>
+              <li><button id="NextButton" class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
+              <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20"><path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path></svg></button></li>
+            </ul>
+          </nav>
+      </span>  
+    </div> 
+  </div>   
 </main>
 <script>
   <?php
-  include_once 'assets/js/global.js';
+  include_once 'assets/js/property.js';
   ?>
 </script>
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">

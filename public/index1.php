@@ -21,19 +21,14 @@
                 UserController::createAction();
             break;
             case 'list' :
-                UserController::indexAction(2);
+                UserController::indexAction();
             break;
             case 'paginationClient':
+                case 'SearchClient' :
                 UserController::paginationNumber();
-            break;
-            case 'SearchClient' :
-                UserController::SearchClient();
             break;
             case 'lengthUser':
                 UserController::lengthUser();
-            break;
-            case 'listRenter' :
-                    UserController::indexAction(3);
             break;
             case 'store':
                 UserController::storeAction();
@@ -65,6 +60,9 @@
             case 'property':
                 ItemController::property();
             break;
+            case 'paginationNumber' :
+                ItemController::paginationNumber();
+            break;
             case 'updateItem':
                 ItemController::updateActionItem();
             break;
@@ -78,13 +76,10 @@
                 ItemLeasedController::indexActionItemLeased();
             break;
             case 'SearchItemLeased' :
-                ItemLeasedController::SearchItemLeased();
+                ItemLeasedController::paginationNumber();
             break;
             case 'calendar' :
                 CalendarController::calendarFile();
-            break;
-            case 'paginationNumber' :
-                ItemController::paginationNumber();
             break;
             case 'statutActionItem' :
                 ItemController::statutActionItem();
@@ -94,6 +89,9 @@
             break;
             case 'paginationItemL' :
                 ItemLeasedController::paginationNumber();
+            break;
+            case 'lengthItemL':
+                ItemLeasedController::lengthItem();
             break;
             default :
             require 'ressources/views/404.php';

@@ -242,34 +242,12 @@ class Item extends Model
     {
         $statement = static::database()->prepare('SELECT * FROM item I
             INNER JOIN item_leased Il ON I.id = Il.item_id
-            WHERE I.id = :id AND Il.time_to >= CURRENT_DATE;'); // Adding the WHERE condition based on the provided $id
+            WHERE I.id = :id AND Il.time_to >= NOW()'); // Adding the WHERE condition based on the provided $id
         $statement->bindParam(':id', $id, PDO::PARAM_INT); // Binding the $id parameter
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC); // Fetching the results as an associative array
         return $result;
     }
-
-    // public static function fetch_data($id) 
-    // {
-    //     $db = static::database(); // Get the database connection.
-
-    //     $query = "SELECT I.item_name, I.description, Il.price_total 
-    //             FROM item I
-    //             INNER JOIN item_leased Il ON I.id = Il.item_id
-    //             WHERE I.id = :id"; // SQL query to fetch data.
-
-    //     $stmt = $db->prepare($query);
-    //     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-
-    //     $exec = $stmt->execute();
-
-    //     if ($exec) {
-    //         $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    //         return $row;
-    //     } else {
-    //         return [];
-    //     }
-    // }
 
     public static function fetch_data($id) 
     {

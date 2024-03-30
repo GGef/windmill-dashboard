@@ -50,29 +50,9 @@ class UserController extends BaseController
         return static::getModel()->getLimitProducts($leftLimit, $rightLimit,$key);
     }
     
-    public static function indexAction($key)
-    {
-        
-        $searchType = isset($_POST['search_type']) ? $_POST['search_type'] : null;
-        $searchValue = isset($_POST['search']) ? $_POST['search'] : null;
-    
-    // Get the request method (POST or GET)
-        $requestMethod = $_SERVER['REQUEST_METHOD'];
-        
-        if ($searchValue !== "" && $searchType !== "" && $requestMethod === 'POST') {
-            // If a search value is provided and the request method is POST,
-            // perform a search using the User model's 'find' method
-            
-            $users = static::getModel()->find('user_account', $searchType, $searchValue);
-        } else {
-            // If no search value is provided or the request method is not POST,
-            // retrieve the users using the 'makeProductPager' method
-            $users = static::makeProductPager($key);
-        }
-    
-        $file = $key == 2 ? 'list' : 'listRenter' ;
-        // Render the "Users/list" view and pass the users data to it
-        static::requir("Users/$file", $users);
+    public static function indexAction()
+    {// Render the "Users/list" view and pass the users data to it
+        static::requir("Users/list");
     }
 
     // public static function paginationNumber()
@@ -122,9 +102,11 @@ class UserController extends BaseController
         $type = $_GET['type'] ?? 2; // Default type
         $query = $_GET['query'] ?? null;
         $offset = $limit * ($numberOfPage - 1);
+        $sort = $_GET['sort'] ;
+        $direction = $_GET['direction'] ;
         
         // Call your actual model function to fetch data based on pagination
-        $result = static::getModel()::getDataOffset($limit, $offset, $type, $query);
+        $result = static::getModel()::getDataOffset($limit, $offset, $type, $query, $sort, $direction);
 
         // Return JSON response
         header('Content-type: application/json');
@@ -147,25 +129,6 @@ class UserController extends BaseController
         exit;
     }
 
-    // Function to search for clients
-    public static function searchClient() {
-        // Extract necessary parameters from $_GET
-        $query = isset($_GET['query']) && $_GET['query'] !== '' ? $_GET['query'] : null;
-        $type = $_GET['type'] ?? 2; // Default type
-        $page = $_GET['prepa'] ?? 1;
-        $limit = 5;
-
-        // Calculate offset based on page number
-        $offset = ($page - 1) * $limit;
-
-        // Call your actual model function to perform the search
-        $result = static::getModel()::getDataOffset($limit, $offset, $type, $query);
-
-        // Return JSON response
-        header('Content-type: application/json');
-        echo json_encode(array('data' => $result));
-        exit;
-    }
 
     public static function CountNewUsers()
     {

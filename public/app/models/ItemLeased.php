@@ -154,51 +154,100 @@ class ItemLeased extends Model
         return  $statement->fetchAll(PDO::FETCH_CLASS, __CLASS__);
     }
 
-    public static function getDataOffset($limit, $offset) 
-    {
-        $sql = 'SELECT IL.id, IL.item_id, I.item_name, U.username, IL.time_from, IL.time_to, IL.price_total
+    // public static function getDataOffset($limit, $offset) 
+    // {
+    //     $sql = 'SELECT IL.id, IL.item_id, I.item_name, U.username, IL.time_from, IL.time_to, IL.price_total
+    //             FROM item_leased IL
+    //             INNER JOIN item I ON IL.item_id = I.id
+    //             INNER JOIN user_account U  ON IL.renter_id = U.id
+    //             WHERE NOW() < IL.time_to
+    //             LIMIT '.$limit.' OFFSET '.$offset ;
+    //     $stmt = static::database()->prepare($sql);
+        
+    //     // Execute the prepared statement  
+    //     $stmt->execute();
+    //     return $stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__);
+    // }
+    
+    public static function getDataOffset($limit, $offset, $query) {
+        // Construct the SQL query
+        $sql = "SELECT IL.id, IL.item_id, I.item_name, U.username, IL.time_from, IL.time_to, IL.price_total
                 FROM item_leased IL
                 INNER JOIN item I ON IL.item_id = I.id
-                INNER JOIN user_account U  ON IL.renter_id = U.id
-                WHERE NOW() < IL.time_to
-                LIMIT '.$limit.' OFFSET '.$offset ;
+                INNER JOIN user_account U ON IL.renter_id = U.id
+                WHERE NOW() < IL.time_to";
+        // Add search condition if query is provided
+        if ($query !== null) {
+            $sql .= " AND (I.item_name LIKE :value OR I.id LIKE :value) ";
+            $queryValue = "%$query%"; // Prepare search value
+        }
+        // Add LIMIT and OFFSET clauses
+        $sql .= " LIMIT :limit OFFSET :offset";
+        // Prepare the SQL statement
         $stmt = static::database()->prepare($sql);
-        
-        // Execute the prepared statement  
+        // Bind parameters
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+        if ($query !== null) {
+            $stmt->bindParam(':value', $queryValue, PDO::PARAM_STR);
+        }
+        // Execute the prepared statement
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__);
+        // Fetch and return the results
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
-
-    public function findItemLeased( $searchType, $searchValue)
+    public static function lengthItem($query) 
     {
-        // Define the allowed search types (you can customize this as needed)
-        $allowedSearchTypes = ['id', 'item_name' ];
-        $search = $searchType == 'username' ? 'item_name' : $searchType ;
-        // Validate the search type parameter
-        if (!in_array($search, $allowedSearchTypes)) 
-        {
-            var_dump('nothing');
-            // throw new InvalidArgumentException('Invalid search type. Allowed types: ' . implode(', ', $allowedSearchTypes));
+        // Construct the SQL query with placeholders for limit, offset, and type
+        $sql = "SELECT  COUNT(*) FROM item_leased IL
+                INNER JOIN item I ON IL.item_id = I.id
+                WHERE NOW() < time_to ";
+        if ($query != null) {
+            $sql .= " AND (I.item_name LIKE :value OR I.id LIKE :value) ";
+            // Bind the search value
+            $queryValue = "%$query%";
         }
-
-        // Prepare the SQL statement to select records from the specified table where the search type matches the provided value
-        $statement = static::database()->prepare('SELECT IL.id, I.item_name, U.username, IL.time_from, IL.time_to, IL.Price_total
-        FROM item_leased IL
-           INNER JOIN item I ON IL.item_id = I.id
-           INNER JOIN user_account U  ON IL.renter_id = U.id
-           WHERE ' . $search . ' LIKE :search_value
-           &&  NOW() < IL.time_to;');
-
-        // Bind the value of the search_value parameter to the corresponding placeholder in the query
-        $statement->bindValue(':search_value', $searchValue);
-
+        // Prepare the SQL statement
+        $stmt = static::database()->prepare($sql);
+        if ($query != null) {
+            $stmt->bindParam(':value', $queryValue, PDO::PARAM_STR);
+        }
         // Execute the prepared statement
-        $statement->execute();
-
-        // Fetch all rows as an array of objects of the current class and return the result
-        return $statement->fetchAll(PDO::FETCH_CLASS, __CLASS__);
+        $stmt->execute();
+        // Fetch and return the results
+        return $stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__);
     }
+
+    // public function findItemLeased( $searchType, $searchValue)
+    // {
+    //     // Define the allowed search types (you can customize this as needed)
+    //     $allowedSearchTypes = ['id', 'item_name' ];
+    //     $search = $searchType == 'username' ? 'item_name' : $searchType ;
+    //     // Validate the search type parameter
+    //     if (!in_array($search, $allowedSearchTypes)) 
+    //     {
+    //         var_dump('nothing');
+    //         // throw new InvalidArgumentException('Invalid search type. Allowed types: ' . implode(', ', $allowedSearchTypes));
+    //     }
+
+    //     // Prepare the SQL statement to select records from the specified table where the search type matches the provided value
+    //     $statement = static::database()->prepare('SELECT IL.id, I.item_name, U.username, IL.time_from, IL.time_to, IL.Price_total
+    //     FROM item_leased IL
+    //        INNER JOIN item I ON IL.item_id = I.id
+    //        INNER JOIN user_account U  ON IL.renter_id = U.id
+    //        WHERE ' . $search . ' LIKE :search_value
+    //        &&  NOW() < IL.time_to;');
+
+    //     // Bind the value of the search_value parameter to the corresponding placeholder in the query
+    //     $statement->bindValue(':search_value', $searchValue);
+
+    //     // Execute the prepared statement
+    //     $statement->execute();
+
+    //     // Fetch all rows as an array of objects of the current class and return the result
+    //     return $statement->fetchAll(PDO::FETCH_CLASS, __CLASS__);
+    // }
 
     
     public static function search($value)

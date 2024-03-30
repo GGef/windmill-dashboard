@@ -90,10 +90,11 @@ class ItemLeasedController  extends BaseController
 
     public static function paginationNumber()
     {
-        $limit = $_GET['limit'];
-        $numberOfPage = $_GET['prepa'] -1 ;
-        $offset = $limit * $numberOfPage ;
-       $result = static::getModelItemLeased()::getDataOffset($limit,$offset);
+        $limit = $_GET['limit'] ?? 5;
+        $numberOfPage = $_GET['prepa'] ?? 1;
+        $query = $_GET['query'] ?? null;
+        $offset = $limit * ($numberOfPage - 1);
+       $result = static::getModelItemLeased()::getDataOffset($limit, $offset, $query);
     //    var_dump($result);
        header('Content-type: application/json');
        echo json_encode(array(
@@ -104,15 +105,31 @@ class ItemLeasedController  extends BaseController
 
     public static function SearchItemLeased()
     {
-        $query = $_GET['query'];
-        // var_dump($query); // For debugging
+        $query = isset($_GET['query']) && $_GET['query'] !== '' ? $_GET['query'] : null;
+        $page = $_GET['prepa'] ?? 1;
+        $limit = 5;
+        $offset = ($page - 1) * $limit;
 
-        $result = static::getModelItemLeased()::search($query);
+        $result = static::getModelItemLeased()::getDataOffset($limit, $offset, $query);
 
         header('Content-type: application/json');
         echo json_encode(array(
             'data' => $result 
         ));
+        exit;
+    }
+
+    // Function to get the length of users
+    public static function lengthItem() {
+        // Extract necessary parameters from $_GET
+        $query = $_GET['query'] ?? null;
+
+        // Call your actual model function to get the length of users
+        $result = static::getModelItemLeased()::lengthItem($query);
+
+        // Return JSON response
+        header('Content-type: application/json');
+        echo json_encode(array('data' => $result));
         exit;
     }
 }

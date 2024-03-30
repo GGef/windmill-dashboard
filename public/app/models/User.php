@@ -153,7 +153,7 @@ class User extends Model
 }
 
 
-public static function getDataOffset($limit, $offset, $type, $query) 
+public static function getDataOffset($limit, $offset, $type, $query, $sort, $direction) 
 {
     // Construct the SQL query with placeholders for limit, offset, and type
     $sql = "SELECT U.* , L.name FROM user_account U
@@ -167,6 +167,10 @@ public static function getDataOffset($limit, $offset, $type, $query)
         $queryValue = "%$query%";
     }
 
+    // Add sorting condition
+    $sql .= " ORDER BY $sort $direction";
+
+    // Add limit and offset clauses
     $sql .= " LIMIT :limit OFFSET :offset";
 
     // Prepare the SQL statement
@@ -188,6 +192,8 @@ public static function getDataOffset($limit, $offset, $type, $query)
     // Fetch and return the results
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+
 
 
 public static function lengthClient($type,$query) 
@@ -274,20 +280,6 @@ public static function lengthClient($type,$query)
         return $statement->execute($parameters);
     }
 
-    // public function find($table, $username)
-    // {
-    //     // Prepare the SQL statement to select records from the specified table where the username matches the provided value
-    //     $statement = static::database()->prepare('SELECT * FROM ' . $table . ' WHERE username LIKE :username');
-        
-    //     // Bind the value of the username parameter to the corresponding placeholder in the query
-    //     $statement->bindValue(':username', $username);
-        
-    //     // Execute the prepared statement
-    //     $statement->execute();
-        
-    //     // Fetch all rows as an array of objects of the current class and return the result
-    //     return $statement->fetchAll(PDO::FETCH_CLASS, __CLASS__);
-    // }   
     public function find($table, $searchType, $searchValue)
     {
         // Define the allowed search types (you can customize this as needed)
@@ -314,54 +306,4 @@ public static function lengthClient($type,$query)
     
 
 
-    // Function to retrieve the referenced table from a foreign key column
-//     public static function retrieveTable($column, $table)
-//     {
-//         $conn = static::database();
-//         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-//         $query = "SELECT REFERENCED_TABLE_NAME
-//                   FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
-//                   WHERE TABLE_NAME = :tableName
-//                   AND COLUMN_NAME = :column
-//                   AND REFERENCED_TABLE_NAME IS NOT NULL";
-
-//         $stmt = $conn->prepare($query);
-//         $stmt->bindParam(':tableName', $table, PDO::PARAM_STR);
-//         $stmt->bindParam(':column', $column, PDO::PARAM_STR);
-//         var_dump($stmt->execute());
-
-//         var_dump( $result = $stmt->fetch(PDO::FETCH_ASSOC));
-
-//         if ($result && var_dump(isset($result['REFERENCED_TABLE_NAME']))) {
-//             return $result['REFERENCED_TABLE_NAME'];
-//         } else {
-//             return null;
-//         }
-//     }
-
-//     public static function SelectJoin($column, $table)
-//     {
-//         $referencedTable = static::retrieveTable($column, $table);
-
-//         if ($referencedTable) {
-//             $statement = static::database()->prepare('SELECT ' . $referencedTable . '.name FROM ' . $table . ' INNER JOIN ' . $referencedTable . ' ON ' . $table . '.' . $column . ' = ' . $referencedTable . '.id');
-
-//         // Execute the prepared statement
-//         $statement->execute();
-        
-//         // Fetch all rows as an array of objects of the current class and return the result
-//         return $statement->fetchAll(PDO::FETCH_CLASS, __CLASS__);
-//         } else {
-//             echo "The column '$column' is not a foreign key.";
-//         }
-//     }
-
-
 }
-
-// $user = new User();
-// $user->SelectJoin('location_id ', 'user_account','location');
-// foreach ($user as $row) {
-//     echo $row['name'] . '<br>';
-// }

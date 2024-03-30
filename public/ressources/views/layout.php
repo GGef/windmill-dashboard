@@ -8,10 +8,41 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
     rel="stylesheet"
   />
+  <link href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" rel=" stylesheet">
+	<!--Replace with your tailwind.css once created-->
+
+
+	<!--Regular Datatables CSS-->
+	<link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
+	<!--Responsive Extension Datatables CSS-->
+	<link href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/SAM/public/assets/css/tailwind.output.css" />
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/SAM/public/assets/css/style.css" />
+  <style>
+  .sorting {
+    cursor: pointer;
+    background-image: url(/SAM/public/assets/img/sort_both);
+    cursor: pointer;
+    background-repeat: no-repeat;
+    background-position: center right;
+  }
+  .sorting-asc {
+    cursor: pointer;
+    background-image: url(/SAM/public/assets/img/sort_asc);
+    cursor: pointer;
+    background-repeat: no-repeat;
+    background-position: center right;
 
+  }
+  .sorting-desc {
+    cursor: pointer;
+    background-image: url(/SAM/public/assets/img/sort_desc);
+    cursor: pointer;
+    background-repeat: no-repeat;
+    background-position: center right;
+  }
+</style>
   <script
     src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
     defer
