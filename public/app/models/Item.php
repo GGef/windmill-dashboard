@@ -280,50 +280,64 @@ class Item extends Model
     }
 
   
-    public static function getDataOffset($Limit,$offset) 
+    public static function getDataOffset($Limit, $offset, $query, $sort, $direction) 
     {
         // Construct the SQL query with placeholders for left and right limit values
-        //$sql = "SELECT * FROM item LIMIT ".$Limit." OFFSET ".$offset ;
-        $sql = "SELECT I.id, I.item_name, it.type_name ,I.description,u.unit_name,I.price_per_unit, L.name, L.description descrLocal,ua.username FROM item I 
-        INNER JOIN item_type it ON I.item_type_id = it.id 
-        INNER JOIN location L ON I.location_id = L.id 
-        INNER JOIN user_account ua ON I.owner_id = ua.id
-        INNER JOIN unit u ON I.unit_id = u.id  LIMIT ".$Limit." OFFSET ".$offset ;
-        //var_dump($sql);
-        
+        $sql = "SELECT I.id, I.item_name, It.type_name, l.name, I.item_location, I.description,
+            U.username, I.price_per_unit, Un.unit_name, I.avaible FROM user_account U 
+            INNER JOIN item I ON I.owner_id = U.id 
+            INNER JOIN item_type It ON I.item_type_id = It.id 
+            INNER JOIN location l ON I.location_id = l.id 
+            INNER JOIN unit Un ON I.unit_id = Un.id  ";
+        // Add search condition if query is provided
+        if($query != null) {
+            $sql .= " WHERE I.item_name LIKE :value OR I.id LIKE :value ";
+            // Bind the search value
+            $queryValue = "%$query%";
+        }
+
+        // Add sorting condition
+        $sql .= " ORDER BY $sort $direction";
+
+        // Add limit and offset clauses
+        $sql .= " LIMIT :limit OFFSET :offset";
+
         // Prepare the SQL statement
         $stmt = static::database()->prepare($sql);
-        
+        $stmt->bindParam(':limit', $Limit, PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+        // Bind search value if provided
+        if($query != null) {
+            $stmt->bindParam(':value', $queryValue, PDO::PARAM_STR);
+        }
         // Execute the prepared statement  
         $stmt->execute();
-       // var_dump($stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__));
-        // Fetch all rows as an array of objects of the current class
-        //var_dump($stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__));
-       // return $stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__);
-        return $stmt->fetchAll(PDO::FETCH_CLASS,__CLASS__);
-        
-        
+        return $stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__);
     }
 
 
+    public static function lengthItem($query) 
+    {
+        // Construct the SQL query with placeholders for limit, offset, and type
+        $sql = "SELECT  COUNT(*) FROM item";
+    
+        if ($query != null) {
+            $sql .= " WHERE (id LIKE :value OR item_name LIKE :value)";
+            // Bind the search value
+            $queryValue = "%$query%";
+        }
+        // Prepare the SQL statement
+        $stmt = static::database()->prepare($sql);
+        if ($query != null) {
+            $stmt->bindParam(':value', $queryValue, PDO::PARAM_STR);
+        }
+        // Execute the prepared statement
+        $stmt->execute();
+        // Fetch and return the results
+        return $stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__);
+    }
+
 }
-
-
-// $item = new Item();
-// $itemLatestData = $item::fetch_latest_data(1); // <-- Corrected the variable name from $itme to $item
-// var_dump( $itemLatestData) ;
-// if ($itemLatestData !== null) {
- 
-//         $responseData = array(
-//                         'name' => $itemLatestData['time_from'], // Assuming the 'username' field is in the first row of the returned data
-//                         'phone' => $itemLatestData['time_to'],  
-//                         'd' => $itemLatestData['price_total'],   
-//                           // Assuming the 'email' field is in the first row of the returned data
-//                         // Add more properties as needed
-//                     );
-
-//                     var_dump($responseData );
-// }
 
 
 

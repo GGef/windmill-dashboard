@@ -1,39 +1,43 @@
 var limit = 5
-var sort = "id";
+var sort = "I.id";
 var direction = "asc"
 
 function GetItem(pageNumber){
     console.log(`Le Nombre a été cliqué !${pageNumber}`);
-  // pagination(type, pageNumber, inputValue); // Update pagination
+    var inputValue = document.getElementById("searchInput").value.trim(); 
+    pagination( pageNumber, inputValue); // Update pagination
+    // Check if there's a search query
+    var isSearch = inputValue !== "";
+    var action = isSearch ? "SearchItem" : "paginationNumber";
+    
+    var queryParam = isSearch ? `&query=${inputValue}` : "";
     $.ajax({
-      url: `index1.php?action=paginationNumber&limit=${limit}&prepa=${pageNumber}&sort=${sort}&direction=${direction}`, // URL du script PHP à appeler
+      url: `index1.php?action=${action}&limit=${limit}&prepa=${pageNumber}&sort=${sort}&direction=${direction}${queryParam}`, // URL du script PHP à appeler
       type: "GET",             // Méthode de la requête (GET, POST, etc.)
       dataType: "json",   
        // Type de données attendu en retour (json, text, html, etc.)
       success: function(data) {
-        //  document.getElementById("ItemContainer").innerHTML= " <div id=Childnode  class='bg-white dark:bg-gray-900'  data-id='${item.id}'></div>"
-          // document.getElementById("Childnode").innerHTML="  <div id=Secondchildnode class='flex justify-between items-center px-4 py-3 text-sm'></div> "
           document.getElementById("ItemContainer").innerHTML = ""; // Clear previous items
           if(data.data.length!=0)
-        {
-            data.data.forEach(el=>{
-            // var SecChildNode =  document.getElementById("Secondchildnode")
-            let createRow = document.createElement("tr")
-            //  createRow.setAttribute('class','flex justify-between  items-center px-4 py-3 text-sm')
+          {
+              data.data.forEach(el=>{
+              // var SecChildNode =  document.getElementById("Secondchildnode")
+              let createRow = document.createElement("tr")
+              //  createRow.setAttribute('class','flex justify-between  items-center px-4 py-3 text-sm')
+              createRow.setAttribute('class',' px-4 py-3 text-sm  bg-gray-50 dark:bg-gray-900 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400 h-12')
+              createRow.setAttribute('data-id',`${el.id}`)
+              createRow.innerHTML = rowTable(el)
+              var Elem  =  document.getElementById("ItemContainer")
+              Elem.append(createRow)
+              })
+          }
+          else
+          {
+            createRow = document.createElement("tr")
             createRow.setAttribute('class',' px-4 py-3 text-sm  bg-gray-50 dark:bg-gray-900 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400 h-12')
-            createRow.setAttribute('data-id',`${el.id}`)
-            createRow.innerHTML = rowTable(el)
-            var Elem  =  document.getElementById("ItemContainer")
-            Elem.append(createRow)
-            })
-        }
-        else
-        {
-           createRow = document.createElement("tr")
-           createRow.setAttribute('class',' px-4 py-3 text-sm  bg-gray-50 dark:bg-gray-900 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400 h-12')
-           createRow.innerHTML = "No data available in table"
-           document.getElementById("ItemContainer").append(createRow)
-        }
+            createRow.innerHTML = "No data available in table"
+            document.getElementById("ItemContainer").append(createRow)
+          }
         $("#resultat").html("Réponse du serveur : " + data.message);
       },
       error: function() {
@@ -42,52 +46,6 @@ function GetItem(pageNumber){
       }
     });
   }
-    function searchItems(query) {
-      if (query !== "") {
-        $.ajax({
-          url: `index1.php?action=SearchItem&query=${query}`,
-          type: "GET",
-          dataType: "json",
-          success: function(data) {
-            // Cette fonction sera appelée en cas de succès de la requête
-            // 'data' contient la réponse du serveur
-            // document.getElementById("ItemContainer").innerHTML= " <div id=Childnode  class='bg-white dark:bg-gray-900'  data-id='${item.id}'></div>"
-            // document.getElementById("Childnode").innerHTML="  <div id=Secondchildnode class='flex justify-between items-center px-4 py-3 text-sm'></div> "
-            document.getElementById("ItemContainer").innerHTML = ""; // Clear previous items
-          if(data.data.length!=0)
-        {
-            data.data.forEach(el=>{
-            // var SecChildNode =  document.getElementById("Secondchildnode")
-            let createRow = document.createElement("tr")
-            //  createRow.setAttribute('class','flex justify-between  items-center px-4 py-3 text-sm')
-            createRow.setAttribute('class',' px-4 py-3 text-sm  bg-gray-50 dark:bg-gray-900 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400 h-12')
-            createRow.setAttribute('data-id',`${el.id}`)
-            createRow.innerHTML = rowTable(el)
-            var Elem  =  document.getElementById("ItemContainer")
-            Elem.append(createRow)
-            })
-        }
-        else
-        {
-           createRow = document.createElement("tr")
-           createRow.setAttribute('class',' px-4 py-3 text-sm  bg-gray-50 dark:bg-gray-900 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400 h-12')
-           createRow.innerHTML = "No data available in table"
-           document.getElementById("ItemContainer").append(createRow)
-        }
-
-            $("#resultat").html("Réponse du serveur : " + data.message);
-          },
-          error: function() {
-            $("#resultat").html("Échec de la requête AJAX.");
-          }
-        });
-      }   
-    else {
-      // If search input is empty, display all items (similar to initial page load)
-      GetItem(1);
-    }
-  }
-
   function statusAvailble(id){
     var html ;
     $.ajax({
@@ -174,8 +132,6 @@ function GetItem(pageNumber){
   
  }
 
-  //ahmed ==========================
-
 // Event listener for clicks on the body
 document.body.addEventListener('click', function(event) {
   var clickedElement = event.target;
@@ -190,9 +146,9 @@ document.body.addEventListener('click', function(event) {
 });
   //----------------Fonction 2-----------------------
   
-function pagination(type, pageNumber, query) {
+function pagination(pageNumber, query) {
   $.ajax({
-      url: `index1.php?action=lengthUser&type=${type}&query=${query}`,
+      url: `index1.php?action=lengthItem&query=${query}`,
       type: "GET",
       dataType: "json",
       success: function(data) {
@@ -227,8 +183,6 @@ function updatePagination(totalPages) {
 
 
 document.addEventListener("DOMContentLoaded", function() {
-  var proprietaire = document.getElementById("proprietaire");
-  var locataire = document.getElementById("locataire");
   var bottonNext = document.getElementById("NextButton");
   var bottonPrevius = document.getElementById("PreviousButton");
   var page = (bottonNext.getAttribute("data-current-id") * 1) - 1;
@@ -237,34 +191,26 @@ document.addEventListener("DOMContentLoaded", function() {
   var page = 1;
   GetItem(page);
 
-  proprietaire.addEventListener("click", function() {
-      proprietaire.classList.add("active");
-      locataire.classList.remove("active");
-      GetItem(1);
-  });
 
-  locataire.addEventListener("click", function() {
-      locataire.classList.add("active");
-      proprietaire.classList.remove("active");
-      GetItem(1);
-  });
-
-  bottonNext.addEventListener("click", function(e) {
-      page = (bottonNext.getAttribute("data-current-id") * 1) + 1;
-      if (page < document.getElementById("endPage").value) {
-          GetItem(page);
-          bottonNext.setAttribute("data-current-id", `${page}`);
-          bottonPrevius.setAttribute("data-current-id", `${page}`);
-      }
+  bottonNext.addEventListener("click", (e) => {
+    var page = (bottonNext.getAttribute("data-current-id")*1) +1
+    if((bottonNext.getAttribute("data-current-id")*1)+1 <= document.getElementById("endPage").value){
+      console.log(page)
+      GetItem(page)
+      bottonNext.setAttribute("data-current-id",`${page}`)
+      bottonPrevius.setAttribute("data-current-id",`${page}`)
+    }
+          
   });
 
   bottonPrevius.addEventListener("click", function(e) {
-      page = (bottonNext.getAttribute("data-current-id") * 1) - 1;
-      if (page >= 1) {
-          GetItem(page);
-          bottonNext.setAttribute("data-current-id", `${page}`);
-          bottonPrevius.setAttribute("data-current-id", `${page}`);
-      }
+    var page = (bottonNext.getAttribute("data-current-id")*1) -1
+    if((bottonNext.getAttribute("data-current-id")*1)-1 >= 1){
+      console.log(page)
+      GetItem(page)
+      bottonNext.setAttribute("data-current-id",`${page}`)
+      bottonPrevius.setAttribute("data-current-id",`${page}`)
+    }
   });
 
   searchInput.addEventListener("input", function() {
@@ -272,27 +218,28 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   document.addEventListener("click", function(event) {
-      if (event.target.matches(".pagination")) {
-          var pageNumber = parseInt(event.target.getAttribute("data-id"));
-          console.log(`Page number clicked: ${pageNumber}`);
-          if (pageNumber < document.getElementById("endPage").value && pageNumber >=1) {
+    if (event.target.matches(".pagination")) {
+      const pageNumber = parseInt(event.target.getAttribute("data-id"));
+      console.log(`Page number clicked: ${pageNumber}`);
             GetItem(pageNumber);
             bottonNext.setAttribute("data-current-id", `${pageNumber}`);
             bottonPrevius.setAttribute("data-current-id", `${pageNumber}`);
-        }
+        
       }
   });
 
   //--------------------sorting && limit---------------------
   var tableHeaders = document.querySelectorAll("th.sorting, th.sorting-asc, th.sorting-desc");
   var columnSortMapping = {
-      "Id": "U.id",
-      "NOM D'UTILISATEUR": "U.username",
-      "EMPLACEMENT": "L.name",
-      "TÉLÉPHONE": "U.phone",
-      "PORTABLE": "U.mobile",
-      "EMAIL": "U.email",
-      "HEURE D'INSCRIPTION": "U.registration_time"
+      "ID": "id",
+      "NOM": "item_name",
+      "TYPE": "type_name",
+      "EMPLACEMENT": "name",
+      "EMPLACEMENT DE L'ARTICLE": "descrLocal",
+      "DESCRIPTION": "description",
+      "PROPRIÉTAIRE": "username",
+      "PRIX": "price_per_unit",
+      "UNITÉ": "unit_name"
   };
   tableHeaders.forEach(function(header) {
       header.addEventListener("click", function() {
@@ -356,42 +303,3 @@ function closeDropdown(dropdown)
     
   });
 }
-document.addEventListener("DOMContentLoaded", function() {
-    //Obtenez une référence vers le bouton
-    var bottonNext = document.getElementById("NextButton");
-    var bottonPrevius = document.getElementById("PreviousButton");
-    var searchInput = document.getElementById("searchInput");
-    var page = 1;
-    GetItem(page)
-    //Utilisez addEventListener pour détecter le clic sur le bouton
-    bottonNext.addEventListener("click", (e) => {
-      var page = (bottonNext.getAttribute("data-current-id")*1) +1
-      if((bottonNext.getAttribute("data-current-id")*1)+1 <= document.getElementById("endPage").value){
-      console.log(page)
-      GetItem(page)
-      bottonNext.setAttribute("data-current-id",`${page}`)
-      bottonPrevius.setAttribute("data-current-id",`${page}`)
-    }
-      
-    });
-    
-    bottonPrevius.addEventListener("click", (e) => {
-      // Effectuez une action AJAX ici (par exemple, récupérez des données du serveur)
-      var page = (bottonNext.getAttribute("data-current-id")*1) -1
-      if((bottonNext.getAttribute("data-current-id")*1)-1 >= 1){
-      console.log(page)
-      GetItem(page)
-      bottonNext.setAttribute("data-current-id",`${page}`)
-      bottonPrevius.setAttribute("data-current-id",`${page}`)
-      }
-    });
-  
-    // Add event listener for search input
-    searchInput.addEventListener("input", function() {
-      console.log('search')
-      console.log(this.value.trim())
-      searchItems(this.value.trim());
-      console.log("searched")
-    });
-  });
-  

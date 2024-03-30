@@ -54,15 +54,20 @@
             case 'editItem':
                 ItemController::editActionItem();
             break;
-            case 'SearchItem':
-                ItemController::SearchItem();
-            break;
+            
             case 'property':
                 ItemController::property();
             break;
             case 'paginationNumber' :
                 ItemController::paginationNumber();
             break;
+            case 'SearchItem':
+                ItemController::paginationNumber();
+            break;
+            case 'lengthItem' :
+                ItemController::lengthProperty();
+            break;
+            
             case 'updateItem':
                 ItemController::updateActionItem();
             break;

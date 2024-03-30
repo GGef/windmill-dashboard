@@ -36,7 +36,7 @@ $endItem = ceil($totalItems/$itemsPerPage);
     <input id="pageCount" type="hidden" name="" value="<?= $totalItems ?>">
     <input id="endPage" type="hidden" name="" value="<?= $endItem ?>">
     <div class="container grid px-6 mx-auto">
-    <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">propriétés</h2>
+    <h2 id="titre"  class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">propriétés</h2>
 
     <div class="grid gap-6 mb-8  md:grid-cols-2 xl:grid-cols-4">
         <!-- Card -->
@@ -221,7 +221,7 @@ $endItem = ceil($totalItems/$itemsPerPage);
       
       <!-- Pagination-->
       <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
-        <nav aria-label="Table navigation">
+         <nav aria-label="Table navigation">
             <ul class="inline-flex items-center">
               <li><button id="PreviousButton" class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
               <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20"><path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path></svg></button></li>
@@ -231,7 +231,7 @@ $endItem = ceil($totalItems/$itemsPerPage);
             </ul>
           </nav>
       </span>  
-    </div> 
+    </div>
   </div>   
 </main>
 <script>

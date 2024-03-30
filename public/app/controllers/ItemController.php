@@ -213,19 +213,43 @@ class ItemController  extends BaseController
 
     public static function paginationNumber()
     {
-        $limit = $_GET['limit'];
-        $numberOfPage = $_GET['prepa'] -1 ;
-        // $offset = $limit * $numberOfPage ;
+        // Retrieve pagination parameters from $_GET
+        $limit = isset($_GET['limit']) ? $_GET['limit'] : 5; // Default limit is set to 5 if not provided
+        $numberOfPage = $_GET['prepa']; 
         $offset = $limit * ($numberOfPage - 1);
-        $sort = $_GET['sort'];
-        $direction = $_GET['direction'];
-        $result = static::getModelItem()::getDataOffset($limit,$offset);
+        // $query = isset($_GET['query']) ? $_GET['query'] : "" ; 
+        $query = isset($_GET['query']) ? $_GET['query'] : null;
+        $sort = $_GET['sort']; 
+        $direction =  $_GET['direction']; 
+    
+        // Call the model method to fetch paginated data
+        $result = static::getModelItem()::getDataOffset($limit, $offset, $query, $sort, $direction);
+    
+        // Send JSON response
         header('Content-type: application/json');
         echo json_encode(array(
             'data' => $result
         ));
         exit;
     }
+    
+
+
+    public static function lengthProperty() {
+        // Extract necessary parameters from $_GET
+        // $query = $_GET['query'] ?? null;
+        $query = isset($_GET['query']) ? $_GET['query'] : null;
+
+
+        // Call your actual model function to get the length of items
+        $result = static::getModelItem()::lengthItem($query);
+
+        // Return JSON response
+        header('Content-type: application/json');
+        echo json_encode(array('data' => $result));
+        exit;
+    }
+
 
     public static function SearchItem()
     {
