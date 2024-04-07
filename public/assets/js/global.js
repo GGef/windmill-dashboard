@@ -46,45 +46,6 @@ userRows.forEach(function (userRow) {
     }
   });
 });
-//ahmed ==========================
-document.addEventListener("DOMContentLoaded", function() {
-  //Obtenez une référence vers le bouton
-  var bottonNext = document.getElementById("NextButton");
-  var bottonPrevius = document.getElementById("PreviousButton");
-  var searchInput = document.getElementById("searchInput");
-  var page = 1;
-  GetItem(page)
-  //Utilisez addEventListener pour détecter le clic sur le bouton
-  bottonNext.addEventListener("click", (e) => {
-    var page = (bottonNext.getAttribute("data-current-id")*1) +1
-    if((bottonNext.getAttribute("data-current-id")*1)+1 <= document.getElementById("endPage").value){
-    console.log(page)
-    GetItem(page)
-    bottonNext.setAttribute("data-current-id",`${page}`)
-    bottonPrevius.setAttribute("data-current-id",`${page}`)
-  }
-    
-  });
-  
-  bottonPrevius.addEventListener("click", (e) => {
-    // Effectuez une action AJAX ici (par exemple, récupérez des données du serveur)
-    var page = (bottonNext.getAttribute("data-current-id")*1) -1
-    if((bottonNext.getAttribute("data-current-id")*1)-1 >= 1){
-    console.log(page)
-    GetItem(page)
-    bottonNext.setAttribute("data-current-id",`${page}`)
-    bottonPrevius.setAttribute("data-current-id",`${page}`)
-    }
-  });
-
-  // Add event listener for search input
-  searchInput.addEventListener("input", function() {
-    console.log('search')
-    console.log(this.value.trim())
-    searchItems(this.value.trim());
-    console.log("searched")
-  });
-});
 
 //---------------- Function to display the fetched user data ----------------
 function displayItemData(userData ) {
@@ -200,6 +161,26 @@ function displayItemPictures(picturesData) {
    });
 }
 
+
+//---------------- Dropdown function: modify, reserve, and delete ----------------
+
+// Function to toggle a dropdown and close others
+function toggleDropdown(button) {
+  var dropdown = button.nextElementSibling;
+  closeDropdown(dropdown)
+  dropdown.classList.toggle('hidden');
+}
+// Function to close all dropdowns except a specific one
+function closeDropdown(dropdown)
+{
+  var dropdowns = document.querySelectorAll('.drop');
+  dropdowns.forEach(function (drop) {
+    if(dropdown.id != drop.id){
+      drop.classList.add('hidden');
+    }
+    
+  });
+}
 /* <img class="lazy" src="https://www.sakane.ma/oc-content/uploads/84/24159_thumbnail.jpg" 
 data-src="https://www.sakane.ma/oc-content/uploads/84/24159_thumbnail.jpg" 
 alt="Dar bouazza, Bel appartement a louer, semi meublé 3CH - 2" loading="lazy"></img> */

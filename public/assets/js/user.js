@@ -1,4 +1,9 @@
-var limit = 5; // Set the limit to 5 items
+// Get the select element for the limit
+var selectElement = document.getElementById("limit");
+
+// Initialize the limit variable with the default value
+var limit = selectElement.value;
+
 var sort = "id";
 var direction = "asc"
 
@@ -121,6 +126,7 @@ function updatePaginationInfo(pageNumber, totalItems) {
 
 function updatePagination(totalPages) {
     var paginationHTML = '';
+    document.getElementById("endPage").value = totalPages
     for (var i = 1; i <= totalPages; i++) {
         paginationHTML += `<li><button class="pagination px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple" data-id=${i}>${i}</button></li>`;
     }
@@ -153,7 +159,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     bottonNext.addEventListener("click", function(e) {
         page = (bottonNext.getAttribute("data-current-id") * 1) + 1;
-        if (page < document.getElementById("endPage").value) {
+        if (page <= document.getElementById("endPage").value) {
             GetUser(page);
             bottonNext.setAttribute("data-current-id", `${page}`);
             bottonPrevius.setAttribute("data-current-id", `${page}`);
@@ -221,12 +227,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
         });
     });
-
-     // Get the select element for the limit
-     var selectElement = document.getElementById("limit");
-
-     // Initialize the limit variable with the default value
-     limit = selectElement.value;
  
      // Add event listener to the select element
      selectElement.addEventListener("change", function() {

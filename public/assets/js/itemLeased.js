@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function() {
   //Utilisez addEventListener pour détecter le clic sur le bouton
   bottonNext.addEventListener("click", (e) => {
     var page = (bottonNext.getAttribute("data-current-id")*1) +1
-    if((bottonNext.getAttribute("data-current-id")*1)+1 < document.getElementById("endPage").value){
+    if(page <= document.getElementById("endPage").value){
       console.log(page)
       GetItem(page)
       bottonNext.setAttribute("data-current-id",`${page}`)
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   bottonPrevius.addEventListener("click", function(e) {
     var page = (bottonNext.getAttribute("data-current-id")*1) -1
-    if((bottonNext.getAttribute("data-current-id")*1)-1 >= 1){
+    if(page >= 1){
       console.log(page)
       GetItem(page)
       bottonNext.setAttribute("data-current-id",`${page}`)
@@ -181,6 +181,7 @@ function updatePaginationInfo(pageNumber, totalItems) {
 
 function updatePagination(totalPages) {
   var paginationHTML = '';
+  document.getElementById("endPage").value = totalPages
   for (var i = 1; i <= totalPages; i++) {
       paginationHTML += `<li><button class="pagination px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple" data-id=${i}>${i}</button></li>`;
   }

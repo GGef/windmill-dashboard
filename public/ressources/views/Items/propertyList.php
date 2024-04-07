@@ -34,7 +34,7 @@ $endItem = ceil($totalItems/$itemsPerPage);
 ?>
 <main class="h-full pb-16 overflow-y-auto">
     <input id="pageCount" type="hidden" name="" value="<?= $totalItems ?>">
-    <input id="endPage" type="hidden" name="" value="<?= $endItem ?>">
+    <input id="endPage" type="hidden" name="" value="">
     <div class="container grid px-6 mx-auto">
     <h2 id="titre"  class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">propriétés</h2>
 
@@ -164,9 +164,9 @@ $endItem = ceil($totalItems/$itemsPerPage);
   <div class="w-full overflow-hidden rounded-lg shadow-xs">
     <div  class=" grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800" >
       <div class="flex items-center col-span-6" >
-        <label>Afficher <select name="example_length" id="limit" aria-controls="example" class="">
+        <label>Afficher <select name="example_length" id="limit" aria-controls="example" class="bg-transparent">
             <option value="5">5</option>
-            <option value="2">10</option>
+            <option value="10">10</option>
             <option value="20">20</option>
             <option value="50">50</option>
           </select> entrées
@@ -223,10 +223,12 @@ $endItem = ceil($totalItems/$itemsPerPage);
          <nav aria-label="Table navigation">
             <ul class="inline-flex items-center">
               <li><button id="PreviousButton" class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
-              <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20"><path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path></svg></button></li>
+                <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20"><path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path></svg></button>
+              </li>
               <div  id="pagination" class="inline-flex "></div>
               <li><button id="NextButton" class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
-              <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20"><path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path></svg></button></li>
+                <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20"><path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path></svg></button>
+              </li>
             </ul>
           </nav>
       </span>  

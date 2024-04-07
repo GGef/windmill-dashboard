@@ -24,7 +24,7 @@ function GetItem(pageNumber){
               // var SecChildNode =  document.getElementById("Secondchildnode")
               let createRow = document.createElement("tr")
               //  createRow.setAttribute('class','flex justify-between  items-center px-4 py-3 text-sm')
-              createRow.setAttribute('class',' px-4 py-3 text-sm  bg-gray-50 dark:bg-gray-900 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400 h-12')
+              createRow.setAttribute('class','item-row px-4 py-3 text-sm  bg-gray-50 dark:bg-gray-900 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400 h-12')
               createRow.setAttribute('data-id',`${el.id}`)
               createRow.innerHTML = rowTable(el)
               var Elem  =  document.getElementById("ItemContainer")
@@ -88,44 +88,39 @@ function GetItem(pageNumber){
          <td class="px-4 py-3" >${item.unit_name}</td>
          <td class="px-4 py-3 available">${statusAvailble(item.id)}</td>      
          <td class="px-4 py-3">
-           <div class='flex  items-center space-x-4 text-sm'>
-                 <div class='relative '>
-                       <button class='dropdownbtton'
-                         type='button' onclick='toggleDropdown(this)' data-item-id='${item.id}'>
-                         <svg class='dropdownbtton' xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-more-vertical'>
-                           <circle cx='12' cy='12' r='1'></circle>
-                           <circle cx='12' cy='5' r='1'></circle>
-                           <circle cx='12' cy='19' r='1'></circle>
-                         </svg>
-                       </button>
-                     <div id='dropdownDelay-${item.id}' class='drop absolute z-20 right-0 w-56 space-y-2 hidden text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:text-gray-300 dark:border-gray-700 dark:bg-gray-700'>
-                       <ul class='py-2 text-sm text-gray-700 dark:text-gray-200' aria-labelledby='dropdownDelayButton'>
-                         <li><a href='index1.php?action=editItem&id=${item.id}'
-                       class='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white'>Modifier</a></li>
-                       <li><a href='index1.php?action=reserveItem' class='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white'>Réserver</a></li>
-                       <li><a onclick='return confirm('voulez vous vraiment supprimer ce utilisateur')' href='index1.php?action=destroyItem&id=${item.id}' 
-                       class='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white'>Supprimer</a></li>
-                     </ul>
-                   </div>
-                   </div>
+            <div class='flex  items-center space-x-4 text-sm'>
+              <div class='relative '>
+                <button class='dropdownbtton'
+                  type='button' onclick='toggleDropdown(this)' data-item-id='${item.id}'>
+                  <svg class='dropdownbtton' xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-more-vertical'>
+                    <circle cx='12' cy='12' r='1'></circle>
+                    <circle cx='12' cy='5' r='1'></circle>
+                    <circle cx='12' cy='19' r='1'></circle>
+                  </svg>
+                </button>
+                <div id='dropdownDelay-${item.id}' class='drop absolute z-20 right-0 w-56 space-y-2 hidden text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:text-gray-300 dark:border-gray-700 dark:bg-gray-700'>
+                  <ul class='py-2 text-sm text-gray-700 dark:text-gray-200' aria-labelledby='dropdownDelayButton'>
+                    <li>
+                      <a href='index1.php?action=editItem&id=${item.id}' class='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white'>Modifier</a>
+                    </li>
+                    <li>
+                      <a href='index1.php?action=reserveItem' class='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white'>Réserver</a>
+                    </li>
+                    <li>  
+                      <a onclick='return confirm('voulez vous vraiment supprimer ce utilisateur')' href='index1.php?action=destroyItem&id=${item.id}' class='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white'>Supprimer</a>
+                    </li>
+                  </ul>
                 </div>
-            </td>
-            <td class="px-4 py-3">
-            <button class='dropdownbtton'
-                         type='button' data-item-id='${item.id}'>
-                         <a href='index1.php?action=property&id=${item.id}'</a>
-                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16"> <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/> <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/> </svg>
-                       </button>
-            </td>
- 
-         <div class=' sam-details__box' style='display:none;' >
-           <div class='sam-details__item-box'>1</div>
-           <div class='sam-details__item-box fff'>
-             <div class='sam-details__item'>2</div>          
-             <div class='sam-details__item'>3</div>
-           </div>
-           <div class='sam-details__item-box'>4</div>
-         </div>`
+              </div>
+            </div>
+          </td>
+        <td class="px-4 py-3">
+          <button class='dropdownbtton'
+            type='button' data-item-id='${item.id}'>
+            <a href='index1.php?action=property&id=${item.id}'</a>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16"> <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/> <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/> </svg>
+          </button>
+        </td>`
      //console.log(newItem);
  
     return newItem;
@@ -175,6 +170,7 @@ function updatePaginationInfo(pageNumber, totalItems) {
 
 function updatePagination(totalPages) {
   var paginationHTML = '';
+  document.getElementById("endPage").value = totalPages
   for (var i = 1; i <= totalPages; i++) {
       paginationHTML += `<li><button class="pagination px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple" data-id=${i}>${i}</button></li>`;
   }
@@ -192,24 +188,21 @@ document.addEventListener("DOMContentLoaded", function() {
   GetItem(page);
 
 
-  bottonNext.addEventListener("click", (e) => {
-    var page = (bottonNext.getAttribute("data-current-id")*1) +1
-    if((bottonNext.getAttribute("data-current-id")*1)+1 <= document.getElementById("endPage").value){
-      console.log(page)
-      GetItem(page)
-      bottonNext.setAttribute("data-current-id",`${page}`)
-      bottonPrevius.setAttribute("data-current-id",`${page}`)
+  bottonNext.addEventListener("click", function(e) {
+    page = (bottonNext.getAttribute("data-current-id") * 1) + 1;
+    if (page <= document.getElementById("endPage").value) {
+      GetItem(page);
+      bottonNext.setAttribute("data-current-id", `${page}`);
+      bottonPrevius.setAttribute("data-current-id", `${page}`);
     }
-          
   });
 
   bottonPrevius.addEventListener("click", function(e) {
-    var page = (bottonNext.getAttribute("data-current-id")*1) -1
-    if((bottonNext.getAttribute("data-current-id")*1)-1 >= 1){
-      console.log(page)
-      GetItem(page)
-      bottonNext.setAttribute("data-current-id",`${page}`)
-      bottonPrevius.setAttribute("data-current-id",`${page}`)
+    page = (bottonNext.getAttribute("data-current-id") * 1) - 1;
+    if (page >= 1) {
+      GetItem(page);
+      bottonNext.setAttribute("data-current-id", `${page}`);
+      bottonPrevius.setAttribute("data-current-id", `${page}`);
     }
   });
 

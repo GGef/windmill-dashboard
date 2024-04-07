@@ -31,7 +31,7 @@ $endItem = min($startItem + $itemsPerPage - 1, $totalItems);
 
 ?>
     <input id="pageCount" type="hidden" name="" value="<?= $totalItems ?>">
-    <input id="endPage" type="hidden" name="" value="<?= $endItem ?>">
+    <input id="endPage" type="hidden" name="" value="">
     <div class="container grid px-6 mx-auto">
     <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">propriétés réservées</h2>
 
@@ -157,7 +157,7 @@ $endItem = min($startItem + $itemsPerPage - 1, $totalItems);
   <div class="w-full overflow-hidden rounded-lg shadow-xs">
     <div  class=" grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800" >
       <div class="flex items-center col-span-6" >
-        <label>Afficher <select name="example_length" id="limit" aria-controls="example" class="">
+        <label>Afficher <select name="example_length" id="limit" aria-controls="example" class="bg-transparent">
             <option value="5">5</option>
             <option value="10">10</option>
             <option value="20">20</option>
