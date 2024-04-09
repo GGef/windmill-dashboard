@@ -51,28 +51,9 @@ class ItemController  extends BaseController
 
     public static function indexActionItem()
     {
-        // Retrieve the search input from the POST request
-        $searchType = isset($_POST['search_type']) ? $_POST['search_type'] : null;
-        $searchValue = isset($_POST['search']) ? $_POST['search'] : null;
         
-        // Retrieve the request method
-        $requestMethod = $_SERVER['REQUEST_METHOD'];
-
-        if ($searchValue !== "" && $searchType !== "" && $requestMethod === 'POST') {
-            // Search for items based on the provided search input
-            $items = static::getModelItem()->findItem($searchType, $searchValue);
-           
-        } else {
-            // Retrieve the latest items
-            $items = static::makeItemsProductPager();
-        }
-        if(is_null($items))
-        {
-            $items = static::makeItemsProductPager();
-        }
-
-        // Render the view "Items/propertyList" and pass the items as data
-        static::requir("Items/propertyList", $items);
+        // Render the view "Items/propertyList" 
+        static::requir("Items/propertyList");
     }
 
     public static function lengthActionItem()
@@ -192,7 +173,7 @@ class ItemController  extends BaseController
         $id = $_GET['id'];
         $statut = static::getModelItem()->statut($id);
         $etat = '';
-    
+        // var_dump($statut);
         if ($statut) {
             // Assuming $statut contains the result from the database query
             // If you have a specific condition to check for "app", modify it accordingly
@@ -265,43 +246,6 @@ class ItemController  extends BaseController
         exit;
     }
 
-    public static function sendData($id)
-    {
-        $item = static::getModelItem() ;
-        $itemData = $item::fetch_data($id);
-        $itemLatestData = $item::fetch_latest_data($id);
-    
-        if ($itemData !== null)
-        {
-            // Prepare the data to be sent back in JSON format
-            $responseData = array(
-                'titre' => $itemData[0]['item_name'], 
-                'desc' => $itemData[0]['description'], 
-                'price' => $itemData[0]['price_per_unit'],   
-            );
-
-            if($itemLatestData !== null)
-            {
-                $responseData += array(
-                    'from' => $itemLatestData['time_from'], 
-                    'to' => $itemLatestData['time_to'], 
-                    'lastprice' => $itemLatestData['price_total'],   
-                );
-            }
-
-            $status = $item->statut($id);
-            $responseData += array(
-                'statut' => $status ? 'occupé' : 'disponible',
-            );
-
-            header('Content-Type: application/json');
-    
-            // Output the JSON data
-            echo json_encode($responseData);
-        }
-        
-        return null; // Return null if user data is not found or there's an error
-    }
 
 }
 

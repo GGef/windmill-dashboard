@@ -204,7 +204,7 @@ $endItem = ceil($totalItems/$itemsPerPage);
                 <th class="sorting px-4 py-3">PROPRIÉTAIRE</th>
                 <th class="sorting px-4 py-3"> PRIX </th>
                 <th class="sorting px-4 py-3">UNITÉ </th>    
-                <th class="sorting px-4 py-3">SATUT </th>        
+                <th class="px-4 py-3">SATUT </th>        
                 <th class="px-4 py-3">ACTION </th> 
                 <th class="px-4 py-3">Details </th> 
             </tr> 

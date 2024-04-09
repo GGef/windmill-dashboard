@@ -26,7 +26,8 @@ function GetItem(pageNumber){
               //  createRow.setAttribute('class','flex justify-between  items-center px-4 py-3 text-sm')
               createRow.setAttribute('class','item-row px-4 py-3 text-sm  bg-gray-50 dark:bg-gray-900 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400 h-12')
               createRow.setAttribute('data-id',`${el.id}`)
-              createRow.innerHTML = rowTable(el)
+              // createRow.innerHTML = rowTable(el)
+              rowTable(el, createRow);
               var Elem  =  document.getElementById("ItemContainer")
               Elem.append(createRow)
               })
@@ -46,47 +47,34 @@ function GetItem(pageNumber){
       }
     });
   }
-  function statusAvailble(id){
-    var html ;
+  function statusAvailable(id, callback) {
     $.ajax({
-      url: `index1.php?action=statutActionItem&id=${id}`, // URL du script PHP à appeler
-      type: "GET",             // Méthode de la requête (GET, POST, etc.)
-      dataType: "json",   
-       // Type de données attendu en retour (json, text, html, etc.)
-      success: function(data) {
-        // Cette fonction sera appelée en cas de succès de la requête
-        // 'data' contient la réponse du serveur
-  
-        var avai = document.querySelectorAll('.available')
-        avai.forEach(function(el) {
-          el.innerHTML = data.data;
-        });
-      //   console.log(data.data)
-      //  avai.innerHTML = data.data;
-        
-        $("#resultat").html("Réponse du serveur : " + data.message);
-      },
-      error: function() {
-        // Cette fonction sera appelée en cas d'échec de la requête
-        $("#resultat").html("Échec de la requête AJAX.");
-      }
+        url: `index1.php?action=statutActionItem&id=${id}`,
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            callback(data.data); // Pass the data to the callback function
+        },
+        error: function() {
+            // Handle error if needed
+        }
     });
-  
   }
   
-  function rowTable(item){
+  function rowTable(item, createRow){
+    statusAvailable(item.id, function(status) {
     let newItem = `
    
          <td class="px-4 py-3">${item.id}</td>
          <td class="px-4 py-3">${item.item_name}</td>
          <td class="px-4 py-3" >${item.type_name}</td>
          <td class="px-4 py-3" >${item.name}</td>
-         <td class="px-4 py-3" >${item.descrLocal}</td>
+         <td class="px-4 py-3" >${item.item_location}</td>
          <td class="px-4 py-3" >${item.description}</td>
          <td class="px-4 py-3" >${item.username}</td>
          <td class="px-4 py-3" >${item.price_per_unit}</td>
          <td class="px-4 py-3" >${item.unit_name}</td>
-         <td class="px-4 py-3 available">${statusAvailble(item.id)}</td>      
+         <td class="px-4 py-3 available">${status}</td>      
          <td class="px-4 py-3">
             <div class='flex  items-center space-x-4 text-sm'>
               <div class='relative '>
@@ -107,7 +95,7 @@ function GetItem(pageNumber){
                       <a href='index1.php?action=reserveItem' class='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white'>Réserver</a>
                     </li>
                     <li>  
-                      <a onclick='return confirm('voulez vous vraiment supprimer ce utilisateur')' href='index1.php?action=destroyItem&id=${item.id}' class='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white'>Supprimer</a>
+                      <a onclick="return confirm('voulez vous vraiment supprimer ce utilisateur')" href="index1.php?action=destroyItem&id=${item.id}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white">Supprimer</a>
                     </li>
                   </ul>
                 </div>
@@ -122,9 +110,9 @@ function GetItem(pageNumber){
           </button>
         </td>`
      //console.log(newItem);
- 
-    return newItem;
-  
+    // return newItem;
+    createRow.innerHTML = newItem;
+    });
  }
 
 // Event listener for clicks on the body
@@ -228,7 +216,7 @@ document.addEventListener("DOMContentLoaded", function() {
       "NOM": "item_name",
       "TYPE": "type_name",
       "EMPLACEMENT": "name",
-      "EMPLACEMENT DE L'ARTICLE": "descrLocal",
+      "EMPLACEMENT DE L'ARTICLE": "item_location",
       "DESCRIPTION": "description",
       "PROPRIÉTAIRE": "username",
       "PRIX": "price_per_unit",
