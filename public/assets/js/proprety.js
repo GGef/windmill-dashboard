@@ -10,6 +10,9 @@ clearTabClass(document.getElementById("b1"))
 viewTab.innerHTML = informationTab({})
 
 
+$(document).ready(function() {
+    Type(); // Call Type function when the DOM is ready
+});
 
 document.getElementById("b1").addEventListener("click",(e)=>{        
     clearTabClass(e.target)
@@ -59,3 +62,28 @@ function clearTabClass(e){
     document.querySelectorAll(".tab-btn").forEach(el => el.classList.remove("text-blue-500","border-b-2","font-medium","border-blue-500"))
     e.classList.add("text-blue-500","border-b-2","font-medium","border-blue-500")
 }
+
+
+function Type() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const itemId = urlParams.get('id');
+    $.ajax({
+        url: `index1.php?action=ItemType&id=${itemId}`,
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            console.log("Type function success:", data);
+            if (data.data) {
+                document.getElementById("b2").innerHTML = "Reservation";
+            } else {
+                document.getElementById("b2").innerHTML = "Visite";
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("Type function error:", error);
+        }
+    });
+}
+
+

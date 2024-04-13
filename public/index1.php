@@ -88,6 +88,10 @@
             break;
             case 'statutActionItem' :
                 ItemController::statutActionItem();
+            break;
+            case 'ItemType' :
+                ItemController::ItemType();
+            break;
             case "ItemLeasedDetails":
                 // echo 'hello' ;
              DashController::dashFile('ItemLeased/itemLeasedDetails');

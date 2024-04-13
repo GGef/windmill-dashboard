@@ -121,24 +121,6 @@ class Item extends Model
     {
          $this->titrePropriete = $titrePropriete;
     }
-
-    public static function latestItem($leftLimit = '' ,$rightLimit ='')
-    {
-        // Perform a database query to retrieve the latest items
-        $comm = 'SELECT I.id, I.item_name, It.type_name, l.name, I.item_location, I.description,
-            U.username, I.price_per_unit, Un.unit_name, I.avaible FROM user_account U 
-            INNER JOIN item I ON I.owner_id = U.id 
-            INNER JOIN item_type It ON I.item_type_id = It.id 
-            INNER JOIN location l ON I.location_id = l.id 
-            INNER JOIN unit Un ON I.unit_id = Un.id';
-        if(!empty($rightLimit) || !empty($leftLimit) )
-        {
-            $comm .= ' LIMIT '.$leftLimit.', '.$rightLimit ;
-        }
-        $statement = static::database()->query($comm);
-
-        return  $statement->fetchAll(PDO::FETCH_CLASS, __CLASS__);
-    }
     
     public function createItem()
     {
@@ -187,31 +169,22 @@ class Item extends Model
         return $statement->execute($parameters);
     }
 
-    public static function search($value)
-    {
-        $statement = static::database()->prepare('SELECT I.id, I.item_name, It.type_name, l.name, I.item_location, I.description,
-            U.username, I.price_per_unit, Un.unit_name, I.avaible FROM user_account U 
-            INNER JOIN item I ON I.owner_id = U.id 
-            INNER JOIN item_type It ON I.item_type_id = It.id 
-            INNER JOIN location l ON I.location_id = l.id 
-            INNER JOIN unit Un ON I.unit_id = Un.id 
-            WHERE I.item_name LIKE :value OR I.id LIKE :value');
-
-        // Bind the value parameter
-        $statement->bindValue(':value', "%$value%");
-
-        // Execute the prepared statement
-        $statement->execute();
-
-        // Fetch all rows as an array of objects of the current class and return the result
-        return $statement->fetchAll(PDO::FETCH_CLASS, __CLASS__);
-    }
-
     public  function statut($id)
     {
         $statement = static::database()->prepare('SELECT * FROM item I
             INNER JOIN item_leased Il ON I.id = Il.item_id
             WHERE Il.item_id = :id AND Il.time_to >= NOW()'); // Adding the WHERE condition based on the provided $id
+        $statement->bindParam(':id', $id, PDO::PARAM_INT); // Binding the $id parameter
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC); // Fetching the results as an associative array
+        return $result;
+    }
+
+    public  function Type($id)
+    {
+        $statement = static::database()->prepare('SELECT * FROM item I
+            INNER JOIN item_leased Il ON I.id = Il.item_id
+            WHERE Il.item_id = :id'); 
         $statement->bindParam(':id', $id, PDO::PARAM_INT); // Binding the $id parameter
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC); // Fetching the results as an associative array

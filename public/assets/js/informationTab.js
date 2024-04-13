@@ -1,40 +1,3 @@
-// export default function informationTab(data){
-  
-//         const queryString = window.location.search;
-//         const urlParams = new URLSearchParams(queryString);
-//         const userId = urlParams.get('id')
-//         const userAction = urlParams.get('stat')
-//         console.log(userId)
-//         //  make an API call to get more details about the user.
-//         var apiEndpoint = 'https://www.sakane.ma/oc-content/plugins/rest/api.php?key=DOoebZRUU1ozFAelnC5u7x8hMvcqBV&type=read&object=item&action=byId&itemId=' + userId;
-//         var apiPictures = 'https://www.sakane.ma/oc-content/plugins/rest/api.php?key=DOoebZRUU1ozFAelnC5u7x8hMvcqBV&type=read&object=item&action=resourcesById&itemId=' + userId
-//         Promise.all([fetch(apiEndpoint), fetch(apiPictures)])
-//           .then(responses => {
-//             // Check for errors in the responses
-//             if (!responses[0].ok || !responses[1].ok) {
-//               throw new Error('One or both API responses were not ok');
-//             }
-
-//             // Parse the responses as JSON
-//             return Promise.all([responses[0].json(), responses[1].json()]);
-//           })
-//           .then(data => {
-//             var userData = data[0];
-//             var picturesData = data[1];
-
-//             // Process the user data and pictures data received from the APIs
-//             if(userAction=="modify"){
-//             modifyItemData(userData)
-//           }else{
-//             displayItemData(userData);
-//             displayItemPictures(picturesData)
-//           }
-//           })
-//           .catch(error => {
-//             console.error('Error fetching user data or pictures:', error);
-//           });
-   
-//     }
 export default async function informationTab(data) {
   try {
     const queryString = window.location.search;
@@ -101,7 +64,7 @@ export default async function informationTab(data) {
       newtext +=`<button onclick="window.location.href='index1.php?action=property&id=${userData.response.pk_i_id}';" class="bg-blue-500 text-white rounded-md py-2 px-4 mt-2 hover:bg-blue-600" >Annuler</button>`;
       newtext +='<button id="modifier-button" class="bg-blue-500 text-white rounded-md py-2 px-4 mt-2 hover:bg-blue-600 ml-2" >Enregistrer</button>';
       newtext += '</div>'
-      newtext += '<div class="grid grid-cols-3 gap-4 p-5">';
+      newtext += '<div class="grid grid-cols-3 gap-4 p-3 pt-5">';
       newtext += '<div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg row-span-2" id="swiper-img"></div>';
       newtext += '<div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg">';
       newtext += '<form id="item-form">';
@@ -146,7 +109,7 @@ export default async function informationTab(data) {
       <button onclick="window.location.href='index1.php?action=propertyList'" class="bg-blue-500 text-white rounded-md py-2 px-4 mt-2 hover:bg-blue-600">Annuler</button>
       <button id="save-button" class="bg-blue-500 text-white rounded-md py-2 px-4 mt-2 hover:bg-blue-600 ml-2">Enregistrer</button>
   </div>
-  <div class="grid grid-cols-3 gap-4 p-5">
+  <div class="grid grid-cols-3 gap-4 p-3 pt-5">
       <div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg row-span-2" id="swiper-img"></div>
       <div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg">
           <form id="item-form">
@@ -286,7 +249,6 @@ export default async function informationTab(data) {
         // });
     });
       });
-      
     }
     var imageUrls = [];
   function addItemPictures() {
@@ -429,20 +391,39 @@ export default async function informationTab(data) {
     // Vous pouvez utiliser le tableau imageUrls comme bon vous semble
   }
  async function displayItemData(userData) {
+  const latitude = userData.response.d_coord_lat;
+  const longitude = userData.response.d_coord_long;
+
+  // Other dynamic parameters from userData.response
+  const locationName = encodeURIComponent(userData.response.s_address); // Encode location name
+  const languageCode = 'fr'; // Language code
+  const mapVersion = '17'; // Map version
       // Create an HTML element using the fetched data
       var newtext = '<div class="flex justify-end">'
       newtext += `<button id="buttonReservation" class="bg-blue-500 text-white rounded-md py-2 px-4 mt-2 hover:bg-blue-600" >Réservation</button>`
       newtext += '<button id="buttonModifier" class="bg-blue-500 text-white rounded-md py-2 px-4 mt-2 hover:bg-blue-600 ml-2" ; style ="margin-right: 21px" >Modifier</button>'
       newtext += '</div>'; 
-      newtext += '<div class="grid grid-cols-3 gap-4 p-5">';
+      newtext += '<div class="grid grid-cols-3 gap-4 p-3 pt-5">';
       newtext += '<div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg row-span-2" id="swiper-img"></div>';
       newtext += '<div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg">';
       newtext += '<span class="font-semibold">Titre : </span> ' + userData.response.s_title + '<br><span class="font-semibold"> adresse : </span>' + userData.response.s_address;
       newtext += '</div> <div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg row-span-2">';
       newtext += '<span class="font-semibold">Prix : </span> ' + userData.response.i_price + '<br> <span class="font-semibold"> Statut : </span>' + '....' + '<br> <span class="font-bold"> contact : </span> <br> <span class="font-semibold"> Nom de proprietaire : </span>' + userData.response.s_contact_name + '<br> <span class="font-semibold"> Numero de telephone : </span>' + userData.response.s_contact_phone + '<br><span class="font-semibold"> date d\'expiration : </span>' + userData.response.dt_expiration + '<br><span class="font-semibold"> Last occup : </span>de ' + '...' + 'à ' + '...';
       newtext += '</div> <div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg"><span class="font-semibold"> Details : </span>' + userData.response.s_description + '</div>';
-      document.getElementById('view-tab').innerHTML = newtext;
-
+    newtext +='</div>' +
+               `<div class="container my-2 mx-auto px-4 md:px-6 lg:px-12">
+                  <section class="mb-20 text-gray-800">
+                    <div class="flex flex-wrap justify-center">
+                      <div class="flex-initial shrink w-full xl:w-8/12 lg:w-6/12">
+                        <div class="lg:py-12 lg:pl-6 mb-6 lg:mb-0">
+                        <iframe class="h-80 w-full border-0 rounded-lg shadow-lg"
+                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3324.7678646942813!2d${longitude}!3d${latitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2s${locationName}!5e0!3m2!1s${languageCode}!2sus!4v${mapVersion}" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                      </div>
+                    </div>
+                  </section>    
+                 </div>`;
+    document.getElementById('view-tab').innerHTML = newtext;
+    // 33.559518899516334, -7.566103990028049
 
       //console.log(userData);
     }
@@ -573,16 +554,6 @@ export default async function informationTab(data) {
         var text = generateTopGallery();
         //text += generateThumbnailGallery();
 
-
-
-
-
-
-
-
-
-
-    
     // Créer la structure HTML pour les Swiper slides
     document.getElementById('swiper-img').innerHTML = text;
     // Loop à travers les éléments dans la réponse de l'API
