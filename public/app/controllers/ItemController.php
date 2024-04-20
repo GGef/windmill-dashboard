@@ -6,6 +6,8 @@ require "vendor/autoload.php";
 
 // Use the User class from the app\models namespace
 use \app\models\Item;
+use \app\controllers\SessionController;
+
 
 
 class ItemController  extends BaseController
@@ -24,9 +26,12 @@ class ItemController  extends BaseController
 
     public static function indexActionItem()
     {
-        
+        var_dump(SessionController::isUserAuthenticated('Administrateur')); // Should return false
+        var_dump(SessionController::isUserAuthenticated('Proprietaire'));
+        if (SessionController::isUserAuthenticated('Proprietaire') ) {        
         // Render the view "Items/propertyList" 
         static::requir("Items/propertyList");
+        }
     }
 
     public static function lengthActionItem()

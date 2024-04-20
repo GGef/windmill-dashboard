@@ -7,12 +7,23 @@
    use \app\controllers\ItemLeasedController;
    use \app\controllers\DashController;
    use \app\controllers\CalendarController;
+   use \app\controllers\SessionController;
+
 
     // Création d'un routeur.
     if (isset($_GET['action'])) 
     {
         $action = $_GET['action'];
         switch ($action) {
+            case "login":
+                require 'ressources/views/login.php';
+            break;
+            case "signup":
+                require 'ressources/views/signup.php';
+            break;
+            case "connected":
+                SessionController::login();
+            break;
             case "dash":
                 // echo 'hello' ;
              DashController::dashFile('dashboard');

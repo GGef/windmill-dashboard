@@ -35,9 +35,11 @@ function GetItem(pageNumber){
           else
           {
             createRow = document.createElement("tr")
-            createRow.setAttribute('class',' px-4 py-3 text-sm  bg-gray-50 dark:bg-gray-900 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400 h-12')
-            createRow.innerHTML = "No data available in table"
-            document.getElementById("ItemContainer").append(createRow)
+            createRow.setAttribute('class','px-4 py-3 text-sm  bg-gray-50 dark:bg-gray-900 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400 h-12')
+            //  createRow.innerHTML = "Pas de données disponibles dans le tableau"
+            createRow.innerHTML = "<td class='text-center' colspan='12'>Pas de données disponibles dans le tableau</td>"
+
+           document.getElementById("ItemContainer").append(createRow)
           }
         $("#resultat").html("Réponse du serveur : " + data.message);
       },

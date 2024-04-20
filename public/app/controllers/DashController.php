@@ -21,6 +21,10 @@ class DashController extends BaseController
 
     public static function dashFile($file)
     {
+        session_start();
+
+        echo  $_SESSION['role'];
+        echo  $_SESSION['email'];
         $itemLeased = static::getModelItemLeased()->latestItemLeased();
         static::requir($file, $itemLeased);
 

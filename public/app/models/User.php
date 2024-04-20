@@ -107,6 +107,31 @@ class User extends Model
       $this->registration_time = $registration_time;
   }
 
+  public static function authenticate($email, $password)
+  {
+    // Prepare SQL statement
+    $sql = "SELECT U.id, U.email, R.type_role 
+    FROM user_account U
+    INNER JOIN role R ON U.role_id = R.id
+    WHERE U.email = :email AND U.password = :password";
+
+    // Prepare and execute the statement
+    $stmt = static::database()->prepare($sql);
+    $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':password', $password);
+    $stmt->execute();
+
+    // Fetch user data
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Check if user exists
+    if ($user) {
+    return $user; // Return user data if found
+    } else {
+    return false; // Return false if user not found
+    }
+  }
+
   public function getLimitProducts($leftLimit, $rightLimit , $key) 
   {
       // Construct the SQL query with placeholders for left and right limit values

@@ -122,10 +122,11 @@ function GetItem(pageNumber){
      // Type de données attendu en retour (json, text, html, etc.)
      success: function(data) {
       console.log('Data received:', data);
+      document.getElementById("ItemContainer").innerHTML = "";
       if(data.data.length!=0)
       {
         var tableBody = document.getElementById("ItemContainer");
-        tableBody.innerHTML = ""; // Clear existing rows
+        // tableBody.innerHTML = ""; // Clear existing rows
         
         data.data.forEach(el => {
             let createRow = document.createElement("tr");
@@ -139,7 +140,7 @@ function GetItem(pageNumber){
       {
         createRow = document.createElement("tr")
         createRow.setAttribute('class',' px-4 py-3 text-sm  bg-gray-50 dark:bg-gray-900 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400 h-12')
-        createRow.innerHTML = "No data available in table"
+        createRow.innerHTML = "<td class='text-center' colspan='10'>Pas de données disponibles dans le tableau</td>"
         document.getElementById("ItemContainer").append(createRow)
       }
       $("#resultat").html("Réponse du serveur : " + data.message);

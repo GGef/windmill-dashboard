@@ -390,27 +390,28 @@ export default async function informationTab(data) {
     //swiperimages();
     // Vous pouvez utiliser le tableau imageUrls comme bon vous semble
   }
- async function displayItemData(userData) {
-  const latitude = userData.response.d_coord_lat;
-  const longitude = userData.response.d_coord_long;
-
-  // Other dynamic parameters from userData.response
-  const locationName = encodeURIComponent(userData.response.s_address); // Encode location name
-  const languageCode = 'fr'; // Language code
-  const mapVersion = '17'; // Map version
-      // Create an HTML element using the fetched data
-      var newtext = '<div class="flex justify-end">'
-      newtext += `<button id="buttonReservation" class="bg-blue-500 text-white rounded-md py-2 px-4 mt-2 hover:bg-blue-600" >Réservation</button>`
-      newtext += '<button id="buttonModifier" class="bg-blue-500 text-white rounded-md py-2 px-4 mt-2 hover:bg-blue-600 ml-2" ; style ="margin-right: 21px" >Modifier</button>'
-      newtext += '</div>'; 
-      newtext += '<div class="grid grid-cols-3 gap-4 p-3 pt-5">';
-      newtext += '<div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg row-span-2" id="swiper-img"></div>';
-      newtext += '<div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg">';
-      newtext += '<span class="font-semibold">Titre : </span> ' + userData.response.s_title + '<br><span class="font-semibold"> adresse : </span>' + userData.response.s_address;
-      newtext += '</div> <div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg row-span-2">';
-      newtext += '<span class="font-semibold">Prix : </span> ' + userData.response.i_price + '<br> <span class="font-semibold"> Statut : </span>' + '....' + '<br> <span class="font-bold"> contact : </span> <br> <span class="font-semibold"> Nom de proprietaire : </span>' + userData.response.s_contact_name + '<br> <span class="font-semibold"> Numero de telephone : </span>' + userData.response.s_contact_phone + '<br><span class="font-semibold"> date d\'expiration : </span>' + userData.response.dt_expiration + '<br><span class="font-semibold"> Last occup : </span>de ' + '...' + 'à ' + '...';
-      newtext += '</div> <div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg"><span class="font-semibold"> Details : </span>' + userData.response.s_description + '</div>';
-    newtext +='</div>' +
+  async function displayItemData(userData) {
+    const latitude = userData.response.d_coord_lat;
+    const longitude = userData.response.d_coord_long;
+  
+    // Other dynamic parameters from userData.response
+    const locationName = encodeURIComponent(userData.response.s_address); // Encode location name
+    const languageCode = 'fr'; // Language code
+    const mapVersion = '17'; // Map version
+  
+    // Create an HTML element using the fetched data
+    var newtext = '<div class="flex justify-end">'
+    newtext += `<button id="buttonReservation" class="bg-blue-500 text-white rounded-md py-2 px-4 mt-2 hover:bg-blue-600" >Réservation</button>`
+    newtext += '<button id="buttonModifier" class="bg-blue-500 text-white rounded-md py-2 px-4 mt-2 hover:bg-blue-600 ml-2" ; style ="margin-right: 21px" >Modifier</button>'
+    newtext += '</div>'; 
+    newtext += '<div class="grid grid-cols-3 gap-4 p-3 pt-5">';
+    newtext += '<div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg row-span-2" id="swiper-img"></div>';
+    newtext += '<div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg">';
+    newtext += '<span class="font-semibold">Titre : </span> ' + userData.response.s_title + '<br><span class="font-semibold"> adresse : </span>' + userData.response.s_address;
+    newtext += '</div> <div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg row-span-2">';
+    newtext += '<span class="font-semibold">Prix : </span> ' + userData.response.i_price + '<br> <span class="font-semibold"> Statut : </span>' + '....' + '<br> <span class="font-bold"> contact : </span> <br> <span class="font-semibold"> Nom de proprietaire : </span>' + userData.response.s_contact_name + '<br> <span class="font-semibold"> Numero de telephone : </span>' + userData.response.s_contact_phone + '<br><span class="font-semibold"> date d\'expiration : </span>' + userData.response.dt_expiration + '<br><span class="font-semibold"> Last occup : </span>de ' + '...' + 'à ' + '...';
+    newtext += '</div> <div class="shadow-lg bg-gray-100 px-4 py-3 text-sm p-10 rounded-lg"><span class="font-semibold"> Details : </span><span id="descriptionText">' + userData.response.s_description + '</span></div>';
+    newtext += '</div>' +
                `<div class="container my-2 mx-auto px-4 md:px-6 lg:px-12">
                   <section class="mb-20 text-gray-800">
                     <div class="flex flex-wrap justify-center">
@@ -422,14 +423,48 @@ export default async function informationTab(data) {
                     </div>
                   </section>    
                  </div>`;
-    document.getElementById('view-tab').innerHTML = newtext;
-    // 33.559518899516334, -7.566103990028049
-
-      //console.log(userData);
-    }
+  
+    $('#view-tab').html(newtext); // Use jQuery to set HTML content
+  
+    // Check if the description text exceeds the height of the div#swiper-img
+    const swiperImgHeight = $('#swiper-img').outerHeight();
+    const descriptionTextHeight = $('#descriptionText').outerHeight();
     
-
-
+    if (descriptionTextHeight > swiperImgHeight) {
+      // If the description exceeds the height, truncate it and add the "Plus" button
+      const truncatedDescription = truncateDescription();
+      $('#descriptionText').html(truncatedDescription);
+      $('.shadow-lg.bg-gray-100').append('<button id="showMoreButton" class="text-blue-500 ml-2">Plus</button>');
+      $('#showMoreButton').on('click', toggleDescription);
+    }
+  }
+  
+  // Function to truncate the description text
+  function truncateDescription() {
+    const maxLength = 150; // Maximum length of the description
+    const description = userData.response.s_description;
+    
+    if (description.length > maxLength) {
+      return description.substring(0, maxLength) + '...'; // Truncate the description
+    } else {
+      return description; // Return the original description if it's not too long
+    }
+  }
+  
+  // Function to toggle the display of the full description
+  function toggleDescription() {
+    const descriptionText = $('#descriptionText');
+    const showMoreButton = $('#showMoreButton');
+  
+    if (descriptionText.css('max-height') === 'none') {
+      descriptionText.css('max-height', '200px'); // Limit the height of the description
+      showMoreButton.text('Plus'); // Change button text to "Plus"
+    } else {
+      descriptionText.css('max-height', 'none'); // Remove height limit to show full description
+      showMoreButton.text('Moins'); // Change button text to "Moins"
+    }
+  }
+  
   function displayItemPictures(picturesData) {
 
 
@@ -533,7 +568,7 @@ export default async function informationTab(data) {
 
         function generateTopGallery() {
           return `
-          <div class="swiper gallery-top swiper-initialized swiper-horizontal swiper-backface-hidden">
+          <div id="swiperContent" class="swiper gallery-top swiper-initialized swiper-horizontal swiper-backface-hidden">
               
               <div id="selected-images" class="swiper-wrapper" aria-live="polite"></div>
               <div id="js-prev1" class="swiper-button-prev"></div>
