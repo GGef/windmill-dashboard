@@ -20,15 +20,14 @@ class SessionController extends BaseController
                 session_start();
                 $_SESSION['email'] = $user['email'];
                 $_SESSION['role'] = $user['type_role'];
+                $_SESSION['id'] = $user['id'];
              
                 // Redirect to dashboard
-                // header("Location: index1.php?action=dash");
                 static::redirect('dash');
                 
                 exit();
             } else {
                 // If authentication fails, redirect to login page with error message
-                // header("Location: login.php?error=1");
                 static::redirect('login&error=1');
                 exit();
             }

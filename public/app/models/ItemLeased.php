@@ -136,7 +136,7 @@ class ItemLeased extends Model
         $this->rentier_grade_description = $rentier_grade_description;
     }
 
-    public static function latestItemLeased($leftLimit = '',$rightLimit ='')
+    public static function latestItemLeased($id = '')
     {
         // Perform a database query to retrieve the latest items
         $comm = 'SELECT IL.id, I.item_name, U.username, IL.time_from, IL.time_to, IL.price_total
@@ -144,14 +144,38 @@ class ItemLeased extends Model
             INNER JOIN item I ON IL.item_id = I.id
             INNER JOIN user_account U  ON IL.renter_id = U.id
             WHERE NOW() < IL.time_to';
-
-        if(!empty($rightLimit) || !empty($leftLimit)  )
-        {
-            $comm .= ' LIMIT '.$leftLimit.', '.$rightLimit ;
-        }
+            if(!empty($id)  )
+            {
+                $comm .= '  And I.owner_id =  '.$id;
+            }
         $statement = static::database()->query($comm);
 
         return  $statement->fetchAll(PDO::FETCH_CLASS, __CLASS__);
+    }
+
+    public static function latestItemLeasedRenter($renterId)
+    {
+        // Perform a database query to retrieve the latest items
+        $sql = 'SELECT IL.id, I.item_name, U.username, IL.time_from, IL.time_to, IL.price_total
+         FROM item_leased IL
+            INNER JOIN item I ON IL.item_id = I.id
+            INNER JOIN user_account U  ON IL.renter_id = U.id
+            WHERE IL.renter_id = ' .$renterId .
+            ' ORDER BY IL.time_to DESC';
+        // Get database connection
+        $db = static::database();
+
+        // Prepare the statement
+        $statement = $db->prepare($sql);
+
+        // Bind the parameter
+        // $statement->bindParam(':renter_id', $renterId, PDO::PARAM_INT);
+
+        // Execute the query
+        $statement->execute();
+
+        // Fetch the results as objects of the current class
+        return $statement->fetchAll(PDO::FETCH_CLASS, __CLASS__);
     }
     
     public static function getDataOffset($limit, $offset, $query, $sort, $direction) {

@@ -28,10 +28,17 @@ class ItemController  extends BaseController
     {
         var_dump(SessionController::isUserAuthenticated('Administrateur')); // Should return false
         var_dump(SessionController::isUserAuthenticated('Proprietaire'));
-        if (SessionController::isUserAuthenticated('Proprietaire') ) {        
+        if (SessionController::isUserAuthenticated('Proprietaire') || SessionController::isUserAuthenticated('Administrateur') ||SessionController::isUserAuthenticated('SuperAdmin') || SessionController::isUserAuthenticated('Locataire')) {        
         // Render the view "Items/propertyList" 
-        static::requir("Items/propertyList");
+            static::requir("Items/propertyList");
         }
+        else{
+            static::redirect('login');
+
+        }
+        // static::requir("Items/propertyList");
+
+
     }
 
     public static function lengthActionItem()
@@ -39,6 +46,7 @@ class ItemController  extends BaseController
         // Retrieve the length of the "item" table
         return static::getModelItem()->length('item');
     }
+
     public static function CountNewItems()
     {
         // Retrieve the length of the "item" table
@@ -69,6 +77,7 @@ class ItemController  extends BaseController
         static::requir("Items/createItem");
         
     }
+    
     public static function reserveActionItem()
     {
         static::requir("Items/reserveItem");
@@ -199,9 +208,23 @@ class ItemController  extends BaseController
         $query = isset($_GET['query']) ? $_GET['query'] : null;
         $sort = $_GET['sort']; 
         $direction =  $_GET['direction']; 
-    
+        
+        if(SessionController::isUserAuthenticated('SuperAdmin'))
+        {
+            $result = static::getModelItem()::getDataOffset($limit, $offset, $query, $sort, $direction);
+
+        }
+        elseif(SessionController::isUserAuthenticated('SuperAdmin'))
+        {
+            $result = static::getModelItem()::getDataOffsetProp($limit, $offset, $query, $sort, $direction, $id);
+
+        }
+        elseif(SessionController::isUserAuthenticated('SuperAdmin'))
+        {
+            $result = static::getModelItem()::getDataOffsetRent($limit, $offset, $query, $sort, $direction);
+
+        }
         // Call the model method to fetch paginated data
-        $result = static::getModelItem()::getDataOffset($limit, $offset, $query, $sort, $direction);
     
         // Send JSON response
         header('Content-type: application/json');

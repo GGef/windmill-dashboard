@@ -226,6 +226,42 @@ class Item extends Model
         return $stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__);
     }
 
+    public static function getDataOffsetProp($Limit, $offset, $query, $sort, $direction, $id) 
+    {
+        // Construct the SQL query with placeholders for left and right limit values
+        $sql = "SELECT I.id, I.item_name, It.type_name, l.name, I.item_location, I.description,
+            U.username, I.price_per_unit, Un.unit_name, I.avaible FROM user_account U 
+            INNER JOIN item I ON I.owner_id = U.id
+            INNER JOIN item_type It ON I.item_type_id = It.id 
+            INNER JOIN location l ON I.location_id = l.id 
+            INNER JOIN unit Un ON I.unit_id = Un.id 
+            WHERE I.owner_id = :id ";
+        // Add search condition if query is provided
+        if($query != null) {
+            $sql .= " AND I.item_name LIKE :value OR I.id LIKE :value ";
+            // Bind the search value
+            $queryValue = "%$query%";
+        }
+
+        // Add sorting condition
+        $sql .= " ORDER BY $sort $direction";
+
+        // Add limit and offset clauses
+        $sql .= " LIMIT :limit OFFSET :offset";
+
+        // Prepare the SQL statement
+        $stmt = static::database()->prepare($sql);
+        $stmt->bindParam(':limit', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':limit', $Limit, PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+        // Bind search value if provided
+        if($query != null) {
+            $stmt->bindParam(':value', $queryValue, PDO::PARAM_STR);
+        }
+        // Execute the prepared statement  
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_CLASS, __CLASS__);
+    }
 
     public static function lengthItem($query) 
     {

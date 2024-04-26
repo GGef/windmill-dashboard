@@ -20,17 +20,20 @@ function GetItem(pageNumber){
           document.getElementById("ItemContainer").innerHTML = ""; // Clear previous items
           if(data.data.length!=0)
           {
+            let idArray = [];
               data.data.forEach(el=>{
-              // var SecChildNode =  document.getElementById("Secondchildnode")
-              let createRow = document.createElement("tr")
-              //  createRow.setAttribute('class','flex justify-between  items-center px-4 py-3 text-sm')
-              createRow.setAttribute('class','item-row px-4 py-3 text-sm  bg-gray-50 dark:bg-gray-900 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400 h-12')
-              createRow.setAttribute('data-id',`${el.id}`)
-              // createRow.innerHTML = rowTable(el)
-              rowTable(el, createRow);
-              var Elem  =  document.getElementById("ItemContainer")
-              Elem.append(createRow)
+              idArray.push(el.id);
+                // var SecChildNode =  document.getElementById("Secondchildnode")
+                let createRow = document.createElement("tr")
+                //  createRow.setAttribute('class','flex justify-between  items-center px-4 py-3 text-sm')
+                createRow.setAttribute('class','item-row px-4 py-3 text-sm  bg-gray-50 dark:bg-gray-900 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400 h-12')
+                createRow.setAttribute('data-id',`${el.id}`)
+                // createRow.innerHTML = rowTable(el)
+                rowTable(el, createRow);
+                var Elem  =  document.getElementById("ItemContainer")
+                Elem.append(createRow)
               })
+              initMap(idArray) 
           }
           else
           {
@@ -283,3 +286,44 @@ function closeDropdown(dropdown)
     
   });
 }
+function initMap(idArray) {
+  var options = {
+    zoom: 5.5,
+    center: { lat: 31.80329888873885, lng: -6.646208049850705 }
+  };
+  
+  var map = new google.maps.Map(document.getElementById('map'), options);
+
+  idArray.forEach(id => {
+    const apiEndpoint =
+      'https://www.sakane.ma/oc-content/plugins/rest/api.php?key=DOoebZRUU1ozFAelnC5u7x8hMvcqBV&type=read&object=item&action=byId&itemId=' +
+      id;
+
+    fetch(apiEndpoint)
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        // Check if latitude and longitude are valid numbers
+        const latitude = parseFloat(data.response.d_coord_lat);
+        const longitude = parseFloat(data.response.d_coord_long);
+
+        if (!isNaN(latitude) && !isNaN(longitude)) {
+          const marker = new google.maps.Marker({
+            map: map,
+            position: { lat: latitude, lng: longitude },
+            title: `Marker for ID ${id}`
+          });
+        } else {
+          console.error('Invalid latitude or longitude:', latitude, longitude);
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  });
+}
+
+
+
+initMap();

@@ -23,10 +23,28 @@ class DashController extends BaseController
     {
         session_start();
 
+        $itemModel = static::getModelItemLeased();
         echo  $_SESSION['role'];
         echo  $_SESSION['email'];
-        $itemLeased = static::getModelItemLeased()->latestItemLeased();
+        echo  $_SESSION['id'];
+
+        if (SessionController::isUserAuthenticated('SuperAdmin')) {  
+        $itemLeased = $itemModel->latestItemLeased();
+        }
+        elseif(SessionController::isUserAuthenticated('Proprietaire') || SessionController::isUserAuthenticated('Administrateur'))
+        {
+            $itemLeased = $itemModel->latestItemLeased($_SESSION['id']);
+        }
+        elseif(SessionController::isUserAuthenticated('Locataire'))
+        {
+            $itemLeased = $itemModel->latestItemLeasedRenter($_SESSION['id']);
+        }
+        else{
+            static::redirect('login');
+            exit();
+        }
         static::requir($file, $itemLeased);
+        
 
     }
 

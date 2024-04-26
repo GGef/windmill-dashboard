@@ -236,7 +236,7 @@ INSERT INTO `role` (`id`, `type_role`) VALUES
 (2, 'Administrateur'),
 (3, 'Proprietaire'),
 (4, 'Locataire'),
-(1, 'SuperAdimin');
+(1, 'SuperAdmin');
 
 -- --------------------------------------------------------
 
