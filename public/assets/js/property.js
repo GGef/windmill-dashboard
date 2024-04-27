@@ -18,9 +18,9 @@ function GetItem(pageNumber){
        // Type de données attendu en retour (json, text, html, etc.)
       success: function(data) {
           document.getElementById("ItemContainer").innerHTML = ""; // Clear previous items
+          let idArray = [];
           if(data.data.length!=0)
           {
-            let idArray = [];
               data.data.forEach(el=>{
               idArray.push(el.id);
                 // var SecChildNode =  document.getElementById("Secondchildnode")
@@ -33,7 +33,7 @@ function GetItem(pageNumber){
                 var Elem  =  document.getElementById("ItemContainer")
                 Elem.append(createRow)
               })
-              initMap(idArray) 
+              
           }
           else
           {
@@ -44,6 +44,7 @@ function GetItem(pageNumber){
 
            document.getElementById("ItemContainer").append(createRow)
           }
+          initMap(idArray) 
         $("#resultat").html("Réponse du serveur : " + data.message);
       },
       error: function() {
@@ -70,17 +71,17 @@ function GetItem(pageNumber){
     statusAvailable(item.id, function(status) {
     let newItem = `
    
-         <td class="px-4 py-3">${item.id}</td>
-         <td class="px-4 py-3">${item.item_name}</td>
-         <td class="px-4 py-3" >${item.type_name}</td>
-         <td class="px-4 py-3" >${item.name}</td>
-         <td class="px-4 py-3" >${item.item_location}</td>
-         <td class="px-4 py-3" >${item.description}</td>
-         <td class="px-4 py-3" >${item.username}</td>
-         <td class="px-4 py-3" >${item.price_per_unit}</td>
-         <td class="px-4 py-3" >${item.unit_name}</td>
-         <td class="px-4 py-3 available">${status}</td>      
-         <td class="px-4 py-3">
+         <td class="column px-4 py-3">${item.id}</td>
+         <td class="column px-4 py-3">${item.item_name}</td>
+         <td class="column px-4 py-3" >${item.type_name}</td>
+         <td class="column px-4 py-3" >${item.name}</td>
+         <td class="column px-4 py-3" >${item.item_location}</td>
+         <td class="column px-4 py-3" >${item.description}</td>
+         <td class="column px-4 py-3" >${item.username}</td>
+         <td class="column px-4 py-3" >${item.price_per_unit}</td>
+         <td class="column px-4 py-3" >${item.unit_name}</td>
+         <td class="column px-4 py-3 available">${status}</td>      
+         <td class="column px-4 py-3">
             <div class='flex  items-center space-x-4 text-sm'>
               <div class='relative '>
                 <button class='dropdownbtton'
@@ -286,44 +287,150 @@ function closeDropdown(dropdown)
     
   });
 }
+// Déclarer la variable map en dehors de la fonction initMap
+let map;
 function initMap(idArray) {
   var options = {
     zoom: 5.5,
     center: { lat: 31.80329888873885, lng: -6.646208049850705 }
   };
   
-  var map = new google.maps.Map(document.getElementById('map'), options);
+  map = new google.maps.Map(document.getElementById('map'), options);
+
+  // Vérifier si idArray est vide
+  if (idArray.length === 0) {
+    return; // Sortir de la fonction si idArray est vide
+  }
 
   idArray.forEach(id => {
     const apiEndpoint =
-      'https://www.sakane.ma/oc-content/plugins/rest/api.php?key=DOoebZRUU1ozFAelnC5u7x8hMvcqBV&type=read&object=item&action=byId&itemId=' +
+    'https://www.sakane.ma/oc-content/plugins/rest/api.php?key=DOoebZRUU1ozFAelnC5u7x8hMvcqBV&type=read&object=item&action=byId&itemId=' +
+    id;
+    const apiPictures =
+      'https://www.sakane.ma/oc-content/plugins/rest/api.php?key=DOoebZRUU1ozFAelnC5u7x8hMvcqBV&type=read&object=item&action=resourcesById&itemId=' +
       id;
+    
+    // Fetch data from both API endpoints simultaneously
+    Promise.all([
+      fetch(apiEndpoint).then(response => response.json()),
+      fetch(apiPictures).then(response => response.json())
+    ])
+    .then(([data, picturesData]) => {
+      // Check if latitude and longitude are valid numbers
+      const latitude = parseFloat(data.response.d_coord_lat);
+      const longitude = parseFloat(data.response.d_coord_long);
+    
+      if (!isNaN(latitude) && !isNaN(longitude)) {
+        const marker = new google.maps.Marker({
+          map: map,
+          position: { lat: latitude, lng: longitude },
+          title: `Marker for ID ${id}`
+        });
 
-    fetch(apiEndpoint)
-      .then(response => {
-        return response.json();
-      })
-      .then(data => {
-        // Check if latitude and longitude are valid numbers
-        const latitude = parseFloat(data.response.d_coord_lat);
-        const longitude = parseFloat(data.response.d_coord_long);
-
-        if (!isNaN(latitude) && !isNaN(longitude)) {
-          const marker = new google.maps.Marker({
-            map: map,
-            position: { lat: latitude, lng: longitude },
-            title: `Marker for ID ${id}`
-          });
-        } else {
-          console.error('Invalid latitude or longitude:', latitude, longitude);
+        var infoWindowContent = '<div style="width: 100px;">'
+        if (picturesData.response.length > 0) {
+          var firstImage = picturesData.response[0];
+          var itemId = firstImage.pk_i_id;
+          var extension = firstImage.s_extension;
+          var path = firstImage.s_path;
+          // Assuming each item has a "s_name" property containing the image name
+          infoWindowContent += `<img style='height : 100px' src="https://sakane.ma/${path}${itemId}.${extension}" alt="${itemId}">`;
         }
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
+        infoWindowContent += '<h4>' + data.response.s_title + '</h4> </div>';
+
+        var infoWindow = new google.maps.InfoWindow({
+          content: infoWindowContent
+        });
+
+        marker.addListener('click', function() {
+          infoWindow.open(map, marker);
+        });
+      } else {
+        console.error('Invalid latitude or longitude:', latitude, longitude);
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
   });
 }
 
+// document.addEventListener('click', function() {
+//   const itemRows = document.querySelectorAll('.item-row');
 
+// // Supposons que vous avez une liste de lignes <tr> avec une classe 'item-row'
 
-initMap();
+// itemRows.forEach(row => {
+//   console.log(row);
+//   row.addEventListener('click', function() {
+//     console.log('clicked')
+//     // Récupérer l'identifiant de l'appartement à partir de l'attribut data-id
+//     const itemId = row.getAttribute('data-id');
+
+//     // Construire l'URL de l'API avec l'identifiant de l'appartement
+//     const apiEndpoint = 'https://www.sakane.ma/oc-content/plugins/rest/api.php?key=DOoebZRUU1ozFAelnC5u7x8hMvcqBV&type=read&object=item&action=byId&itemId=' + itemId;
+
+//     // Effectuer la requête pour obtenir les informations de l'appartement
+//     fetch(apiEndpoint)
+//       .then(response => response.json())
+//       .then(data => {
+//     console.log('exist')
+
+//         // Vérifier si les données sont valides
+//         if (data.response) {
+//           // Récupérer les informations de géolocalisation
+//           const latitude = parseFloat(data.response.d_coord_lat);
+//           const longitude = parseFloat(data.response.d_coord_long);
+
+//           // Centrer la carte sur l'emplacement de l'appartement
+//           map.setCenter({ lat: latitude, lng: longitude });
+//         } else {
+//           console.error('Réponse invalide de l\'API');
+//         }
+//       })
+//       .catch(error => {
+//         console.error('Erreur lors de la récupération des informations de l\'appartement :', error);
+//       });
+//   });
+// });
+
+// });
+
+document.addEventListener('click', function(event) {
+  console.log('Clicked yy:');
+  // Check if the direct parent element of the clicked element has the class 'column'
+  const parentElement = event.target.parentNode;
+
+  if (parentElement && event.target.classList.contains('column')) {
+    // Handle the click event
+    console.log('Clicked on element with class "column" as its direct parent');
+    const itemId = parentElement.getAttribute('data-id');
+     // Construire l'URL de l'API avec l'identifiant de l'appartement
+     const apiEndpoint = 'https://www.sakane.ma/oc-content/plugins/rest/api.php?key=DOoebZRUU1ozFAelnC5u7x8hMvcqBV&type=read&object=item&action=byId&itemId=' + itemId;
+
+     // Effectuer la requête pour obtenir les informations de l'appartement
+     fetch(apiEndpoint)
+       .then(response => response.json())
+       .then(data => {
+     console.log('exist')
+ 
+         // Vérifier si les données sont valides
+         if (data.response) {
+           // Récupérer les informations de géolocalisation
+           const latitude = parseFloat(data.response.d_coord_lat);
+           const longitude = parseFloat(data.response.d_coord_long);
+ 
+           // Centrer la carte sur l'emplacement de l'appartement
+           map.setOptions({
+            center: { lat: latitude, lng: longitude },
+            zoom: 14 // Set the desired zoom level here
+          });
+         } else {
+           console.error('Réponse invalide de l\'API');
+         }
+       })
+       .catch(error => {
+         console.error('Erreur lors de la récupération des informations de l\'appartement :', error);
+       });
+  }
+});
