@@ -55,7 +55,7 @@ class ItemLeasedController  extends BaseController
         $offset = $limit * ($numberOfPage - 1);
         $sort = $_GET['sort'] ;
         $direction = $_GET['direction'] ;
-       $result = static::getModelItemLeased()::getDataOffset($limit, $offset, $query, $sort, $direction);
+        $result = static::getModelItemLeased()::getDataOffset($limit, $offset, $query, $sort, $direction);
     //    var_dump($result);
        header('Content-type: application/json');
        echo json_encode(array(

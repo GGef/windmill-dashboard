@@ -238,7 +238,7 @@ class Item extends Model
             WHERE I.owner_id = :id ";
         // Add search condition if query is provided
         if($query != null) {
-            $sql .= " AND I.item_name LIKE :value OR I.id LIKE :value ";
+            $sql .= " AND ( I.item_name LIKE :value OR I.id LIKE :value ) ";
             // Bind the search value
             $queryValue = "%$query%";
         }
@@ -251,7 +251,7 @@ class Item extends Model
 
         // Prepare the SQL statement
         $stmt = static::database()->prepare($sql);
-        $stmt->bindParam(':limit', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->bindParam(':limit', $Limit, PDO::PARAM_INT);
         $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
         // Bind search value if provided

@@ -70,9 +70,7 @@
                 ItemController::property();
             break;
             case 'paginationNumber' :
-                ItemController::paginationNumber();
-            break;
-            case 'SearchItem':
+                case 'SearchItem' :
                 ItemController::paginationNumber();
             break;
             case 'lengthItem' :

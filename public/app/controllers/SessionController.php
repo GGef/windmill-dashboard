@@ -5,6 +5,21 @@ use app\models\UserModel; // Adjust namespace as needed
 
 class SessionController extends BaseController
 {
+    
+
+    public static function getUserId() {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        // Check if the user is logged in
+        if (isset($_SESSION['id']) ) {
+            // Check if the user's role matches the required role
+            return $_SESSION['id'] ;
+        }
+
+        return false; 
+    }
 
     public static function login() {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -34,7 +49,7 @@ class SessionController extends BaseController
         }
     }
 
-    public static function isUserAuthenticated($requiredRole)
+    public static function isUserAuthenticated()
     {
         // Start session if not already started
         if (session_status() == PHP_SESSION_NONE) {
@@ -44,7 +59,7 @@ class SessionController extends BaseController
         // Check if the user is logged in
         if (isset($_SESSION['email']) && isset($_SESSION['role'])) {
             // Check if the user's role matches the required role
-            return $_SESSION['role'] == $requiredRole;
+            return $_SESSION['role'] ;
         }
 
         return false; // User is not authenticated or does not have the required role

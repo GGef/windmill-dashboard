@@ -199,40 +199,44 @@ class ItemController  extends BaseController
     
 
     public static function paginationNumber()
-    {
-        // Retrieve pagination parameters from $_GET
-        $limit = isset($_GET['limit']) ? $_GET['limit'] : 5; // Default limit is set to 5 if not provided
-        $numberOfPage = $_GET['prepa']; 
-        $offset = $limit * ($numberOfPage - 1);
-        // $query = isset($_GET['query']) ? $_GET['query'] : "" ; 
-        $query = isset($_GET['query']) ? $_GET['query'] : null;
-        $sort = $_GET['sort']; 
-        $direction =  $_GET['direction']; 
-        
-        if(SessionController::isUserAuthenticated('SuperAdmin'))
-        {
+{
+    // Retrieve pagination parameters from $_GET
+    $limit = isset($_GET['limit']) ? intval($_GET['limit']) : 5; // Default limit is set to 5 if not provided
+    $numberOfPage = isset($_GET['prepa']) ? intval($_GET['prepa']) : 1; // Default page number is set to 1 if not provided
+    $offset = $limit * ($numberOfPage - 1);
+    $query = isset($_GET['query']) ? $_GET['query'] : null;
+    $sort = isset($_GET['sort']) ? $_GET['sort'] : ''; // Set default sort
+    $direction = isset($_GET['direction']) ? $_GET['direction'] : 'asc'; // Set default direction
+
+    // Check user authentication and role
+    $authenticatedUserRole = SessionController::isUserAuthenticated();
+
+    switch ($authenticatedUserRole) {
+        case 'SuperAdmin':
             $result = static::getModelItem()::getDataOffset($limit, $offset, $query, $sort, $direction);
-
-        }
-        elseif(SessionController::isUserAuthenticated('SuperAdmin'))
-        {
-            $result = static::getModelItem()::getDataOffsetProp($limit, $offset, $query, $sort, $direction, $id);
-
-        }
-        elseif(SessionController::isUserAuthenticated('SuperAdmin'))
-        {
+            break;
+        case 'Proprietaire':
+            $userId = $_SESSION['id'] ;
+            // $result = static::getModelItem()::getDataOffsetProp($limit, $offset, $query, $sort, $direction, $userId);
+            $result = static::getModelItem()::getDataOffsetProp($limit, $offset, $query, $sort, $direction, $userId);
+            break;
+        case 'Locataire':
             $result = static::getModelItem()::getDataOffsetRent($limit, $offset, $query, $sort, $direction);
-
-        }
-        // Call the model method to fetch paginated data
-    
-        // Send JSON response
-        header('Content-type: application/json');
-        echo json_encode(array(
-            'data' => $result
-        ));
-        exit;
+            break;
+        default:
+            // Handle unauthorized access
+            http_response_code(403);
+            exit("Unauthorized access.");
     }
+
+    // Send JSON response
+    header('Content-type: application/json');
+    echo json_encode(array(
+        'data' => $result
+    ));
+    exit;
+}
+
     
 
 

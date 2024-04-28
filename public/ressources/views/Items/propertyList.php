@@ -235,7 +235,7 @@ $endItem = ceil($totalItems/$itemsPerPage);
         </span>  
       </div>
     </div>  
-    <div id="map" class="" style="height:70% ; width : 70%;">hh</div>
+    <div id="map" class="" style="height:70% ; width : 70%;"></div>
   </div> 
   
 </main>

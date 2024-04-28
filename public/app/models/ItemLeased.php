@@ -143,10 +143,10 @@ class ItemLeased extends Model
          FROM item_leased IL
             INNER JOIN item I ON IL.item_id = I.id
             INNER JOIN user_account U  ON IL.renter_id = U.id
-            WHERE NOW() < IL.time_to';
+            WHERE NOW() < IL.time_to ';
             if(!empty($id)  )
             {
-                $comm .= '  And I.owner_id =  '.$id;
+                $comm .= '  AND I.owner_id =  '.$id;
             }
         $statement = static::database()->query($comm);
 

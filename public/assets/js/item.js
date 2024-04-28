@@ -87,9 +87,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // Add event listener for search input
   searchInput.addEventListener("input", function() {
-    console.log('search')
-    console.log(this.value.trim())
-    searchItems(this.value.trim());
+    GetItem(1); // Trigger item retrieval when input changes
   });
 });
 
@@ -105,7 +103,6 @@ document.addEventListener("DOMContentLoaded", function() {
   el.addEventListener("click",(e)=>{
     var bottonNext = document.getElementById("NextButton");
     var bottonPrevius = document.getElementById("PreviousButton");
-    var searchInput = document.getElementById("searchInput");
     GetItem(e.target.getAttribute("data-id"));
     bottonNext.setAttribute("data-current-id",`${e.target.getAttribute("data-id")}`)
     bottonPrevius.setAttribute("data-current-id",`${e.target.getAttribute("data-id")}`)
@@ -116,8 +113,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
 function GetItem(pageNumber){
   console.log(`Le Nombre a été cliqué !${pageNumber}`);
+  var inputValue = document.getElementById("searchInput").value.trim(); // Trim whitespace
+  var isSearch = inputValue !== "";
+  var action = isSearch ? "SearchItem" : "paginationNumber";
+  var queryParam = isSearch ? `&query=${inputValue}` : "";
   $.ajax({
-    url: `index1.php?action=paginationNumber&limit=5&prepa=${pageNumber}`, // URL du script PHP à appeler
+    url: `index1.php?action=${action}&limit=${limit}&sort=${sort}&direction=${direction}&prepa=${pageNumber}${queryParam}`, // URL du script PHP à appeler
     type: "GET",             // Méthode de la requête (GET, POST, etc.)
     dataType: "json",   
      // Type de données attendu en retour (json, text, html, etc.)
@@ -144,34 +145,34 @@ function GetItem(pageNumber){
     }
   });
 }
-  function searchItems(query) {
-    if (query !== "") {
-      $.ajax({
-        url: `index1.php?action=SearchItem&query=${query}`,
-        type: "GET",
-        dataType: "json",
-        success: function(data) {
-          document.getElementById("ItemContainer").innerHTML = "";
-          data.data.forEach(el => {
-            let createRow = document.createElement("div");
-            createRow.setAttribute('class', 'flex justify-between items-center px-4 py-3 text-sm');
-            createRow.setAttribute('data-id', `${el.id}`);
-            createRow.innerHTML = rowTable(el);
-            var Elem = document.getElementById("Childnode");
-            Elem.append(createRow);
-          });
-          $("#resultat").html("Réponse du serveur : " + data.message);
-        },
-        error: function() {
-          $("#resultat").html("Échec de la requête AJAX.");
-        }
-      });
-    }   
-  // else {
-  //   // If search input is empty, display all items (similar to initial page load)
-  //   GetItem(page);
-  // }
-}
+//   function searchItems(query) {
+//     if (query !== "") {
+//       $.ajax({
+//         url: `index1.php?action=SearchItem&query=${query}`,
+//         type: "GET",
+//         dataType: "json",
+//         success: function(data) {
+//           document.getElementById("ItemContainer").innerHTML = "";
+//           data.data.forEach(el => {
+//             let createRow = document.createElement("div");
+//             createRow.setAttribute('class', 'flex justify-between items-center px-4 py-3 text-sm');
+//             createRow.setAttribute('data-id', `${el.id}`);
+//             createRow.innerHTML = rowTable(el);
+//             var Elem = document.getElementById("Childnode");
+//             Elem.append(createRow);
+//           });
+//           $("#resultat").html("Réponse du serveur : " + data.message);
+//         },
+//         error: function() {
+//           $("#resultat").html("Échec de la requête AJAX.");
+//         }
+//       });
+//     }   
+//   // else {
+//   //   // If search input is empty, display all items (similar to initial page load)
+//   //   GetItem(page);
+//   // }
+// }
 
 //---------------- Function to display the fetched user data ----------------
 function displayItemData(userData ) {

@@ -3,56 +3,57 @@ var sort = "I.id";
 var direction = "asc"
 
 function GetItem(pageNumber){
-    console.log(`Le Nombre a été cliqué !${pageNumber}`);
-    var inputValue = document.getElementById("searchInput").value.trim(); 
-    pagination( pageNumber, inputValue); // Update pagination
-    // Check if there's a search query
-    var isSearch = inputValue !== "";
-    var action = isSearch ? "SearchItem" : "paginationNumber";
-    
-    var queryParam = isSearch ? `&query=${inputValue}` : "";
-    $.ajax({
-      url: `index1.php?action=${action}&limit=${limit}&prepa=${pageNumber}&sort=${sort}&direction=${direction}${queryParam}`, // URL du script PHP à appeler
-      type: "GET",             // Méthode de la requête (GET, POST, etc.)
-      dataType: "json",   
-       // Type de données attendu en retour (json, text, html, etc.)
-      success: function(data) {
-          document.getElementById("ItemContainer").innerHTML = ""; // Clear previous items
-          let idArray = [];
-          if(data.data.length!=0)
-          {
-              data.data.forEach(el=>{
-              idArray.push(el.id);
-                // var SecChildNode =  document.getElementById("Secondchildnode")
-                let createRow = document.createElement("tr")
-                //  createRow.setAttribute('class','flex justify-between  items-center px-4 py-3 text-sm')
-                createRow.setAttribute('class','item-row px-4 py-3 text-sm  bg-gray-50 dark:bg-gray-900 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400 h-12')
-                createRow.setAttribute('data-id',`${el.id}`)
-                // createRow.innerHTML = rowTable(el)
-                rowTable(el, createRow);
-                var Elem  =  document.getElementById("ItemContainer")
-                Elem.append(createRow)
-              })
-              
-          }
-          else
-          {
-            createRow = document.createElement("tr")
-            createRow.setAttribute('class','px-4 py-3 text-sm  bg-gray-50 dark:bg-gray-900 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400 h-12')
-            //  createRow.innerHTML = "Pas de données disponibles dans le tableau"
-            createRow.innerHTML = "<td class='text-center' colspan='12'>Pas de données disponibles dans le tableau</td>"
+  console.log(`Le Nombre a été cliqué !${pageNumber}`);
+  var inputValue = document.getElementById("searchInput").value.trim(); 
+  pagination( pageNumber, inputValue); // Update pagination
+  // Check if there's a search query
+  var isSearch = inputValue !== "";
+  var action = isSearch ? "SearchItem" : "paginationNumber";
+  
+  var queryParam = isSearch ? `&query=${inputValue}` : "";
+  $.ajax({
+    url: `index1.php?action=${action}&limit=${limit}&prepa=${pageNumber}&sort=${sort}&direction=${direction}${queryParam}`, // URL du script PHP à appeler
+    type: "GET",             // Méthode de la requête (GET, POST, etc.)
+    dataType: "json",   
+     // Type de données attendu en retour (json, text, html, etc.)
+    success: function(data) {
+        document.getElementById("ItemContainer").innerHTML = ""; // Clear previous items
+        let idArray = [];
+        if(data.data.length!=0)
+        {
+            data.data.forEach(el=>{
+            idArray.push(el.id);
+              // var SecChildNode =  document.getElementById("Secondchildnode")
+              let createRow = document.createElement("tr")
+              //  createRow.setAttribute('class','flex justify-between  items-center px-4 py-3 text-sm')
+              createRow.setAttribute('class','item-row px-4 py-3 text-sm  bg-gray-50 dark:bg-gray-900 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400 h-12')
+              createRow.setAttribute('data-id',`${el.id}`)
+              // createRow.innerHTML = rowTable(el)
+              rowTable(el, createRow);
+              var Elem  =  document.getElementById("ItemContainer")
+              Elem.append(createRow)
+            })
+            
+        }
+        else
+        {
+          createRow = document.createElement("tr")
+          createRow.setAttribute('class','px-4 py-3 text-sm  bg-gray-50 dark:bg-gray-900 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400 h-12')
+          //  createRow.innerHTML = "Pas de données disponibles dans le tableau"
+          createRow.innerHTML = "<td class='text-center' colspan='12'>Pas de données disponibles dans le tableau</td>"
 
-           document.getElementById("ItemContainer").append(createRow)
-          }
-          initMap(idArray) 
-        $("#resultat").html("Réponse du serveur : " + data.message);
-      },
-      error: function() {
-        // Cette fonction sera appelée en cas d'échec de la requête
-        $("#resultat").html("Échec de la requête AJAX.");
-      }
-    });
-  }
+         document.getElementById("ItemContainer").append(createRow)
+        }
+        createMarkers(idArray); // Appel de la fonction pour créer les marqueurs
+      $("#resultat").html("Réponse du serveur : " + data.message);
+    },
+    error: function() {
+      // Cette fonction sera appelée en cas d'échec de la requête
+      $("#resultat").html("Échec de la requête AJAX.");
+    }
+  });
+}
+
   function statusAvailable(id, callback) {
     $.ajax({
         url: `index1.php?action=statutActionItem&id=${id}`,
@@ -287,16 +288,21 @@ function closeDropdown(dropdown)
     
   });
 }
-// Déclarer la variable map en dehors de la fonction initMap
+
 let map;
-function initMap(idArray) {
+
+// Fonction pour initialiser la carte
+function initMap() {
   var options = {
     zoom: 5.5,
     center: { lat: 31.80329888873885, lng: -6.646208049850705 }
   };
   
   map = new google.maps.Map(document.getElementById('map'), options);
+}
 
+// Fonction pour créer les marqueurs
+function createMarkers(idArray) {
   // Vérifier si idArray est vide
   if (idArray.length === 0) {
     return; // Sortir de la fonction si idArray est vide
@@ -354,6 +360,10 @@ function initMap(idArray) {
     });
   });
 }
+
+// Appel de la fonction initMap pour initialiser la carte au chargement de la page
+initMap();
+
 
 // document.addEventListener('click', function() {
 //   const itemRows = document.querySelectorAll('.item-row');
